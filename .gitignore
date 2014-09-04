@@ -1,1 +1,7 @@
 *.gddoc
+Documents/Test plan/*.aux
+Documents/Test plan/*.pdf
+Documents/Test plan/*.gz
+Documents/Test plan/*.log
+Documents/Test plan/*.toc
+*.swp
