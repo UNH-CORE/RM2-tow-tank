@@ -7,7 +7,26 @@ model is being designed.
 
 ## Objectives
   1. Acquire a Reynolds number independent dataset characterizing the 
-  performance and near wake of the DOE RM2 cross-flow turbine.
+  performance and near wake of the DOE RM2 cross-flow turbine, for validation of
+  [CACTUS](http://energy.sandia.gov/?page_id=16734), and other prediction codes. 
+  2. Measure the effects of strut drag, with the hope that this will improve
+  CACTUS's performance prediction ability. 
+  
+## Test plan
+See `Test plan/` for CSVs of test matrices for each part of the experiment. See
+`Documents/Test plan/testplan.tex` for the test plan report. 
+
+### Summary
+
+  1. Build a scaled RM2 vertical axis turbine model, as faithfully as possible.
+  2. Measure performance curves to find a Reynolds number independent operating
+  condition. 
+  3. Measure the near-wake at the Reynolds number found in 2. 
+  4. Measure the parasitic torque from the struts by rotating them in still water
+  with the blades removed.
+  5. Repeat 4 but for higher-drag struts.
+  5. Acquire a performance curve with the higher-drag struts.
+  
 
 ## CAD files
 CAD files of the turbine model will be uploaded to figshare once designed.
