@@ -40,6 +40,7 @@ See `Test plan/` for CSVs of test matrices for each part of the experiment. See
 | Blade pitch (deg) | 0.0?  |     0.0?    |
 | Strut profile | NACA 0021 |   NACA 0021 |
 | Strut chord (m) |  0.400? |    0.067?   |
+| Shaft diameter (m) |  ??? |   ???       |
 
 ### CAD files
 CAD files of the turbine model will be uploaded to figshare once designed.
