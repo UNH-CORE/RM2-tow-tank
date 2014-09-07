@@ -24,22 +24,23 @@ See `Test plan/` for CSVs of test matrices for each part of the experiment. See
   3. Measure the near-wake at the Reynolds number found in 2. 
   4. Measure the parasitic torque from the struts by rotating them in still water
   with the blades removed.
-  5. Repeat 4 but for higher-drag struts.
+  5. Repeat 4 but for higher-drag struts. These will likely be cylindrical tubes
+  slid over the regular struts.
   5. Acquire a performance curve with the higher-drag struts.
   
 ## Turbine model
 
-|              | Full-scale | Model (1:6) |
-| -----------  | ---------- | ----------- |
-| Diameter (m) | 6.45       |     1.075   |
-| Height (m)   | 4.84       |     0.807   |
-| Root chord (m) |  0.400   |     0.067   |
-| Tip chord (m) |   0.240   |     0.040   |
-| Blade profile | NACA 0021 |   NACA 0021 |
-| Blade mount  | 1/2 chord? |  1/2 chord? |
+|                | Full-scale | Model (1:6) |
+| -------------  | ---------- | ----------- |
+| Diameter (m)   | 6.45       |     1.075   |
+| Height (m)     | 4.84       |     0.807   |
+| Blade root chord (m) |  0.400  |     0.067   |
+| Blade tip chord (m)  |  0.240  |     0.040   |
+| Blade profile  | NACA 0021 |   NACA 0021 |
+| Blade mount    | 1/2 chord? |  1/2 chord? |
 | Blade pitch (deg) | 0.0?  |     0.0?    |
 | Strut profile | NACA 0021 |   NACA 0021 |
-| Strut chord (m) |  0.400? |    0.067?   |
+| Strut chord (m) |  0.360? |    0.060?   |
 
 ### CAD files
 CAD files of the turbine model will be uploaded to figshare once designed.
