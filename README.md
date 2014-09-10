@@ -14,7 +14,12 @@ model is being designed.
   
 ## Test plan
 See `Test plan/` for CSVs of test matrices for each part of the experiment. See
-`Documents/Test plan/testplan.tex` for the test plan report. 
+`Documents/Test plan/testplan.tex` for the test plan report.
+
+### Temporary documents
+
+  * [Scratch pad](https://docs.google.com/document/d/1zFC9iLIFHl3ufpJLw5Iijj2XMi7WhGAPeBDgcCtB2U0/edit?usp=sharing)
+  * [Model scaling spreadsheet](https://docs.google.com/spreadsheets/d/1p0JXNNEb69uChnZ2UWda0CEV3VlKe7VV8KDJxV5FpGk/edit?usp=sharing)
 
 ### Summary
 
