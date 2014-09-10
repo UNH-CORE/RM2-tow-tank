@@ -3,7 +3,7 @@ UNH RM2 tow tank experiment
 
 This is a repository for data and documentation from the UNH RM2 tow tank 
 experiment. Currently the test plan is being finalized, and the turbine
-model is being designed. 
+model is being designed.
 
 ## Objectives
   1. Acquire a Reynolds number independent dataset characterizing the 
@@ -26,7 +26,7 @@ See `Test plan/` for CSVs of test matrices for each part of the experiment. See
   with the blades removed.
   5. Repeat 4 but for higher-drag struts. These will likely be cylindrical tubes
   slid over the regular struts.
-  5. Acquire a performance curve with the higher-drag struts.
+  6. Acquire a performance curve with the higher-drag struts.
   
 ## Turbine model
 
