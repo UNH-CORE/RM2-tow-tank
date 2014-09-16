@@ -5,3 +5,7 @@ Documents/Test plan/*.gz
 Documents/Test plan/*.log
 Documents/Test plan/*.toc
 *.swp
+*.doc
+*.docx
+*.xls
+*.xlsx
