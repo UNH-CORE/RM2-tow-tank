@@ -42,10 +42,10 @@ See `Test plan/` for CSVs of test matrices for each part of the experiment. See
 | Blade root chord (m) |  0.400  |     0.067   |
 | Blade tip chord (m)  |  0.240  |     0.040   |
 | Blade profile  | NACA 0021 |   NACA 0021 |
-| Blade mount    | 1/2 chord? |  1/2 chord? |
-| Blade pitch (deg) | 0.0?  |     0.0?    |
+| Blade mount    | 1/2 chord |  1/2 chord  |
+| Blade pitch (deg) | 0.0   |      0.0    |
 | Strut profile | NACA 0021 |   NACA 0021 |
-| Strut chord (m) |  0.360? |    0.060?   |
+| Strut chord (m) |  0.360  |    0.060    |
 | Shaft diameter (m) |  ??? |   ???       |
 
 ### CAD files
