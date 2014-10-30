@@ -9,6 +9,7 @@ model is being designed.
 
   * [Scratch pad](https://docs.google.com/document/d/1zFC9iLIFHl3ufpJLw5Iijj2XMi7WhGAPeBDgcCtB2U0/edit?usp=sharing)
   * [Model scaling spreadsheet](https://docs.google.com/spreadsheets/d/1p0JXNNEb69uChnZ2UWda0CEV3VlKe7VV8KDJxV5FpGk/edit?usp=sharing)
+  * [Test plan report (working copy, pdf)](https://drive.google.com/file/d/0BwMVIAlxIxfZSk1YUWktZE5EQjg/view?usp=sharing)
 
 ## Objectives
   1. Acquire a Reynolds number independent dataset characterizing the 
