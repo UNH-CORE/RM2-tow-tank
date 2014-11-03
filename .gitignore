@@ -9,3 +9,5 @@ Documents/Test plan/*.toc
 *.docx
 *.xls
 *.xlsx
+*.bbl
+*.blg
