@@ -11,3 +11,4 @@ Documents/Test plan/*.toc
 *.xlsx
 *.bbl
 *.blg
+*.lof
