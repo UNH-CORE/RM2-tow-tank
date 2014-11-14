@@ -19,8 +19,8 @@ model is being designed.
   CACTUS's performance prediction ability. 
   
 ## Test plan
-See `Test plan/` for CSVs of test matrices for each part of the experiment. See
-`Documents/Test plan/testplan.tex` for the test plan report.
+See `Config/Test plan/` for CSVs of test matrices for each part of the experiment. See
+`Documents/Test plan` for the test plan report.
 
 ### Summary
 
