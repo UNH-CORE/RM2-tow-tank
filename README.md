@@ -20,7 +20,7 @@ model is being designed.
   
 ## Test plan
 See `Config/Test plan/` for CSVs of test matrices for each part of the experiment. See
-`Documents/Test plan` for the test plan report.
+`Documents/Test plan/` for the test plan report.
 
 ### Summary
 
