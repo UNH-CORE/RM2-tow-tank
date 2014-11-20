@@ -11,6 +11,7 @@ Documents/Test plan/*.toc
 *.xlsx
 *.blg
 *.lof
+*.bbl
 Invoices and receipts
 Documents/Test plan/Figures/SolidWorks/
 *.out
