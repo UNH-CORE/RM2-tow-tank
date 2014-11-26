@@ -11,7 +11,9 @@ model is being designed.
     [here](https://drive.google.com/folderview?id=0BwMVIAlxIxfZSmVXWlFYX2dRVjg&usp=sharing)
     for the latest manufacturing drawings. We have received one partial quote
     for manufacturing, and we're waiting on a couple more to begin.
-  * We are currently writing the test plan document, which is due on December 15th.
+  * We are currently writing the test plan document, which is due on December 15th. See
+    [here](https://drive.google.com/file/d/0BwMVIAlxIxfZSk1YUWktZE5EQjg/view?usp=sharing)
+    for the most recently built PDF. 
   * The tow tank has been tentatively reserved for the month of February to perform
     both this and the [RVAT-FBG experiment](https://github.com/UNH-CORE/RVAT-FBG). 
 
