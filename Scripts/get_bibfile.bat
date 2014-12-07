@@ -1,1 +1,1 @@
-cp ../../../../Library/Library.bib ../Documents/Resources/Library.bib
+cp ../../../../Library/Library.bib "../Documents/Test plan/library.bib"
