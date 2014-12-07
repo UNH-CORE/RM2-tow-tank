@@ -11,7 +11,7 @@ experiment.
     for the latest manufacturing drawings. We have received one partial quote
     for manufacturing, and we're waiting on a couple more to begin.
   * We are currently writing the test plan document, which is due on December 15th. See
-    [here](https://drive.google.com/file/d/0BwMVIAlxIxfZSk1YUWktZE5EQjg/view?usp=sharing)
+    [here](https://drive.google.com/file/d/0BwMVIAlxIxfZZFR4cTVoRXdRNEU/view?usp=sharing)
     for the most recently built PDF. 
   * The tow tank has been tentatively reserved for the month of February to perform
     both this and the [RVAT-FBG experiment](https://github.com/UNH-CORE/RVAT-FBG). 
@@ -20,7 +20,7 @@ experiment.
 
   * [Scratch pad](https://docs.google.com/document/d/1zFC9iLIFHl3ufpJLw5Iijj2XMi7WhGAPeBDgcCtB2U0/edit?usp=sharing)
   * [Model scaling spreadsheet](https://docs.google.com/spreadsheets/d/1p0JXNNEb69uChnZ2UWda0CEV3VlKe7VV8KDJxV5FpGk/edit?usp=sharing)
-  * [Test plan report (working copy, pdf)](https://drive.google.com/file/d/0BwMVIAlxIxfZSk1YUWktZE5EQjg/view?usp=sharing)
+  * [Test plan report (working copy, pdf)](https://drive.google.com/file/d/0BwMVIAlxIxfZZFR4cTVoRXdRNEU/view?usp=sharing)
 
 ## Objectives
   1. Acquire a Reynolds number independent dataset characterizing the 
