@@ -6,25 +6,16 @@ experiment.
 
 ## Status
 
-  * The turbine model design is just about complete. See
-    [here](https://drive.google.com/folderview?id=0BwMVIAlxIxfZSmVXWlFYX2dRVjg&usp=sharing)
-    for the latest manufacturing drawings. We have received one partial quote
-    for manufacturing, and we're waiting on a couple more to begin.
-  * We are currently writing the test plan document, which is due on December 15th. See
+  * The turbine model parts are currently being machined.
+  * The test plan document is finished. See
     [here](https://drive.google.com/file/d/0BwMVIAlxIxfZZFR4cTVoRXdRNEU/view?usp=sharing)
     for the most recently built PDF. 
-  * The tow tank has been tentatively reserved for the month of February to perform
+  * The tow tank has been reserved for the month of February to perform
     both this and the [RVAT-FBG experiment](https://github.com/UNH-CORE/RVAT-FBG). 
-
-## Temporary documents
-
-  * [Scratch pad](https://docs.google.com/document/d/1zFC9iLIFHl3ufpJLw5Iijj2XMi7WhGAPeBDgcCtB2U0/edit?usp=sharing)
-  * [Model scaling spreadsheet](https://docs.google.com/spreadsheets/d/1p0JXNNEb69uChnZ2UWda0CEV3VlKe7VV8KDJxV5FpGk/edit?usp=sharing)
-  * [Test plan report (working copy, pdf)](https://drive.google.com/file/d/0BwMVIAlxIxfZZFR4cTVoRXdRNEU/view?usp=sharing)
 
 ## Objectives
   1. Acquire a Reynolds number independent dataset characterizing the 
-  performance and near wake of the DOE RM2 cross-flow turbine, for validation of
+  performance and near-wake of the DOE RM2 cross-flow turbine, for validation of
   [CACTUS](http://energy.sandia.gov/?page_id=16734), and other prediction codes. 
   2. Measure the effects of strut drag, with the hope that this will improve
   CACTUS's performance prediction ability. 
@@ -35,7 +26,7 @@ See `Config/Test plan/` for CSVs of test matrices for each part of the experimen
 
 ### Summary
 
-  1. Build a scaled RM2 vertical axis turbine model, as faithfully as possible.
+  1. Build a scaled RM2 vertical axis turbine model.
   2. Measure performance curves to find a Reynolds number independent operating
   condition. 
   3. Measure the near-wake at the Reynolds number found in 2. 
