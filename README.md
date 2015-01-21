@@ -21,8 +21,7 @@ experiment.
   CACTUS's performance prediction ability. 
   
 ## Test plan
-See `Config/Test plan/` for CSVs of test matrices for each part of the experiment. See
-`Documents/Test plan/` for the test plan report.
+See `Config/Test plan/` for CSVs of test matrices for each part of the experiment.
 
 ### Summary
 
@@ -32,7 +31,7 @@ See `Config/Test plan/` for CSVs of test matrices for each part of the experimen
   3. Measure the near-wake at the Reynolds number found in 2. 
   4. Measure the parasitic torque from the struts by rotating them in still water
   with the blades removed.
-  5. Repeat 4 but for higher-drag struts. These will likely be cylindrical tubes
+  5. Repeat 4 but for higher-drag struts. These will be cylindrical tubes
   slid over the regular struts.
   6. Acquire a performance curve with the higher-drag struts.
   
