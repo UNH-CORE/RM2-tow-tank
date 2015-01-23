@@ -1,7 +1,7 @@
 UNH RM2 tow tank experiment
 ===========================
 
-This is a repository for data and documentation from the UNH RM2 tow tank 
+This is a repository for data and processing code from the UNH RM2 tow tank 
 experiment.
 
 ## Status
@@ -10,7 +10,9 @@ experiment.
     before being sent out for anodizing. 
   * The tow tank has been prepped and is reserved for the month of February to perform
     both this and the [RVAT-FBG experiment](https://github.com/UNH-CORE/RVAT-FBG). 
-  * All necessary [calibrations](https://github.com/UNH-CORE/turbine-test-bed) have been updated. 
+  * All necessary [calibrations](https://github.com/UNH-CORE/turbine-test-bed) have been updated.
+  * A [photo album](https://plus.google.com/photos/111208198532108641429/albums/6107577342767479137?authkey=CMiwzO2nmqziNQ)
+    has been created and will be updated during the experiment. 
 
 ## Objectives
   1. Acquire a Reynolds number independent dataset characterizing the 
