@@ -75,25 +75,15 @@ class Run(object):
     """Object that represents a single turbine tow"""
     def __init__(self, section, nrun):
         self.section = section
-        nrun = int(nrun)
+        self.nrun = int(nrun)
         section_raw_dir = os.path.join("Data", "Raw", section)
-        if nrun < 0:
-            runs = []
-            for f in os.listdir(section_raw_dir):
-                try: 
-                    runs.append(int(f))
-                except ValueError:
-                    pass
-            self.nrun = sorted(runs)[nrun]
-        else:
-            self.nrun = nrun
         self.raw_dir = os.path.join(section_raw_dir, str(self.nrun))
         self.loaded = False
         self.t2found = False
         self.not_loadable = False
         self.wake_calculated = False
-        # Do all processing
         self.load()
+        # Do all processing if all data was loaded successfully
         if self.loaded:
             self.subtract_tare_drag()
             self.add_tare_torque()
