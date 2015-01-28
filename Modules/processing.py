@@ -115,29 +115,29 @@ class Run(object):
         else:
             self.loaded = False
         # Load NI data if it exists
-        fpath_nidata = os.path.join(self.raw_dir, "nidata.mat")
+        fpath_nidata = os.path.join(self.raw_dir, "nidata.h5")
         if os.path.isfile(fpath_nidata):
             self.load_nidata()
         elif make_remote_name(fpath_nidata) in raw_data_urls:
-            self.download_raw("nidata.mat")
+            self.download_raw("nidata.h5")
             self.load_nidata()
         else:
             self.loaded = False
         # Load ACS data if it exists
-        fpath_acsdata = os.path.join(self.raw_dir, "acsdata.mat")
+        fpath_acsdata = os.path.join(self.raw_dir, "acsdata.h5")
         if os.path.isfile(fpath_acsdata):
             self.load_acsdata()
         elif make_remote_name(fpath_acsdata) in raw_data_urls:
-            self.download_raw("acsdata.mat")
+            self.download_raw("acsdata.h5")
             self.load_acsdata()
         else:
             self.loaded = False
         # Load Vectrino data if it exists
-        fpath_vecdata = os.path.join(self.raw_dir, "vecdata.mat")
+        fpath_vecdata = os.path.join(self.raw_dir, "vecdata.h5")
         if os.path.isfile(fpath_vecdata):
             self.load_vecdata()
         elif make_remote_name(fpath_vecdata) in raw_data_urls:
-            self.download_raw("vecdata.mat")
+            self.download_raw("vecdata.h5")
             self.load_vecdata()
         else:
             self.loaded = False
@@ -151,7 +151,7 @@ class Run(object):
         self.z_H = self.metadata["Vectrino z/H"]
         
     def load_nidata(self):
-        nidata = loadmat(os.path.join(self.raw_dir, "nidata.mat"), squeeze_me=True)
+        nidata = loadmat(os.path.join(self.raw_dir, "nidata.h5"), squeeze_me=True)
         self.time_ni = nidata["t"]
         self.sr_ni = (1.0/(self.time_ni[1] - self.time_ni[0]))
         if "carriage_pos" in nidata:
@@ -178,7 +178,7 @@ class Run(object):
         self.tow_speed = self.tow_speed_ref
         
     def load_acsdata(self):
-        fpath = os.path.join(self.raw_dir, "acsdata.mat")
+        fpath = os.path.join(self.raw_dir, "acsdata.h5")
         acsdata = loadmat(fpath, squeeze_me=True)
         self.tow_speed_acs = acsdata["carriage_vel"]
         self.rpm_acs = acsdata["turbine_rpm"]
@@ -194,7 +194,7 @@ class Run(object):
         
     def load_vecdata(self):
         try:
-            vecdata = loadmat(self.raw_dir + "/" + "vecdata.mat", 
+            vecdata = loadmat(self.raw_dir + "/" + "vecdata.h5", 
                               squeeze_me=True)
             self.sr_vec = 200.0
             self.time_vec = vecdata["t"]
@@ -722,7 +722,7 @@ def process_tare_drag(nrun, plot=False):
     with open(os.path.join(rdpath, "metadata.json")) as f:
         metadata = json.load(f)
     speed = float(metadata["Tow speed (m/s)"])
-    nidata = loadmat(os.path.join(rdpath, "nidata.mat"), squeeze_me=True)
+    nidata = loadmat(os.path.join(rdpath, "nidata.h5"), squeeze_me=True)
     time_ni  = nidata["t"]
     drag = nidata["drag_left"] + nidata["drag_right"]
     drag = drag - np.mean(drag[:2000])
@@ -763,7 +763,7 @@ def process_tare_torque(nrun, plot=False):
              1 : (12, 52),
              2 : (11, 32),
              3 : (7, 30)}
-    nidata = loadmat("Data/Raw/Tare torque/" + str(nrun) + "/nidata.mat", 
+    nidata = loadmat("Data/Raw/Tare torque/" + str(nrun) + "/nidata.h5", 
                      squeeze_me=True)
     # Compute RPM
     time_ni  = nidata["t"]
@@ -828,7 +828,7 @@ def download_raw(section, nrun, name):
     if name == "metadata":
         filename = "metadata.json"
     elif name in ["vecdata", "nidata", "acsdata"]:
-        filename = name + ".mat"
+        filename = name + ".h5"
     else: 
         filename = name
     print("Downloading", filename, "from", section, "run", nrun)
