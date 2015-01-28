@@ -31,9 +31,11 @@ wakeruns = {0.0 : np.arange(0, 45),
             0.5 : np.arange(180, 225),
             0.625 : np.arange(225, 270)}
            
-# Constants
-H = 1.0
-D = 1.0
+# Read constants from turbine properties
+with open("Config/turbine_properties.json") as f:
+    turbine_properties = json.load(f)
+H = turbine_properties["height"]
+D = turbine_properties["diameter"]
 A = D*H
 R = D/2
 rho = 1000.0
