@@ -70,11 +70,6 @@ times = {0.3 : (20.0, 80.0),
          1.3 : (13.0, 23.0),
          1.4 : (12.0, 20.0)}
 
-if "linux" in sys.platform:
-    cfd_path = "/media/pete/BigPocket/OpenFOAM/pete-2.3.0/run/unh-rvat-2d_re-dep_2"
-elif "win" in sys.platform:
-    cfd_path = "G:/OpenFOAM/pete-2.3.0/run/unh-rvat-2d_re-dep_2"
-    
 
 class Run(object):
     """Object that represents a single turbine tow"""
