@@ -1,17 +1,18 @@
 UNH RM2 tow tank experiment
 ===========================
 
-This is a repository for data and documentation from the UNH RM2 tow tank 
+This is a repository for data and processing code from the UNH RM2 tow tank 
 experiment.
 
 ## Status
 
-  * The turbine model parts are currently being machined.
-  * The test plan document is finished. See
-    [here](https://drive.google.com/file/d/0BwMVIAlxIxfZZFR4cTVoRXdRNEU/view?usp=sharing)
-    for the most recently built PDF. 
-  * The tow tank has been reserved for the month of February to perform
+  * The turbine model parts are machined. They will be inspected January 28, 2015
+    before being sent out for anodizing, weather permitting. 
+  * The tow tank has been prepped and is reserved for the month of February to perform
     both this and the [RVAT-FBG experiment](https://github.com/UNH-CORE/RVAT-FBG). 
+  * All necessary [calibrations](https://github.com/UNH-CORE/turbine-test-bed) have been updated.
+  * A [photo album](https://plus.google.com/photos/111208198532108641429/albums/6107577342767479137?authkey=CMiwzO2nmqziNQ)
+    has been created and will be updated during the experiment. 
 
 ## Objectives
   1. Acquire a Reynolds number independent dataset characterizing the 
@@ -21,7 +22,8 @@ experiment.
   CACTUS's performance prediction ability. 
   
 ## Test plan
-See `Config/Test plan/` for CSVs of test matrices for each part of the experiment.
+* The [test plan document](https://drive.google.com/file/d/0BwMVIAlxIxfZZFR4cTVoRXdRNEU/view?usp=sharing) is online.
+* CSV test matrices for each part of the experiment are located in `Config/Test plan`.
 
 ### Summary
 
