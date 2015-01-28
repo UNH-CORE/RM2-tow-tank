@@ -6,8 +6,8 @@ This module contains classes and functions for processing data.
 from __future__ import division, print_function
 import numpy as np
 from pxl import timeseries as ts
+from pxl.timeseries import loadhdf
 import matplotlib.pyplot as plt
-from scipy.io import loadmat
 import multiprocessing as mp
 import scipy.stats
 from scipy.stats import nanmean, nanstd
@@ -151,7 +151,7 @@ class Run(object):
         self.z_H = self.metadata["Vectrino z/H"]
         
     def load_nidata(self):
-        nidata = loadmat(os.path.join(self.raw_dir, "nidata.h5"), squeeze_me=True)
+        nidata = loadhdf(os.path.join(self.raw_dir, "nidata.h5"))
         self.time_ni = nidata["t"]
         self.sr_ni = (1.0/(self.time_ni[1] - self.time_ni[0]))
         if "carriage_pos" in nidata:
@@ -179,7 +179,7 @@ class Run(object):
         
     def load_acsdata(self):
         fpath = os.path.join(self.raw_dir, "acsdata.h5")
-        acsdata = loadmat(fpath, squeeze_me=True)
+        acsdata = loadhdf(fpath)
         self.tow_speed_acs = acsdata["carriage_vel"]
         self.rpm_acs = acsdata["turbine_rpm"]
         self.rpm_acs = ts.sigmafilter(self.rpm_acs, 3, 3)
@@ -194,8 +194,7 @@ class Run(object):
         
     def load_vecdata(self):
         try:
-            vecdata = loadmat(self.raw_dir + "/" + "vecdata.h5", 
-                              squeeze_me=True)
+            vecdata = loadhdf(os.path.join(self.raw_dir, vecdata.h5"))
             self.sr_vec = 200.0
             self.time_vec = vecdata["t"]
             self.u = vecdata["u"]
@@ -722,7 +721,7 @@ def process_tare_drag(nrun, plot=False):
     with open(os.path.join(rdpath, "metadata.json")) as f:
         metadata = json.load(f)
     speed = float(metadata["Tow speed (m/s)"])
-    nidata = loadmat(os.path.join(rdpath, "nidata.h5"), squeeze_me=True)
+    nidata = loadhdf(os.path.join(rdpath, "nidata.h5"))
     time_ni  = nidata["t"]
     drag = nidata["drag_left"] + nidata["drag_right"]
     drag = drag - np.mean(drag[:2000])
@@ -763,8 +762,7 @@ def process_tare_torque(nrun, plot=False):
              1 : (12, 52),
              2 : (11, 32),
              3 : (7, 30)}
-    nidata = loadmat("Data/Raw/Tare torque/" + str(nrun) + "/nidata.h5", 
-                     squeeze_me=True)
+    nidata = loadhdf("Data/Raw/Tare torque/" + str(nrun) + "/nidata.h5")
     # Compute RPM
     time_ni  = nidata["t"]
     angle = nidata["turbine_angle"]
