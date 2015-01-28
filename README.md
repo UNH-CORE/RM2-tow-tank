@@ -5,14 +5,24 @@ This is a repository for data and processing code from the UNH RM2 tow tank
 experiment.
 
 ## Status
-
   * The turbine model parts are machined. They will be inspected January 28, 2015
     before being sent out for anodizing, weather permitting. 
   * The tow tank has been prepped and is reserved for the month of February to perform
     both this and the [RVAT-FBG experiment](https://github.com/UNH-CORE/RVAT-FBG). 
   * All necessary [calibrations](https://github.com/UNH-CORE/turbine-test-bed) have been updated.
   * A [photo album](https://plus.google.com/photos/111208198532108641429/albums/6107577342767479137?authkey=CMiwzO2nmqziNQ)
-    has been created and will be updated during the experiment. 
+    has been created and will be updated during the experiment.
+
+## Getting started
+We recommend the 
+[Anaconda Python distribution](https://store.continuum.io/cshop/anaconda/)
+(Python 3.4) since it includes most dependencies. The remaining 
+can be installed by executing
+
+    pip install -r requirements.txt
+
+After installing all dependencies, execute `python run.py` to generate
+figures from the experiment. 
 
 ## Objectives
   1. Acquire a Reynolds number independent dataset characterizing the 
@@ -26,7 +36,6 @@ experiment.
 * CSV test matrices for each part of the experiment are located in `Config/Test plan`.
 
 ### Summary
-
   1. Build a scaled RM2 vertical axis turbine model.
   2. Measure performance curves to find a Reynolds number independent operating
   condition. 
@@ -53,7 +62,7 @@ experiment.
 | Shaft diameter (m) | 0.254 or 0.416 |   0.0635  |
 
 ### CAD files
-CAD files of the turbine model will be uploaded to figshare once designed.
+CAD files of the turbine model will be uploaded to figshare once assembled.
 
 ## License
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
