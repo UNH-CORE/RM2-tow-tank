@@ -6,8 +6,8 @@ experiment.
 
 ## Status
 
-  * The turbine model parts are currently being machined. They will be inspected January 23, 2015
-    before being sent out for anodizing. 
+  * The turbine model parts are machined. They will be inspected January 28, 2015
+    before being sent out for anodizing, weather pending. 
   * The tow tank has been prepped and is reserved for the month of February to perform
     both this and the [RVAT-FBG experiment](https://github.com/UNH-CORE/RVAT-FBG). 
   * All necessary [calibrations](https://github.com/UNH-CORE/turbine-test-bed) have been updated.
