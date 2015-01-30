@@ -7,7 +7,7 @@ experiment.
 ## Status
   * The aluminum turbine model parts have been machined and passed the shop's inspection. They were delivered to
     the anodizers on January 28, 2015.
-  * Turbine model PVC parts are being machined. 
+  * Turbine model PVC parts have been machined and are awaiting the machine shop's QC inspection. 
   * The tow tank has been prepped and is reserved for the month of February to perform
     both this and the [RVAT-FBG experiment](https://github.com/UNH-CORE/RVAT-FBG). 
   * All necessary [calibrations](https://github.com/UNH-CORE/turbine-test-bed) have been updated.
@@ -15,7 +15,7 @@ experiment.
     has been created and will be updated during the experiment.
 
 ## Getting started
-We recommend the 
+We recommend installing the 
 [Anaconda Python distribution](https://store.continuum.io/cshop/anaconda/)
 (Python 3.4) since it includes most dependencies. The remaining 
 can be installed by executing
