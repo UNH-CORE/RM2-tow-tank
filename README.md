@@ -5,8 +5,9 @@ This is a repository for data and processing code from the UNH RM2 tow tank
 experiment.
 
 ## Status
-  * The turbine model parts are machined. They will be inspected January 28, 2015
-    before being sent out for anodizing, weather permitting. 
+  * The aluminum turbine model parts have been machined and passed the shop's inspection. They were delivered to
+    the anodizers on January 28, 2015.
+  * Turbine model PVC parts have been machined and are awaiting the machine shop's QC inspection. 
   * The tow tank has been prepped and is reserved for the month of February to perform
     both this and the [RVAT-FBG experiment](https://github.com/UNH-CORE/RVAT-FBG). 
   * All necessary [calibrations](https://github.com/UNH-CORE/turbine-test-bed) have been updated.
@@ -14,7 +15,7 @@ experiment.
     has been created and will be updated during the experiment.
 
 ## Getting started
-We recommend the 
+We recommend installing the 
 [Anaconda Python distribution](https://store.continuum.io/cshop/anaconda/)
 (Python 3.4) since it includes most dependencies. The remaining 
 can be installed by executing
@@ -62,7 +63,9 @@ figures from the experiment.
 | Shaft diameter (m) | 0.254 or 0.416 |   0.0635  |
 
 ### CAD files
-CAD files of the turbine model will be uploaded to figshare once assembled.
+CAD files of the turbine model will be uploaded as a figshare fileset once assembled.
+[Manufacturing drawings](https://drive.google.com/folderview?id=0BwMVIAlxIxfZSmVXWlFYX2dRVjg&usp=sharing)
+are available on Google Drive.
 
 ## License
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
