@@ -5,12 +5,15 @@ This is a repository for data and processing code from the UNH RM2 tow tank
 experiment.
 
 ## Status
-  * The aluminum turbine model parts have been machined and passed the shop's inspection. They were delivered to
-    the anodizers on January 28, 2015.
-  * Turbine model PVC parts have been machined and are awaiting the machine shop's QC inspection. 
-  * The tow tank has been prepped and is reserved for the month of February to perform
-    both this and the [RVAT-FBG experiment](https://github.com/UNH-CORE/RVAT-FBG). 
-  * All necessary [calibrations](https://github.com/UNH-CORE/turbine-test-bed) have been updated.
+  * The aluminum turbine model parts are anodized and will be picked up
+    2/2/2015.
+  * Turbine model PVC parts have passed the machine
+    shop's QC inspection and will be picked up 2/2/2015. 
+  * The tow tank has been prepped and is reserved for the month of February to
+    perform both this and the 
+    [RVAT-FBG experiment](https://github.com/UNH-CORE/RVAT-FBG). 
+  * All necessary [calibrations](https://github.com/UNH-CORE/turbine-test-bed)
+    have been updated.
   * A [photo album](https://plus.google.com/photos/111208198532108641429/albums/6107577342767479137?authkey=CMiwzO2nmqziNQ)
     has been created and will be updated during the experiment.
 
