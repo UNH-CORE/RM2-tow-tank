@@ -72,3 +72,13 @@ All dimensions in inches.
 | Thickness, unmarked end | 0.496 | 0.500 |
 | Length | 17.350 | 17 3/8 |
 
+## Strut 3
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Chord, marked end | 2.366 | 2.361 |
+| Chord, unmarked end | 2.366 | 2.361 |
+| Thickness, marked end | 0.496 | 0.501 |
+| Thickness, unmarked end | 0.496 | 0.502 |
+| Length | 17.350 | 17 3/8 |
+
