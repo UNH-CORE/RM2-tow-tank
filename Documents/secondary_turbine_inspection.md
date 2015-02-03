@@ -115,3 +115,21 @@ All dimensions in inches.
 | Diameter, bottom | 2.500 | 2.495 | 
 | Length  | 51.72 | 51 3/4 |
 
+# Hub section 1
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Strut mount surface height | 2.965 | 2.964 | 
+
+# Hub section 2
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Strut mount surface height | 2.965 | 2.964 | 
+
+# Hub section 3
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Strut mount surface height | 2.965 | 2.964 | 
+
