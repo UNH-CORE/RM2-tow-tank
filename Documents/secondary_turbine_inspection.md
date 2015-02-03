@@ -37,3 +37,17 @@ All dimensions in inches.
 | Strut mount chord | 2.366 | 2.359 | 
 | Strut mount thickness | 0.496 | 0.500 |
 | Length | 31.759 | 31 3/4 |
+
+## Blade 3
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Root chord | 2.629 | 2.623 |
+| Tip chord, top | 1.578 | 1.568 |
+| Tip chord, bottom | 1.578 | 1.571 |
+| Thickness at strut attachment | 0.674 | 0.673 |
+| Tip thickness, top | 0.330 | 0.335 |
+| Tip thickness, bottom | 0.330 | 0.335 |
+| Strut mount chord | 2.366 | 2.362 | 
+| Strut mount thickness | 0.496 | 0.501 |
+| Length | 31.759 | 31 3/4 |
