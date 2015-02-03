@@ -82,3 +82,26 @@ All dimensions in inches.
 | Thickness, unmarked end | 0.496 | 0.502 |
 | Length | 17.350 | 17 3/8 |
 
+## Blade mount spacer 1
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Chord | 2.366 | 2.368 |
+| Thickness | 0.496 | 0.500 |
+| Length | 0.384 | 0.388 |
+
+## Blade mount spacer 2
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Chord | 2.366 | 2.366 |
+| Thickness | 0.496 | 0.498 |
+| Length | 0.384 | 0.387 |
+
+## Blade mount spacer 3
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Chord | 2.366 | 2.367 |
+| Thickness | 0.496 | 0.500 |
+| Length | 0.384 | 0.389 |
