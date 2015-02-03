@@ -51,3 +51,14 @@ All dimensions in inches.
 | Strut mount chord | 2.366 | 2.362 | 
 | Strut mount thickness | 0.496 | 0.501 |
 | Length | 31.759 | 31 3/4 |
+
+## Strut 1
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Chord, marked end | 2.366 | 2.361 |
+| Chord, unmarked end | 2.366 | 2.365 |
+| Thickness, marked end | 0.496 | 0.503 |
+| Thickness, unmarked end | 0.496 | 0.498 |
+| Length | 17.350 | 17 3/8 |
+
