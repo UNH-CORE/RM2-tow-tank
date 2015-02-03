@@ -1,8 +1,8 @@
 # Secondary turbine inspection
 
-This is a secondary inspection of crucial dimensions of the turbine model
-parts. The machine shop inspection is more accurate and should be considered
-the official inspection.
+This is a secondary inspection of critical dimensions of the turbine model
+parts, performed after anodizing. The machine shop inspection is more accurate
+and should be considered the official inspection.
 
 Measurments smaller than 6 inches done via calipers with 0.001 inch
 resolution. Measurements longer done with tape measure with 1/16 inch
@@ -60,5 +60,15 @@ All dimensions in inches.
 | Chord, unmarked end | 2.366 | 2.365 |
 | Thickness, marked end | 0.496 | 0.503 |
 | Thickness, unmarked end | 0.496 | 0.498 |
+| Length | 17.350 | 17 3/8 |
+
+## Strut 2
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Chord, marked end | 2.366 | 2.364 |
+| Chord, unmarked end | 2.366 | 2.362 |
+| Thickness, marked end | 0.496 | 0.499 |
+| Thickness, unmarked end | 0.496 | 0.500 |
 | Length | 17.350 | 17 3/8 |
 
