@@ -15,19 +15,15 @@
 4. Wake characteristics
   - [ ] 4--6 cross-stream profiles at Re-indepent tow speed, `tsr_0`
 5. Strut torque runs
-  - [ ] Remove turbine mounting frame
   - [ ] Remove blades
-  - [ ] Re-install turbine mounting frame
   - [ ] Measure strut torque at RPMs corresponding to the Re-independent
         performance curve
 6. Strut torque with covers
-  - [ ] Remove turbine mounting frame
-  - [ ] Install strut covers
+  - [ ] Install strut covers and endcaps
   - [ ] Repeat measuring strut torque at RPMs corresponding to 
         Re-independent performance curve
 7. Performance curve with strut covers
-  - [ ] Remove turbine mounting frame
-  - [ ] Install blades
+  - [ ] Install blades with strut covers
   - [ ] Repeat `Re_0` perf curve with strut covers
 8. Tare torque
   - [ ] Calculate RPM range used throughout the experiment
