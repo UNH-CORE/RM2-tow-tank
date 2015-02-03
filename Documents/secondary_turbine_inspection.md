@@ -105,3 +105,13 @@ All dimensions in inches.
 | Chord | 2.366 | 2.367 |
 | Thickness | 0.496 | 0.500 |
 | Length | 0.384 | 0.389 |
+
+## Shaft
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Diameter, top | 2.500 | 2.499 |
+| Diameter, middle | 2.500 | 2.500 |
+| Diameter, bottom | 2.500 | 2.495 | 
+| Length  | 51.72 | 51 3/4 |
+
