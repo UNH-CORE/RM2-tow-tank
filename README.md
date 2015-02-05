@@ -5,9 +5,7 @@ This is a repository for data and processing code from the UNH RM2 tow tank
 experiment.
 
 ## Status
-  * The turbine model is assembled.
-  * A [photo album](https://plus.google.com/photos/111208198532108641429/albums/6107577342767479137?authkey=CMiwzO2nmqziNQ)
-    has been created and will be updated during the experiment.
+  * The turbine model is assembled and installed in the tank.
 
 ## Getting started
 We recommend installing the 
