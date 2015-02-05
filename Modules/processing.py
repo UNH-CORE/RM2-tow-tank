@@ -194,7 +194,7 @@ class Run(object):
         
     def load_vecdata(self):
         try:
-            vecdata = loadhdf(os.path.join(self.raw_dir, vecdata.h5"))
+            vecdata = loadhdf(os.path.join(self.raw_dir, "vecdata.h5"))
             self.sr_vec = 200.0
             self.time_vec = vecdata["t"]
             self.u = vecdata["u"]
