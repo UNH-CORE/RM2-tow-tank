@@ -153,7 +153,7 @@ class Run(object):
         
     def load_nidata(self):
         nidata = loadhdf(os.path.join(self.raw_dir, "nidata.h5"))
-        self.time_ni = nidata["t"]
+        self.time_ni = nidata["time"]
         self.sr_ni = (1.0/(self.time_ni[1] - self.time_ni[0]))
         if "carriage_pos" in nidata:
             self.lin_enc = True
@@ -185,7 +185,7 @@ class Run(object):
         self.rpm_acs = acsdata["turbine_rpm"]
         self.rpm_acs = ts.sigmafilter(self.rpm_acs, 3, 3)
         self.omega_acs = self.rpm_acs*2*np.pi/60.0
-        self.time_acs = acsdata["t"]
+        self.time_acs = acsdata["time"]
         if len(self.time_acs) != len(self.omega_acs):
             newlen = np.min((len(self.time_acs), len(self.omega_acs)))
             self.time_acs = self.time_acs[:newlen]
@@ -197,7 +197,7 @@ class Run(object):
         try:
             vecdata = loadhdf(os.path.join(self.raw_dir, "vecdata.h5"))
             self.sr_vec = 200.0
-            self.time_vec = vecdata["t"]
+            self.time_vec = vecdata["time"]
             self.u = vecdata["u"]
             self.v = vecdata["v"]
             self.w = vecdata["w"]
@@ -723,7 +723,7 @@ def process_tare_drag(nrun, plot=False):
         metadata = json.load(f)
     speed = float(metadata["Tow speed (m/s)"])
     nidata = loadhdf(os.path.join(rdpath, "nidata.h5"))
-    time_ni  = nidata["t"]
+    time_ni  = nidata["time"]
     drag = nidata["drag_left"] + nidata["drag_right"]
     drag = drag - np.mean(drag[:2000])
     t1, t2 = times[speed]
@@ -765,7 +765,7 @@ def process_tare_torque(nrun, plot=False):
              3 : (7, 30)}
     nidata = loadhdf("Data/Raw/Tare torque/" + str(nrun) + "/nidata.h5")
     # Compute RPM
-    time_ni  = nidata["t"]
+    time_ni  = nidata["time"]
     angle = nidata["turbine_angle"]
     rpm_ni = fdiff.second_order_diff(angle, time_ni)/6.0
     rpm_ni = ts.smooth(rpm_ni, 8)
