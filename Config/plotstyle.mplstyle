@@ -42,7 +42,7 @@ lines.linewidth: 1.2
 legend.numpoints: 1
 legend.fontsize: small
 
-font.size: 16.0
-font.family: "serif"
-font.serif: "cmr10"
-text.usetex: True
+#font.size: 16.0
+#font.family: "serif"
+#font.serif: "cmr10"
+#text.usetex: True
