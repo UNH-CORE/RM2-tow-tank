@@ -97,6 +97,8 @@ class Run(object):
             self.calc_wake_stats()
             self.calc_perf_uncertainty()
             self.calc_perf_exp_uncertainty()
+        else:
+            print("Cannot load Run data")
         
     def load(self):
         """Loads the data from the run into memory."""
