@@ -502,7 +502,7 @@ def plot_tare_drag():
     plt.ylabel("Tare drag (N)")
     plt.show()
     
-def plot_settling(nrun, smooth_window=600, show=False):
+def plot_settling(nrun, smooth_window=600, std=False, show=False):
     """Plot data from the settling experiments."""
     run = Run("Settling", nrun)
     tow_speed = run.tow_speed_nom
@@ -524,26 +524,28 @@ def plot_settling(nrun, smooth_window=600, show=False):
         tstop = 80
     u = run.u_all
     t = run.time_vec_all
-    uf = u.copy()
-    uf[t>tstop] = ts.sigmafilter(uf[t>tstop], 4, 1)
-    t_std, u_std = ts.runningstd(t, uf, 1000)
+    if std:
+        uf = u.copy()
+        uf[t>tstop] = ts.sigmafilter(uf[t>tstop], 4, 1)
+        t_std, u_std = ts.runningstd(t, uf, 1000)
     u = ts.smooth(u, smooth_window)
     tseg = t[t>tstop]
     useg = u[t>tstop]
     zero_crossings = np.where(np.diff(np.sign(useg)))[0]
     settling_time = int(tseg[zero_crossings][0] - tstop)
     print("Tow speed:", tow_speed, "m/s")
-    print("Settling time:", settling_time, "s")
+    print("First zero crossing:", settling_time, "s")
     plt.figure()
     plt.plot(t - tstop, u, "k")
     plt.xlabel("t (s)")
     plt.ylabel("$u$ (m/s)")
     plt.tight_layout()
-    plt.figure()
-    plt.plot(t_std - tstop, u_std)
-    plt.xlabel("t (s)")
-    plt.ylabel(r"$\sigma_u$")
-    plt.tight_layout()
+    if std:
+        plt.figure()
+        plt.plot(t_std - tstop, u_std)
+        plt.xlabel("t (s)")
+        plt.ylabel(r"$\sigma_u$")
+        plt.tight_layout()
     if show:
         plt.show()
     
