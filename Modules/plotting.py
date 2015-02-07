@@ -502,7 +502,7 @@ def plot_tare_drag():
     plt.ylabel("Tare drag (N)")
     plt.show()
     
-def plot_settling(nrun, smooth_window=600, std=False, show=False):
+def plot_settling(nrun, smooth_window=800, tol=1e-2, std=False, show=False):
     """Plot data from the settling experiments."""
     run = Run("Settling", nrun)
     tow_speed = run.tow_speed_nom
@@ -532,9 +532,11 @@ def plot_settling(nrun, smooth_window=600, std=False, show=False):
     tseg = t[t>tstop]
     useg = u[t>tstop]
     zero_crossings = np.where(np.diff(np.sign(useg)))[0]
-    settling_time = int(tseg[zero_crossings][0] - tstop)
+    zero_crossing = int((tseg[zero_crossings][0] - tstop))
+    settling_time = int(tseg[np.where(np.abs(useg) < tol)[0][0]])
     print("Tow speed:", tow_speed, "m/s")
-    print("First zero crossing:", settling_time, "s")
+    print("First zero crossing:", zero_crossing, "s")
+    print("Settling time based on threshold:", settling_time, "s")
     plt.figure()
     plt.plot(t - tstop, u, "k")
     plt.xlabel("t (s)")
