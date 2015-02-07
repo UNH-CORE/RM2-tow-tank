@@ -10,7 +10,7 @@ import os
 import json
 #import urllib
 
-article = "XXXXXXX" # This must be added later!
+article = "1302029"
 
 def load_credentials():
     with open(os.path.join(os.path.expanduser("~"), ".figsharerc")) as f:
