@@ -4,7 +4,7 @@ This is a secondary inspection of critical dimensions of the turbine model
 parts, performed after anodizing. The machine shop inspection is more accurate
 and should be considered the official inspection.
 
-Measurments smaller than 6 inches done via calipers with 0.001 inch
+Measurements smaller than 6 inches done via calipers with 0.001 inch
 resolution. Measurements longer done with tape measure with 1/16 inch
 resolution.
 
