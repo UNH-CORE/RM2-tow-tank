@@ -666,7 +666,7 @@ class Section(object):
         self.test_plan_path = os.path.join("Config", "Test plan", name+".csv")
         self.load()    
     def load(self):
-        self.test_plan = pd.read_csv(self.test_plan_path)
+        self.test_plan = pd.read_csv(self.test_plan_path, index_col="run")
         try:
             self.data = pd.read_csv(self.processed_path, index_col="run")
         except IOError:
@@ -677,26 +677,32 @@ class Section(object):
     def process(self, nproc=8, nruns="all", save=True):
         """Process an entire section of data."""
         self.process_parallel(nproc=nproc, nruns=nruns)
+        self.data.index.name = "run"
         if save:
-            self.data.to_csv(self.processed_path, na_rep="NaN", index=False)
+            self.data.to_csv(self.processed_path, na_rep="NaN", index=True)
     def process_parallel(self, nproc=8, nruns="all"):
         s = self.name
-        runs = self.test_plan["run"]
+        runs = self.test_plan.index.values
         if nruns != "all":
             if nruns == "new":
-                runs = runs[np.isnan(self.data.mean_cp)]
+                try:
+                    runs = runs[np.where(np.isnan(self.data.mean_cp))]
+                    print("Only processing runs", runs)
+                    self.data = self.data.iloc[np.where(~np.isnan(self.data.mean_cp))]
+                except AttributeError:
+                    pass
             else:
                 runs = runs[:nruns]
         pool = mp.Pool(processes=nproc)
         results = [pool.apply_async(process_run, args=(s,n)) for n in runs]
         output = [p.get() for p in results]
-        self.newdata = pd.DataFrame(output)
-        self.newdata.set_index(self.newdata.run, inplace=True)
-        self.data = self.data.append(self.newdata)
-        if nruns == "all":
-            self.data = self.newdata
-#        self.data.run = [int(run) for run in self.data.run]
         pool.close()
+        self.newdata = pd.DataFrame(output)
+        self.newdata.set_index("run", inplace=True)
+        try:
+            self.data = self.data.merge(self.newdata, how="outer")
+        except:
+            self.data = self.newdata
         
 
 def process_run(section, nrun):
