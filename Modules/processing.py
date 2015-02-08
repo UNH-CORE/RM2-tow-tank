@@ -687,7 +687,6 @@ class Section(object):
             if nruns == "new":
                 try:
                     runs = runs[np.where(np.isnan(self.data.mean_cp))]
-                    print("Only processing runs", runs)
                     self.data = self.data.iloc[np.where(~np.isnan(self.data.mean_cp))]
                 except AttributeError:
                     pass
