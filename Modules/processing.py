@@ -530,41 +530,78 @@ class Run(object):
     def summary(self):
         s = pd.Series()
         s["run"] = self.nrun
-        s["mean_tow_speed"] = self.mean_u_enc
-        s["std_tow_speed"] = self.std_u_enc
-        s["t1"] = self.t1
-        s["t2"] = self.t2
-        s["n_blade_pass"] = self.n_blade_pass
-        s["n_revs"] = self.n_revs
-        s["mean_tsr"] = self.mean_tsr
-        s["mean_cp"] = self.mean_cp
-        s["mean_cd"] = self.mean_cd
-        s["std_tsr"] = self.std_tsr
-        s["std_cp"] = self.std_cp
-        s["std_cd"] = self.std_cd
-        s["std_tsr_per_rev"] = self.std_tsr_per_rev
-        s["std_cp_per_rev"] = self.std_cp_per_rev
-        s["std_cd_per_rev"] = self.std_cd_per_rev
-        s["exp_unc_tsr"] = self.exp_unc_tsr
-        s["exp_unc_cp"] = self.exp_unc_cp
-        s["exp_unc_cd"] = self.exp_unc_cd
-        s["dof_tsr"] = self.dof_tsr
-        s["dof_cp"] = self.dof_cp
-        s["dof_cd"] = self.dof_cd
-        s["t1_wake"] = self.t1_wake
-        s["t2_wake"] = self.t2_wake
-        s["y_R"] = self.y_R
-        s["z_H"] = self.z_H
-        s["mean_u"] = self.mean_u
-        s["mean_v"] = self.mean_v
-        s["mean_w"] = self.mean_w
-        s["std_u"] = self.std_u
-        s["std_v"] = self.std_v
-        s["std_w"] = self.std_w
-        s["mean_upvp"] = self.mean_upvp
-        s["mean_upwp"] = self.mean_upwp
-        s["mean_vpwp"] = self.mean_vpwp
-        s["k"] = self.k
+        if self.loaded:
+            s["mean_tow_speed"] = self.mean_u_enc
+            s["std_tow_speed"] = self.std_u_enc
+            s["t1"] = self.t1
+            s["t2"] = self.t2
+            s["n_blade_pass"] = self.n_blade_pass
+            s["n_revs"] = self.n_revs
+            s["mean_tsr"] = self.mean_tsr
+            s["mean_cp"] = self.mean_cp
+            s["mean_cd"] = self.mean_cd
+            s["std_tsr"] = self.std_tsr
+            s["std_cp"] = self.std_cp
+            s["std_cd"] = self.std_cd
+            s["std_tsr_per_rev"] = self.std_tsr_per_rev
+            s["std_cp_per_rev"] = self.std_cp_per_rev
+            s["std_cd_per_rev"] = self.std_cd_per_rev
+            s["exp_unc_tsr"] = self.exp_unc_tsr
+            s["exp_unc_cp"] = self.exp_unc_cp
+            s["exp_unc_cd"] = self.exp_unc_cd
+            s["dof_tsr"] = self.dof_tsr
+            s["dof_cp"] = self.dof_cp
+            s["dof_cd"] = self.dof_cd
+            s["t1_wake"] = self.t1_wake
+            s["t2_wake"] = self.t2_wake
+            s["y_R"] = self.y_R
+            s["z_H"] = self.z_H
+            s["mean_u"] = self.mean_u
+            s["mean_v"] = self.mean_v
+            s["mean_w"] = self.mean_w
+            s["std_u"] = self.std_u
+            s["std_v"] = self.std_v
+            s["std_w"] = self.std_w
+            s["mean_upvp"] = self.mean_upvp
+            s["mean_upwp"] = self.mean_upwp
+            s["mean_vpwp"] = self.mean_vpwp
+            s["k"] = self.k
+        else:
+            s["mean_tow_speed"] = np.nan
+            s["std_tow_speed"] = np.nan
+            s["t1"] = np.nan
+            s["t2"] = np.nan
+            s["n_blade_pass"] = np.nan
+            s["n_revs"] = np.nan
+            s["mean_tsr"] = np.nan
+            s["mean_cp"] = np.nan
+            s["mean_cd"] = np.nan
+            s["std_tsr"] = np.nan
+            s["std_cp"] = np.nan
+            s["std_cd"] = np.nan
+            s["std_tsr_per_rev"] = np.nan
+            s["std_cp_per_rev"] = np.nan
+            s["std_cd_per_rev"] = np.nan
+            s["exp_unc_tsr"] = np.nan
+            s["exp_unc_cp"] = np.nan
+            s["exp_unc_cd"] = np.nan
+            s["dof_tsr"] = np.nan
+            s["dof_cp"] = np.nan
+            s["dof_cd"] = np.nan
+            s["t1_wake"] = np.nan
+            s["t2_wake"] = np.nan
+            s["y_R"] = np.nan
+            s["z_H"] = np.nan
+            s["mean_u"] = np.nan
+            s["mean_v"] = np.nan
+            s["mean_w"] = np.nan
+            s["std_u"] = np.nan
+            s["std_v"] = np.nan
+            s["std_w"] = np.nan
+            s["mean_upvp"] = np.nan
+            s["mean_upwp"] = np.nan
+            s["mean_vpwp"] = np.nan
+            s["k"] = np.nan
         return s
         
     def plot_perf(self, quantity="power coefficient"):
@@ -629,26 +666,36 @@ class Section(object):
         self.test_plan_path = os.path.join("Config", "Test plan", name+".csv")
         self.load()    
     def load(self):
-        self.data = pd.read_csv(self.processed_path)
         self.test_plan = pd.read_csv(self.test_plan_path)
+        try:
+            self.data = pd.read_csv(self.processed_path, index_col="run")
+        except IOError:
+            self.data = pd.DataFrame()
     @property
     def mean_cp(self):
         return self.data.mean_cp
-    def process(self, nproc=8, save=True):
-        """To-do: Process an entire section of data."""
-        self.process_parallel(nproc=nproc)
+    def process(self, nproc=8, nruns="all", save=True):
+        """Process an entire section of data."""
+        self.process_parallel(nproc=nproc, nruns=nruns)
         if save:
             self.data.to_csv(self.processed_path, na_rep="NaN", index=False)
     def process_parallel(self, nproc=8, nruns="all"):
         s = self.name
-        runs = self.test_plan["Run"]
+        runs = self.test_plan["run"]
         if nruns != "all":
-            runs = runs[:nruns]
+            if nruns == "new":
+                runs = runs[np.isnan(self.data.mean_cp)]
+            else:
+                runs = runs[:nruns]
         pool = mp.Pool(processes=nproc)
         results = [pool.apply_async(process_run, args=(s,n)) for n in runs]
         output = [p.get() for p in results]
-        self.data = pd.DataFrame(output)
-        self.data.run = [int(run) for run in self.data.run]
+        self.newdata = pd.DataFrame(output)
+        self.newdata.set_index(self.newdata.run, inplace=True)
+        self.data = self.data.append(self.newdata)
+        if nruns == "all":
+            self.data = self.newdata
+#        self.data.run = [int(run) for run in self.data.run]
         pool.close()
         
 
