@@ -42,6 +42,9 @@ lines.linewidth: 1.2
 legend.numpoints: 1
 legend.fontsize: small
 
+font.size: 14.0
+
+# Parameters to use with LaTeX
 #font.size: 16.0
 #font.family: "serif"
 #font.serif: "cmr10"
