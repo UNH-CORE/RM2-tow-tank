@@ -215,20 +215,13 @@ class Run(object):
         self.drag = self.drag - self.tare_drag
         
     def add_tare_torque(self):
-        # Choose reference RPM, using NI for all except Perf-0.4
-        if self.section == "Perf-0.4":
-            rpm_ref = self.rpm_acs_interp
-        else:
-            rpm_ref = self.rpm_ni
+        rpm_ref = self.rpm_ni
         # Add tare torque
         self.tare_torque = calc_tare_torque(rpm_ref)
         self.torque += self.tare_torque
         
     def calc_perf_instantaneous(self):
-        if self.section == "Perf-0.4":
-            omega_ref = self.omega_acs_interp
-        else:
-            omega_ref = self.omega_ni
+        omega_ref = self.omega_ni
         # Compute power
         self.power = self.torque*omega_ref
         self.tsr = omega_ref*R/self.tow_speed_ref
