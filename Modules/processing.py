@@ -157,15 +157,10 @@ class Run(object):
         nidata = loadhdf(os.path.join(self.raw_dir, "nidata.h5"))
         self.time_ni = nidata["time"]
         self.sr_ni = (1.0/(self.time_ni[1] - self.time_ni[0]))
-        if "carriage_pos" in nidata:
-            self.lin_enc = True
-            self.carriage_pos = nidata["carriage_pos"]
-            self.tow_speed_ni = fdiff.second_order_diff(self.carriage_pos, self.time_ni)
-            self.tow_speed_ni = ts.smooth(self.tow_speed_ni, 8)
-            self.tow_speed_ref = self.tow_speed_ni
-        else:
-            self.lin_enc = False
-            self.tow_speed_ref = self.tow_speed_nom
+        self.carriage_pos = nidata["carriage_pos"]
+        self.tow_speed_ni = fdiff.second_order_diff(self.carriage_pos, self.time_ni)
+        self.tow_speed_ni = ts.smooth(self.tow_speed_ni, 8)
+        self.tow_speed_ref = self.tow_speed_ni
         self.torque = nidata["torque_trans"]
         self.torque_arm = nidata["torque_arm"]
         self.drag = nidata["drag_left"] + nidata["drag_right"]
@@ -259,8 +254,7 @@ class Run(object):
         self.omega_all = self.omega
         self.omega = self.omega_all[self.t1*self.sr_ni:self.t2*self.sr_ni]
         self.tow_speed_all = self.tow_speed
-        if self.lin_enc:
-            self.tow_speed = self.tow_speed_all[self.t1*self.sr_ni:self.t2*self.sr_ni]
+        self.tow_speed = self.tow_speed_all[self.t1*self.sr_ni:self.t2*self.sr_ni]
         self.tsr_all = self.tsr
         self.tsr = self.tsr_all[self.t1*self.sr_ni:self.t2*self.sr_ni]
         self.cp_all = self.cp
@@ -306,18 +300,13 @@ class Run(object):
         self.mean_cp, self.std_cp = nanmean(self.cp), nanstd(self.cp)
         self.mean_cd, self.std_cd = nanmean(self.cd), nanstd(self.cd)
         self.mean_ct, self.std_ct = nanmean(self.ct), nanstd(self.ct)
-        if self.lin_enc:
-            self.mean_u_enc = nanmean(self.tow_speed)
-            self.std_u_enc = nanstd(self.tow_speed)
-        else:
-            self.mean_u_enc = np.nan
-            self.std_u_enc = np.nan
+        self.mean_u_enc = nanmean(self.tow_speed)
+        self.std_u_enc = nanstd(self.tow_speed)
 
     def print_perf_stats(self):
         print("tow_speed_nom =", self.tow_speed_nom)
-        if self.lin_enc:
-            print("mean_tow_speed_enc =", self.mean_u_enc)
-            print("std_tow_speed_enc =", self.std_u_enc)
+        print("mean_tow_speed_enc =", self.mean_u_enc)
+        print("std_tow_speed_enc =", self.std_u_enc)
         print("TSR = {:.2f} +/- {:.2f}".format(self.mean_tsr, self.exp_unc_tsr))
         print("C_P = {:.2f} +/- {:.2f}".format(self.mean_cp, self.exp_unc_cp))
         print("C_D = {:.2f} +/- {:.2f}".format(self.mean_cd, self.exp_unc_cd))
