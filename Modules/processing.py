@@ -58,18 +58,42 @@ def calc_tare_torque(rpm):
     """Returns tare torque array given RPM array."""
     return 0.000474675989476*rpm + 0.876750155952
              
-times = {0.3 : (20.0, 80.0),
-         0.4 : (20.0, 60.0),
-         0.5 : (20.0, 50.0),
-         0.6 : (20.0, 45.0),
-         0.7 : (20.0, 38.0),
-         0.8 : (18.0, 34.0),
-         0.9 : (16.0, 32.0),
-         1.0 : (15.0, 30.0),
-         1.1 : (15.0, 28.0),
-         1.2 : (14.0, 25.0),
-         1.3 : (13.0, 23.0),
-         1.4 : (12.0, 20.0)}
+times = {"low_tsr" : {0.3 : (20.0, 80.0),
+                      0.4 : (20.0, 60.0),
+                      0.5 : (20.0, 50.0),
+                      0.6 : (20.0, 45.0),
+                      0.7 : (20.0, 38.0),
+                      0.8 : (18.0, 34.0),
+                      0.9 : (16.0, 32.0),
+                      1.0 : (15.0, 30.0),
+                      1.1 : (15.0, 28.0),
+                      1.2 : (14.0, 25.0),
+                      1.3 : (13.0, 23.0),
+                      1.4 : (12.0, 20.0)},
+         "mid_tsr" : {0.3 : (20.0, 80.0),
+                      0.4 : (20.0, 60.0),
+                      0.5 : (20.0, 50.0),
+                      0.6 : (20.0, 45.0),
+                      0.7 : (20.0, 38.0),
+                      0.8 : (20.0, 34.0),
+                      0.9 : (20.0, 32.0),
+                      1.0 : (20.0, 30.0),
+                      1.1 : (20.0, 28.0),
+                      1.2 : (21.0, 25.0),
+                      1.3 : (19.0, 23.0),
+                      1.4 : (17.0, 20.0)},
+         "high_tsr" : {0.3 : (20.0, 80.0),
+                       0.4 : (20.0, 60.0),
+                       0.5 : (20.0, 50.0),
+                       0.6 : (20.0, 45.0),
+                       0.7 : (20.0, 38.0),
+                       0.8 : (24.0, 34.0),
+                       0.9 : (24.0, 32.0),
+                       1.0 : (24.0, 30.0),
+                       1.1 : (22.0, 28.0),
+                       1.2 : (23.0, 25.0),
+                       1.3 : (19.0, 23.0),
+                       1.4 : (18.0, 20.0)}}
 
 
 class Run(object):
@@ -152,6 +176,7 @@ class Run(object):
         self.tow_speed_nom = np.round(self.metadata["Tow speed (m/s)"], decimals=1)
         self.y_R = self.metadata["Vectrino y/R"]
         self.z_H = self.metadata["Vectrino z/H"]
+        self.tsr_nom = self.metadata["Tip speed ratio"]
         
     def load_nidata(self):
         nidata = loadhdf(os.path.join(self.raw_dir, "nidata.h5"))
@@ -159,7 +184,7 @@ class Run(object):
         self.sr_ni = (1.0/(self.time_ni[1] - self.time_ni[0]))
         self.carriage_pos = nidata["carriage_pos"]
         self.tow_speed_ni = fdiff.second_order_diff(self.carriage_pos, self.time_ni)
-        self.tow_speed_ni = ts.smooth(self.tow_speed_ni, 8)
+        self.tow_speed_ni = ts.smooth(self.tow_speed_ni, 100)
         self.tow_speed_ref = self.tow_speed_ni
         self.torque = nidata["torque_trans"]
         self.torque_arm = nidata["torque_arm"]
@@ -238,7 +263,13 @@ class Run(object):
         """Trim all time series and replace the full run names with names with
         the '_all' suffix."""
         # Put in some guesses for t1 and t2
-        self.t1, self.t2 = times[self.tow_speed_nom]
+        if self.tsr_nom > 3:
+            tsr_range = "high_tsr"
+        elif 2 < self.tsr_nom <= 3:
+            tsr_range = "mid_tsr"
+        elif self.tsr_nom <= 2:
+            tsr_range = "low_tsr"
+        self.t1, self.t2 = times[tsr_range][self.tow_speed_nom]
         self.find_t2()
         # Trim performance quantities
         self.time_ni_all = self.time_ni
@@ -690,6 +721,8 @@ class Section(object):
         try:
             self.data = self.data.merge(self.newdata, how="outer")
         except:
+            self.data = self.newdata
+        if nruns == "all":
             self.data = self.newdata
         
 
