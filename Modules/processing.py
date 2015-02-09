@@ -554,6 +554,8 @@ class Run(object):
         s = pd.Series()
         s["run"] = self.nrun
         if self.loaded:
+            s["tow_speed_nom"] = self.tow_speed_nom
+            s["tsr_nom"] = self.tsr_nom
             s["mean_tow_speed"] = self.mean_u_enc
             s["std_tow_speed"] = self.std_u_enc
             s["t1"] = self.t1
