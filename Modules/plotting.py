@@ -39,7 +39,7 @@ class PerfCurve(object):
                savetype=".pdf", splinefit=False, marker="o"):
         """Generates power coefficient curve plot."""
         # Check to see if processed data exists and if not, process it
-        label = "$Re_D = {:0.1e}$".format(self.Re_D)
+        label = r"$Re_D = {:.1f} \times 10^6$".format(self.Re_D/1e6)
         self.tsr = self.df.mean_tsr
         self.cp = self.df.mean_cp
         if newfig:
