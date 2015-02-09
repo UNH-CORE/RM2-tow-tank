@@ -592,6 +592,8 @@ class Run(object):
             s["mean_vpwp"] = self.mean_vpwp
             s["k"] = self.k
         else:
+            s["tow_speed_nom"] = np.nan
+            s["tsr_nom"] = np.nan
             s["mean_tow_speed"] = np.nan
             s["std_tow_speed"] = np.nan
             s["t1"] = np.nan
