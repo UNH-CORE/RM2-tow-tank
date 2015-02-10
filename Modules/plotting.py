@@ -577,9 +577,7 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     plt.legend(("0.4e6", "0.6e6", "0.8e6", "1.0e6", "1.2e6"), 
                loc="lower right", ncol=2)
     if save:
-        if savedir != "":
-            savedir += "/"
-        plt.savefig(savedir + "perf_curves" + savetype)
+        plt.savefig(os.path.join(savedir, "perf_curves" + savetype))
     if show:
         plt.show()
     
