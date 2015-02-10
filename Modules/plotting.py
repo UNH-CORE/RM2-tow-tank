@@ -32,22 +32,29 @@ class PerfCurve(object):
         self.Re_D = tow_speed*D/nu
         self.section = "Perf-{}".format(tow_speed)
         self.raw_data_dir = os.path.join("Data", "Raw", self.section)
-        self.df = pd.read_csv(os.path.join("Data", "Processed", self.section+".csv"))
-        self.testplan = pd.read_csv(os.path.join("Config", "Test plan", self.section+".csv")) 
-        self.df = self.df[self.df.std_tow_speed < 0.009]        
+        fpath = os.path.join("Data", "Processed", self.section+".csv")
+        fpath_b = os.path.join("Data", "Processed", self.section+"-b.csv")
+        self.df = pd.read_csv(fpath)
+        try:
+            self.df = self.df.append(pd.read_csv(fpath_b), ignore_index=True)
+            self.df = self.df.groupby("tsr_nom").mean()
+        except IOError:
+            pass
+        fpath_tp = os.path.join("Config", "Test plan", self.section+".csv")
+        self.testplan = pd.read_csv(fpath_tp) 
+        self.df = self.df[self.df.std_tow_speed < 0.009]   
+        self.label = r"$Re_D = {:.1f} \times 10^6$".format(self.Re_D/1e6)
         
     def plotcp(self, newfig=True, show=True, save=False, savedir="Figures",
                savetype=".pdf", splinefit=False, marker="o"):
         """Generates power coefficient curve plot."""
-        # Check to see if processed data exists and if not, process it
-        label = r"$Re_D = {:.1f} \times 10^6$".format(self.Re_D/1e6)
         self.tsr = self.df.mean_tsr
         self.cp = self.df.mean_cp
         if newfig:
             plt.figure()
         if splinefit and not True in np.isnan(self.tsr):
             plt.plot(self.tsr, self.cp, marker+"k", markerfacecolor="None", 
-                     label=label)
+                     label=self.label)
             plt.hold(True)
             tsr_fit = np.linspace(np.min(self.tsr), np.max(self.tsr), 200)
             tck = interpolate.splrep(self.tsr[::-1], self.cp[::-1], s=1e-3)
@@ -57,7 +64,7 @@ class PerfCurve(object):
             if splinefit:
                 print("Cannot fit spline. NaN present in array.")
             plt.plot(self.tsr, self.cp, "-"+marker+"k", markerfacecolor="None",
-                     label=label)
+                     label=self.label)
         plt.xlabel(r"$\lambda$")
         plt.ylabel(r"$C_P$")
         plt.grid(True)
@@ -70,15 +77,13 @@ class PerfCurve(object):
     def plotcd(self, newfig=True, show=True, save=False, savedir="Figures",
                savetype=".pdf", splinefit=False, marker="o"):
         """Generates power coefficient curve plot."""
-        # Check to see if processed data exists and if not, process it
-        label = "$Re_D = {:0.1e}$".format(self.Re_D)
         self.tsr = self.df.mean_tsr
         self.cd = self.df.mean_cd
         if newfig:
             plt.figure()
         if splinefit and not True in np.isnan(self.tsr):
             plt.plot(self.tsr, self.cd, marker+"k", markerfacecolor="None", 
-                     label=label)
+                     label=self.label)
             plt.hold(True)
             tsr_fit = np.linspace(np.min(self.tsr), np.max(self.tsr), 200)
             tck = interpolate.splrep(self.tsr[::-1], self.cd[::-1], s=1e-3)
@@ -88,7 +93,7 @@ class PerfCurve(object):
             if splinefit:
                 print("Cannot fit spline. NaN present in array.")
             plt.plot(self.tsr, self.cd, "-"+marker+"k", markerfacecolor="None",
-                     label=label)
+                     label=self.label)
         plt.xlabel(r"$\lambda$")
         plt.ylabel(r"$C_D$")
         plt.ylim((0, 1.2))
@@ -526,6 +531,7 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     PerfCurve(0.8).plotcp(newfig=False, show=False, marker="<")
     PerfCurve(1.0).plotcp(newfig=False, show=False, marker="o")
     PerfCurve(1.2).plotcp(newfig=False, show=False, marker="^")
+    plt.legend(loc="upper left")
     if subplots:
         plt.subplot(122)
     PerfCurve(0.4).plotcd(newfig=not subplots, show=False, marker=">")
@@ -533,8 +539,7 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     PerfCurve(0.8).plotcd(newfig=False, show=False, marker="<")
     PerfCurve(1.0).plotcd(newfig=False, show=False, marker="o")
     PerfCurve(1.2).plotcd(newfig=False, show=False, marker="^")
-    plt.legend(("0.4e6", "0.6e6", "0.8e6", "1.0e6", "1.2e6"), 
-               loc="lower right", ncol=2)
+    plt.legend(loc="lower right")
     if save:
         plt.savefig(os.path.join(savedir, "perf_curves" + savetype))
     if show:
