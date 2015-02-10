@@ -402,11 +402,11 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf", errorbars=F
         plt.ylabel(r"$C_P$")
     ax = plt.gca()
     if dual_xaxes:
-        plt.text(1.27e6, 1.11, r"$\times 10^5$", color=r"#555555")
+        plt.text(1.32e6, 0.51, "1e5", color=r"#555555")
         ax2 = ax.twiny()
         ax.xaxis.get_majorticklocs()
         ticklabs = np.arange(0.2e6, 1.6e6, 0.2e6)
-        ticklabs = ticklabs/D*3.1*0.067/1e5
+        ticklabs = ticklabs/D*df.mean_tsr.mean()*chord/1e5
         ticklabs = [str(np.round(ticklab, decimals=1)) for ticklab in ticklabs]
         ax2.set_xticks(ax.xaxis.get_ticklocs())
         ax2.set_xlim((0.2e6, 1.4e6))

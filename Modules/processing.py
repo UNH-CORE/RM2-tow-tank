@@ -41,6 +41,7 @@ A = D*H
 R = D/2
 rho = 1000.0
 nu = 1e-6
+chord = 0.067
 
 # Directory constants
 raw_data_dir = os.path.join("Data", "Raw")
