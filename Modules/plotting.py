@@ -34,6 +34,7 @@ class PerfCurve(object):
         self.raw_data_dir = os.path.join("Data", "Raw", self.section)
         self.df = pd.read_csv(os.path.join("Data", "Processed", self.section+".csv"))
         self.testplan = pd.read_csv(os.path.join("Config", "Test plan", self.section+".csv")) 
+        self.df = self.df[self.df.std_tow_speed < 0.009]        
         
     def plotcp(self, newfig=True, show=True, save=False, savedir="Figures",
                savetype=".pdf", splinefit=False, marker="o"):
