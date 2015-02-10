@@ -105,22 +105,21 @@ class PerfCurve(object):
             plt.show()
         
 class WakeProfile(object):
-    def __init__(self, tow_speed, z_H, quantity, orientation="horizontal"):
+    def __init__(self, tow_speed, z_H, orientation="horizontal"):
         self.tow_speed = tow_speed
         self.z_H = z_H
-        self.section = "Wake-" + str(tow_speed)
-        self.testplan = pd.read_csv(os.path.join("Config", "Test plan", 
-                                                 self.section+".csv"))
-        self.runs = self.testplan.Run[self.testplan["z/H"]==z_H]
-        self.quantity = quantity
-        self.load()
-        
-    def load(self):
-        """Loads the processed data"""
-        self.df = pd.read_csv(os.path.join(processed_data_dir, 
-                                           self.section+".csv"))
-        self.df = self.df[self.df.z_H==self.z_H]
+        self.section = "Wake-{}-{}".format(tow_speed, z_H)
+        fpath = os.path.join("Config", "Test plan", self.section+".csv")
+        self.testplan = pd.read_csv(fpath)
+        self.runs = self.testplan.run
+        fpath = os.path.join("Data", "Processed", self.section+".csv")
+        self.df = pd.read_csv(fpath)
         self.y_R = self.df["y_R"]
+        
+    def plot_mean_u(self):
+        plt.plot(self.y_R, self.df.mean_u/self.df.mean_tow_speed, "-o")
+        plt.xlabel("$y/R$")
+        plt.ylabel("$U/U_\infty$")
         
     def plot(self, quantity, newfig=True, show=True, save=False, 
              savedir="Figures", savetype=".pdf", linetype='--ok'):
