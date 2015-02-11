@@ -380,8 +380,9 @@ def plot_trans_wake_profile(quantity, U_infty=0.4, z_H=0.0, save=False, savedir=
     plt.ylabel(ylabels[quantity])
     plt.tight_layout()
     
-def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf", errorbars=False,
-                     normalize_by="default", dual_xaxes=False, show=True):
+def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf", 
+                     errorbars=False, normalize_by="default", dual_xaxes=False, 
+                     show=True, preliminary=False):
     df = pd.read_csv("Data/Processed/Perf-tsr_0.csv")
     df = df.append(pd.read_csv("Data/Processed/Perf-tsr_0-b.csv"), ignore_index=True)
     df = df[df.tow_speed_nom > 0.21]    
@@ -419,6 +420,8 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf", errorbars=F
         ax2.set_xlabel(r"$Re_{c, \mathrm{ave}}$")
     ax.xaxis.major.formatter.set_powerlimits((0,0)) 
     plt.tight_layout()
+    if preliminary:
+        watermark()
     if save:
         plt.savefig(savedir + "/re_dep_cp" + savetype)
     plt.figure()
@@ -435,6 +438,8 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf", errorbars=F
     ax = plt.gca()
     ax.xaxis.major.formatter.set_powerlimits((0,0)) 
     plt.tight_layout()
+    if preliminary:
+        watermark()
     if save:
         plt.savefig(savedir + "/re_dep_cd" + savetype)
     if show:
@@ -520,7 +525,7 @@ def plot_cp_curve(u_infty, save=False, show=False, savedir="Figures",
         plt.show()
     
 def plot_perf_curves(subplots=True, save=False, savedir="Figures", 
-                     show=False, savetype=".pdf"):
+                     show=False, savetype=".pdf", preliminary=False):
     """Plots all performance curves."""
     if subplots:
         plt.figure(figsize=(12,5))
@@ -531,6 +536,8 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     PerfCurve(1.0).plotcp(newfig=False, show=False, marker="o")
     PerfCurve(1.2).plotcp(newfig=False, show=False, marker="^")
     plt.legend(loc="upper left")
+    if preliminary:
+        watermark()
     if subplots:
         plt.subplot(122)
     PerfCurve(0.4).plotcd(newfig=not subplots, show=False, marker=">")
@@ -539,6 +546,8 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     PerfCurve(1.0).plotcd(newfig=False, show=False, marker="o")
     PerfCurve(1.2).plotcd(newfig=False, show=False, marker="^")
     plt.legend(loc="lower right")
+    if preliminary:
+        watermark()
     if save:
         plt.savefig(os.path.join(savedir, "perf_curves" + savetype))
     if show:
@@ -572,6 +581,16 @@ def plot_wake_profiles(z_H=0.25, save=False, show=False, savedir="Figures",
 def plot_meancontquiv(U_infty=1.0, show=False, cb_orientation="vertical"):
     wm = WakeMap(U_infty)
     wm.plot_meancontquiv(show=show, cb_orientation=cb_orientation)
+    
+def watermark():
+    """Creates a "preliminary" watermark on plots."""
+    ax = plt.gca()    
+    plt.text(0.5, 0.5,"PRELIMINARY",
+             horizontalalignment="center",
+             verticalalignment="center",
+             transform=ax.transAxes,
+             alpha=0.2,
+             fontsize=32)
 
 if __name__ == "__main__":
     pass
