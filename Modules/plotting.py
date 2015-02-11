@@ -585,12 +585,13 @@ def plot_meancontquiv(U_infty=1.0, show=False, cb_orientation="vertical"):
 def watermark():
     """Creates a "preliminary" watermark on plots."""
     ax = plt.gca()    
-    plt.text(0.5, 0.5,"PRELIMINARY",
+    plt.text(0.5, 0.5,"PRELIMINARY\nDO NOT PUBLISH",
              horizontalalignment="center",
              verticalalignment="center",
              transform=ax.transAxes,
              alpha=0.2,
-             fontsize=32)
+             fontsize=32,
+             zorder=10)
 
 if __name__ == "__main__":
     pass
