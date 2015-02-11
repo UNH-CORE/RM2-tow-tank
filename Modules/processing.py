@@ -58,6 +58,13 @@ def calc_uncertainty(quantity, b):
 def calc_tare_torque(rpm):
     """Returns tare torque array given RPM array."""
     return 0.000474675989476*rpm + 0.876750155952
+    
+def calc_re_c(u_infty, tsr=3.1):
+    """
+    Calculates the average blade chord Reynolds number based on free
+    stream velocity and tip speed ratio.
+    """
+    return tsr*u_infty*chord/nu    
 
 
 class Run(object):
