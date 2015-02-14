@@ -115,46 +115,42 @@ class WakeProfile(object):
         fpath = os.path.join("Data", "Processed", self.section+".csv")
         self.df = pd.read_csv(fpath)
         self.y_R = self.df["y_R"]
+        self.Re_D = self.tow_speed*D/nu
+        self.Re_label = r"$Re_D = {:.1f} \times 10^6$".format(self.Re_D/1e6)
         
-    def plot_mean_u(self):
-        plt.plot(self.y_R, self.df.mean_u/self.df.mean_tow_speed, "-o")
-        plt.xlabel("$y/R$")
-        plt.ylabel("$U/U_\infty$")
-        
-    def plot(self, quantity, newfig=True, show=True, save=False, 
-             savedir="Figures", savetype=".pdf", linetype='--ok'):
+    def plot(self, quantity, fmt="", newfig=True, show=True, save=False, 
+             savedir="Figures", savetype=".pdf", preliminary=False):
         """Plots some quantity"""
         y_R = self.df["y_R"]
-        q = self.df[quantity]
+        q = self.df[quantity].copy()
         loc = 1
         if quantity == "mean_u":
-            q = q/self.tow_speed
+            q /= self.df.mean_tow_speed
             ylab = r"$U/U_\infty$"
             loc = 3
-        if quantity == "mean_w":
-            q = q/self.tow_speed
-            ylab = r"$U/U_\infty$"
-            loc = 4
-        if quantity == "mean_v":
-            q = q/self.tow_speed
+        elif quantity == "mean_v":
+            q /= self.df.mean_tow_speed
             ylab = r"$V/U_\infty$"
             loc=4
-        if quantity == "std_u":
-            q = q/self.tow_speed
+        elif quantity == "mean_w":
+            q /= self.df.mean_tow_speed
+            ylab = r"$U/U_\infty$"
+            loc = 4
+        elif quantity == "std_u":
+            q /= self.df.mean_tow_speed
             ylab = r"$\sigma_u/U_\infty$"
-        if quantity is "mean_upvp":
-            q = q/(self.tow_speed**2)
+        elif quantity is "mean_upvp":
+            q /= (self.df.mean_tow_speed**2)
             ylab = r"$\overline{u'v'}/U_\infty^2$" 
         if newfig:
-            if quantity == "mean_u":
-                plt.figure(figsize=(10,5))
-            else: plt.figure()
+            plt.figure()
             plt.ylabel(ylab)
             plt.xlabel(r"$y/R$")
-        plt.plot(y_R, q, "-.^k", label=r"$Re_D=0.4 \times 10^6$")
-#        plot_old_wake(quantity, y_R)
+        plt.plot(y_R, q, fmt, label=self.Re_label)
         plt.legend(loc=loc)
         plt.tight_layout()
+        if preliminary:
+            watermark()
         if show:
             plt.show()
         if save:
