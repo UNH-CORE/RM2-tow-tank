@@ -117,6 +117,14 @@ def test_plot_settling():
     plot_settling(1.0)
     print("PASS")
     
+def test_process_new():
+    section = Section("Wake-1.0-0.0")
+    section.process(nproc=4)
+    df1 = pd.read_csv("Data/Processed/Wake-1.0-0.0.csv")
+    section.process(nproc=1, nruns="new")
+    df2 = pd.read_csv("Data/Processed/Wake-1.0-0.0.csv")
+    assert(df1.y_R==df2.y_R)
+    
 def test_all():
     test_run()
     test_section()
