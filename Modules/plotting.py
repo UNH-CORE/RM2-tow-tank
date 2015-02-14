@@ -114,14 +114,14 @@ class WakeProfile(object):
         self.runs = self.testplan.run
         fpath = os.path.join("Data", "Processed", self.section+".csv")
         self.df = pd.read_csv(fpath)
-        self.y_R = self.df["y_R"]
+        self.y_R = self.df["y_R"].copy()
         self.Re_D = self.tow_speed*D/nu
         self.Re_label = r"$Re_D = {:.1f} \times 10^6$".format(self.Re_D/1e6)
         
     def plot(self, quantity, fmt="", newfig=True, show=True, save=False, 
              savedir="Figures", savetype=".pdf", preliminary=False):
         """Plots some quantity"""
-        y_R = self.df["y_R"]
+        y_R = self.df["y_R"].copy()
         q = self.df[quantity].copy()
         loc = 1
         if quantity == "mean_u":
