@@ -387,14 +387,11 @@ class Run(object):
         self.vpwp = self.vp*self.wp
         self.wpwp = self.wp**2
         
-    def filter_wake(self, stdfilt=True, threshfilt=True):
+    def filter_wake(self, std=4, passes=1, thresh=0.95):
         """Applies filtering to wake velocity data with a standard deviation
         filter, threshold filter, or both. Renames unfiltered time series with
         the '_unf' suffix. Time series are already trimmed before they reach 
         this point, so no slicing is necessary"""
-        std = 8
-        passes = 1
-        fthresh = 1.2
         # Calculate means
         mean_u = self.u.mean()
         mean_v = self.v.mean()
@@ -403,27 +400,27 @@ class Run(object):
         self.u_unf = self.u.copy()
         self.v_unf = self.v.copy()
         self.w_unf = self.w.copy()
-        if stdfilt:
+        if std > 0:
         # Do standard deviation filters
             self.u = ts.sigmafilter(self.u, std, passes)
             self.v = ts.sigmafilter(self.v, std, passes)
             self.w = ts.sigmafilter(self.w, std, passes)
-        if threshfilt:
+        if thresh != False:
             # Do threshold filter on u
-            ibad = np.where(self.u > mean_u + fthresh)[0]
-            ibad = np.append(ibad, np.where(self.u < mean_u - fthresh)[0])
+            ibad = np.where(self.u > mean_u + thresh)[0]
+            ibad = np.append(ibad, np.where(self.u < mean_u - thresh)[0])
             i = np.where(np.logical_and(ibad > self.t1*200, 
                                         ibad < self.t2*200))[0]
             self.u[ibad[i]] = np.nan
             # Do threshold filter on v
-            ibad = np.where(self.v > mean_v + fthresh)[0]
-            ibad = np.append(ibad, np.where(self.v < mean_v - fthresh)[0])
+            ibad = np.where(self.v > mean_v + thresh)[0]
+            ibad = np.append(ibad, np.where(self.v < mean_v - thresh)[0])
             i = np.where(np.logical_and(ibad > self.t1*200, 
                                         ibad < self.t2*200))[0]
             self.v[ibad[i]] = np.nan
             # Do threshold filter on w
-            ibad = np.where(self.w > mean_w + fthresh)[0]
-            ibad = np.append(ibad, np.where(self.w < mean_w - fthresh)[0])
+            ibad = np.where(self.w > mean_w + thresh)[0]
+            ibad = np.append(ibad, np.where(self.w < mean_w - thresh)[0])
             i = np.where(np.logical_and(ibad > self.t1*200, 
                                         ibad < self.t2*200))[0]
             self.w[ibad[i]] = np.nan
