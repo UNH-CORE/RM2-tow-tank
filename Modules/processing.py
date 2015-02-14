@@ -394,15 +394,15 @@ class Run(object):
         this point, so no slicing is necessary"""
         std = 8
         passes = 1
-        fthresh = 0.9
+        fthresh = 1.2
         # Calculate means
         mean_u = self.u.mean()
         mean_v = self.v.mean()
         mean_w = self.w.mean()
         # Create new unfiltered arrays
-        self.u_unf = self.u*1
-        self.v_unf = self.v*1
-        self.w_unf = self.w*1
+        self.u_unf = self.u.copy()
+        self.v_unf = self.v.copy()
+        self.w_unf = self.w.copy()
         if stdfilt:
         # Do standard deviation filters
             self.u = ts.sigmafilter(self.u, std, passes)
