@@ -434,14 +434,8 @@ class Run(object):
         self.nbad = self.nbadu + self.nbadv + self.nbadw
         
     def calc_wake_stats(self):
-        if self.not_loadable:
-            self.mean_u = np.nan
-            self.mean_v = np.nan
-            self.mean_w = np.nan
-            return None
         if not self.t2found:
             self.find_t2()
-        self.filter_wake()
         self.mean_u, self.std_u = nanmean(self.u), nanstd(self.u)
         self.mean_v, self.std_v = nanmean(self.v), nanstd(self.v)
         self.mean_w, self.std_w = nanmean(self.w), nanstd(self.w)
