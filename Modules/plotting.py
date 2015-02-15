@@ -166,7 +166,7 @@ class WakeMap(object):
         self.load()
         
     def load(self):
-        self.y_R = WakeProfile(self.U_infty, 0, "mean_u").y_R
+        self.y_R = WakeProfile(self.U_infty, 0.0, "mean_u").y_R
         self.mean_u = np.zeros((len(self.z_H), len(self.y_R)))
         self.mean_v = self.mean_u*1
         self.mean_w = self.mean_u*1
@@ -212,7 +212,6 @@ class WakeMap(object):
         Plot contours of mean velocity and vector arrows showing mean
         cross-stream and vertical velocity.
         """
-        print("Plotting mean velocity at U_infty = {} m/s".format(self.U_infty))
         plt.figure(figsize=(10,6))
         # Add contours of mean velocity
         cs = plt.contourf(self.y_R, self.z_H, self.mean_u/self.U_infty,
