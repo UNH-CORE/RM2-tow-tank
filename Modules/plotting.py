@@ -119,7 +119,8 @@ class WakeProfile(object):
         self.Re_label = r"$Re_D = {:.1f} \times 10^6$".format(self.Re_D/1e6)
         
     def plot(self, quantity, fmt="", newfig=True, show=True, save=False, 
-             savedir="Figures", savetype=".pdf", preliminary=False):
+             savedir="Figures", savetype=".pdf", preliminary=False,
+             legend=False):
         """Plots some quantity"""
         y_R = self.df["y_R"].copy()
         q = self.df[quantity].copy()
@@ -147,7 +148,8 @@ class WakeProfile(object):
             plt.ylabel(ylab)
             plt.xlabel(r"$y/R$")
         plt.plot(y_R, q, fmt, label=self.Re_label)
-        plt.legend(loc=loc)
+        if legend:
+            plt.legend(loc=loc)
         plt.tight_layout()
         if preliminary:
             watermark()
