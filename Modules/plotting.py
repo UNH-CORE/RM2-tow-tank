@@ -161,7 +161,7 @@ class WakeProfile(object):
 class WakeMap(object):
     def __init__(self, U_infty):
         self.U_infty = U_infty
-        self.z_H = [0.0, 0.125, 0.25, 0.375, 0.5, 0.625]
+        self.z_H = [0.0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75]
         self.loaded = False
         self.load()
         
@@ -214,13 +214,13 @@ class WakeMap(object):
         """
         plt.figure(figsize=(10,6))
         # Add contours of mean velocity
-        cs = plt.contourf(self.y_R, self.z_H, self.mean_u/self.U_infty,
-                          np.arange(0.15, 1.25, 0.05), cmap=plt.cm.coolwarm)
+        cs = plt.contourf(self.y_R, self.z_H, self.mean_u/self.U_infty, 20, 
+                          cmap=plt.cm.coolwarm)
         if cb_orientation == "horizontal":
             cb = plt.colorbar(cs, shrink=1, extend="both",
                               orientation="horizontal", pad=0.14)
         elif cb_orientation == "vertical":
-            cb = plt.colorbar(cs, shrink=0.401, extend="both", 
+            cb = plt.colorbar(cs, shrink=0.425, extend="both", 
                               orientation="vertical", pad=0.02)
         cb.set_label(r"$U/U_{\infty}$")
         plt.hold(True)
@@ -230,7 +230,7 @@ class WakeMap(object):
                        edgecolor="none")
         plt.xlabel(r"$y/R$")
         plt.ylabel(r"$z/H$")
-        plt.ylim(-0.2, 0.78)
+        plt.ylim(-0.2, 0.85)
         plt.xlim(-3.2, 3.2)
         if cb_orientation == "horizontal":
             plt.quiverkey(Q, 0.65, 0.26, 0.1, r"$0.1 U_\infty$",
@@ -245,7 +245,7 @@ class WakeMap(object):
         self.turb_lines()
         ax = plt.axes()
         ax.set_aspect(2)
-        plt.yticks([0,0.13,0.25,0.38,0.5,0.63])
+        plt.yticks([0, 0.13, 0.25, 0.38, 0.5, 0.63, 0.75])
         plt.grid(True)
         plt.tight_layout()
         if show:
