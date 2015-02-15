@@ -661,6 +661,7 @@ class Section(object):
         """Process an entire section of data."""
         self.process_parallel(nproc=nproc, nruns=nruns)
         self.data.index.name = "run"
+        self.data = self.data.sort()
         if save:
             self.data.to_csv(self.processed_path, na_rep="NaN", index=True)
     def process_parallel(self, nproc=8, nruns="all"):
@@ -675,18 +676,18 @@ class Section(object):
                     pass
             else:
                 runs = runs[:nruns]
-        pool = mp.Pool(processes=nproc)
-        results = [pool.apply_async(process_run, args=(s,n)) for n in runs]
-        output = [p.get() for p in results]
-        pool.close()
-        self.newdata = pd.DataFrame(output)
-        self.newdata.set_index("run", inplace=True)
-        try:
-            self.data = self.data.merge(self.newdata, how="outer")
-        except:
-            self.data = self.newdata
+        if len(runs) > 0:
+            pool = mp.Pool(processes=nproc)
+            results = [pool.apply_async(process_run, args=(s,n)) for n in runs]
+            output = [p.get() for p in results]
+            pool.close()
+            self.newdata = pd.DataFrame(output)
+            self.newdata.set_index("run", inplace=True)
+            self.newdata = self.newdata.sort()
         if nruns == "all":
             self.data = self.newdata
+        else:
+            self.data = self.data.append(self.newdata)
         
 
 def process_run(section, nrun):

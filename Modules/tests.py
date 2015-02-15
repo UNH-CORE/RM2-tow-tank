@@ -118,12 +118,23 @@ def test_plot_settling():
     print("PASS")
     
 def test_process_new():
-    section = Section("Wake-1.0-0.0")
+    from pandas.util.testing import assert_frame_equal
+    sname = "Wake-1.0-0.5"
+    section = Section(sname)
     section.process(nproc=4)
-    df1 = pd.read_csv("Data/Processed/Wake-1.0-0.0.csv")
+    df1 = pd.read_csv("Data/Processed/{}.csv".format(sname))
+    df1copy = df1.copy()
+    df1copy.mean_cp[-1] = np.nan
+    df1copy.to_csv("Data/Processed/{}.csv".format(sname), index=False)
     section.process(nproc=1, nruns="new")
-    df2 = pd.read_csv("Data/Processed/Wake-1.0-0.0.csv")
-    assert(df1.y_R==df2.y_R)
+    df2 = pd.read_csv("Data/Processed/{}.csv".format(sname))
+    try:
+        assert_frame_equal(df1, df2)
+        print("PASS")
+    except AssertionError:
+        print(df1)
+        print(df2)
+
     
 def test_all():
     test_run()
