@@ -133,3 +133,29 @@ All dimensions in inches.
 |-----------|-------|-------|
 | Strut mount surface height | 2.965 | 2.964 | 
 
+# Strut cover 1
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Diameter, hub end | N/A | 2.899 |
+| Diameter, blade end | N/A | 2.908 |
+| Diameter, middle | N/A | 2.899 |
+| Length | 19.65 | 19 5/8 |
+
+# Strut cover 2
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Diameter, hub end | N/A | 2.859 |
+| Diameter, blade end | N/A | 2.898 |
+| Diameter, middle | N/A | 2.903 |
+| Length | 19.65 | 19 5/8 |
+
+# Strut cover 3
+
+| Dimension | Spec. | Meas. |
+|-----------|-------|-------|
+| Diameter, hub end | N/A | 2.875 |
+| Diameter, blade end | N/A | 2.866 |
+| Diameter, middle | N/A | 2.865 |
+| Length | 19.65 | 19 5/8 |
