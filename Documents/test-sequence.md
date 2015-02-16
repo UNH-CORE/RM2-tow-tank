@@ -13,7 +13,7 @@
   - [ ] Performance curve at `Re_0`
   - [x] Check for Re-independence by generating figure
 4. Wake characteristics
-  - [ ] 4--6 cross-stream profiles at Re-independent tow speed, `tsr_0`
+  - [x] 4--6 cross-stream profiles at Re-independent tow speed, `tsr_0`
 5. Strut torque runs
   - [ ] Remove blades
   - [ ] Measure strut torque at RPMs corresponding to the Re-independent
