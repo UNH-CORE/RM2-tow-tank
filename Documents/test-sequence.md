@@ -1,17 +1,17 @@
 # Test sequence
 
 1. Shakedown runs
-  - [ ] Find `tsr_max` (where `cp` drops below zero)
-  - [ ] Find `tsr_0` (where `cp` is maximum)
+  - [x] Find `tsr_max`
+  - [x] Find `tsr_0` (where `cp` is maximum)
   - [ ] Find max tow speed, or do a quick check for Re-independence
 2. Settling runs: One for each tow speed we plan to use, with
    `tsr = tsr_0`
-  - [ ] Generate `Config/settling_times.csv`
+  - [x] Generate `Config/settling_times.csv`
 3. Performance curves
   - [ ] 4--6 full performance curves--one or two above `Re_0`
   - [ ] Some runs at in-between tow speeds at `tsr_0`
   - [ ] Performance curve at `Re_0`
-  - [ ] Check for Re-independence by generating figure
+  - [x] Check for Re-independence by generating figure
 4. Wake characteristics
   - [ ] 4--6 cross-stream profiles at Re-independent tow speed, `tsr_0`
 5. Strut torque runs
