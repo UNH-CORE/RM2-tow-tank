@@ -220,18 +220,18 @@ class WakeMap(object):
             cb = plt.colorbar(cs, shrink=1, extend="both",
                               orientation="horizontal", pad=0.14)
         elif cb_orientation == "vertical":
-            cb = plt.colorbar(cs, shrink=0.425, extend="both", 
+            cb = plt.colorbar(cs, shrink=0.415, extend="both", 
                               orientation="vertical", pad=0.02)
         cb.set_label(r"$U/U_{\infty}$")
         plt.hold(True)
         # Make quiver plot of v and w velocities
         Q = plt.quiver(self.y_R, self.z_H, self.mean_v/self.U_infty, 
                        self.mean_w/self.U_infty, width=0.0022,
-                       edgecolor="none")
+                       edgecolor="none", scale=2)
         plt.xlabel(r"$y/R$")
         plt.ylabel(r"$z/H$")
-        plt.ylim(-0.2, 0.85)
-        plt.xlim(-3.2, 3.2)
+        plt.ylim(-0.15, 0.85)
+        plt.xlim(-1.68/R, 1.68/R)
         if cb_orientation == "horizontal":
             plt.quiverkey(Q, 0.65, 0.26, 0.1, r"$0.1 U_\infty$",
                           labelpos="E",
