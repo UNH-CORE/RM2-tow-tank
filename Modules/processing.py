@@ -684,6 +684,8 @@ class Section(object):
             self.newdata = pd.DataFrame(output)
             self.newdata.set_index("run", inplace=True)
             self.newdata = self.newdata.sort()
+        else:
+            self.newdata = pd.DataFrame()
         if nruns == "all":
             self.data = self.newdata
         else:
