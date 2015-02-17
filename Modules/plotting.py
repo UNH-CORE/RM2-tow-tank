@@ -480,7 +480,8 @@ def plot_settling(nrun, smooth_window=800, tol=1e-2, std=False, show=False):
                   0.9 : 75,
                   1.0 : 68,
                   1.1 : 64,
-                  1.2 : 62}
+                  1.2 : 62,
+                  1.3 : 62}
     tstop = stop_times[tow_speed]
     u = run.u_all
     t = run.time_vec_all
