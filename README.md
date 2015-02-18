@@ -10,7 +10,7 @@ Performance and wake runs are complete. Strut torque runs are in progress.
 
 ## Getting started
 We recommend installing the 
-[Anaconda Python distribution](https://continuum.io/downloads)
+[Anaconda Python distribution](http://continuum.io/downloads)
 (Python 3.4) since it includes most dependencies. The remaining 
 can be installed by executing
 
