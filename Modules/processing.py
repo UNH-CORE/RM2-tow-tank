@@ -822,6 +822,51 @@ def process_tare_torque(nrun, plot=False):
         plt.show()
     return meanrpm, -meantorque
     
+def process_strut_torque(nrun, zero_torque=1.1, plot=False, covers=False, 
+                         verbose=False):
+    """Processes a single strut torque run."""
+    testplan = pd.read_csv("Config/Test plan/Strut-torque.csv", 
+                           index_col="run")
+    ref_speed = testplan.ref_speed.iloc[nrun]
+    tsr_nom = testplan.tsr.iloc[nrun]
+    revs = testplan.revs.iloc[nrun]
+    rpm_nom = tsr_nom*ref_speed/R/(2*np.pi)*60
+    dur = revs/rpm_nom*60
+    if covers:
+        if verbose:
+            print("Processing strut torque with covers run", nrun)
+        nidata = loadhdf("Data/Raw/Strut-torque-covers/" + str(nrun) + \
+                         "/nidata.h5")
+    else:
+        if verbose:
+            print("Processing strut torque run", nrun)
+        nidata = loadhdf("Data/Raw/Strut-torque/" + str(nrun) + "/nidata.h5")
+    # Compute RPM
+    time_ni  = nidata["time"]
+    angle = nidata["turbine_angle"]
+    rpm_ni = fdiff.second_order_diff(angle, time_ni)/6.0
+    rpm_ni = ts.smooth(rpm_ni, 8)
+    t1, t2 = 9, dur
+    meanrpm, _ = ts.calcstats(rpm_ni, t1, t2, 2000)
+    torque = nidata["torque_trans"]
+#     torque = torque - np.mean(torque[:2000]) # 2000 samples of zero torque
+    meantorque, _ = ts.calcstats(torque, t1, t2, 2000)
+    tsr_ref = meanrpm/60.0*2*np.pi*R/ref_speed
+    if verbose:
+        print("Reference TSR =", np.round(tsr_ref, decimals=4))
+        print("Strut torque =", meantorque, "Nm at", meanrpm, "RPM")
+    if plot:
+        plt.figure()
+        plt.plot(time_ni, torque)
+        plt.xlabel("Time (s)")
+        plt.ylabel("Torque (Nm)")
+        plt.tight_layout()
+        plt.show()
+    meantorque -= zero_torque
+    ct = -meantorque/(0.5*rho*A*R*ref_speed**2)
+    cp = ct*tsr_ref
+    return tsr_ref, cp
+    
 def batch_process_tare_torque(plot=False):
     """Processes all tare torque data."""
     runs = os.listdir("Data/Raw/Tare torque")
