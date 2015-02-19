@@ -798,7 +798,7 @@ def process_tare_torque(nrun, plot=False):
              1 : (12, 52),
              2 : (11, 32),
              3 : (7, 30)}
-    nidata = loadhdf("Data/Raw/Tare torque/" + str(nrun) + "/nidata.h5")
+    nidata = loadhdf("Data/Raw/Tare-torque/" + str(nrun) + "/nidata.h5")
     # Compute RPM
     time_ni  = nidata["time"]
     angle = nidata["turbine_angle"]
@@ -808,10 +808,10 @@ def process_tare_torque(nrun, plot=False):
         t1, t2 = times[nrun]
     except KeyError:
         t1, t2 = times[3]
-    meanrpm, x = ts.calcstats(rpm_ni, t1, t2, 2000)
+    meanrpm, _ = ts.calcstats(rpm_ni, t1, t2, 2000)
     torque = nidata["torque_trans"]
 #    torque = torque - np.mean(torque[:2000]) # 2000 samples of zero torque
-    meantorque, x = ts.calcstats(torque, t1, t2, 2000)
+    meantorque, _ = ts.calcstats(torque, t1, t2, 2000)
     print("Tare torque =", meantorque, "Nm at", meanrpm, "RPM")
     if plot:
         plt.figure()
