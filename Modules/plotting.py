@@ -378,8 +378,13 @@ def plot_trans_wake_profile(quantity, U_infty=0.4, z_H=0.0, save=False, savedir=
     plt.tight_layout()
     
 def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf", 
-                     errorbars=False, normalize_by="default", dual_xaxes=False, 
+                     errorbars=False, normalize_by=1.0, dual_xaxes=False, 
                      show=True, preliminary=False):
+    """
+    Plots Reynolds number dependence of power and drag coefficient. Note
+    that if `errorbars=True`, the error bar values are the averages of all the
+    individual run uncertainties.
+    """
     df = pd.read_csv("Data/Processed/Perf-tsr_0.csv")
     df = df.append(pd.read_csv("Data/Processed/Perf-tsr_0-b.csv"), ignore_index=True)
     df = df[df.tow_speed_nom > 0.21]    
@@ -404,7 +409,7 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
         plt.ylabel(r"$C_P$")
     ax = plt.gca()
     if dual_xaxes:
-        plt.text(1.32e6, 0.51, "1e5", color=r"#555555")
+        plt.text(1.32e6, 0.5, "1e5", color=r"#555555")
         ax2 = ax.twiny()
         ax.xaxis.get_majorticklocs()
         ticklabs = np.arange(0.2e6, 1.6e6, 0.2e6)
