@@ -9,6 +9,7 @@ from Modules.plotting import *
 
 save = True
 savetype = ".pdf"
+show = True
 
 def main():
     plot_perf_curves(save=save, savetype=savetype)
@@ -16,6 +17,8 @@ def main():
                      dual_xaxes=True)
     PerfCurve(1.0).plotcp(save=save, savetype=savetype)
     plot_meancontquiv(save=save, savetype=savetype)
+    if show:
+        plt.show()
 
 if __name__ == "__main__":
     if not os.path.isdir("Figures"):
