@@ -583,9 +583,15 @@ def plot_wake_profiles(z_H=0.25, save=False, show=False, savedir="Figures",
     if show:
         plt.show()
     
-def plot_meancontquiv(U_infty=1.0, show=False, cb_orientation="vertical"):
-    wm = WakeMap(U_infty)
+def plot_meancontquiv(show=False, cb_orientation="vertical",
+                      save=False, savedir="Figures", savetype=".pdf"):
+    wm = WakeMap(1.0)
     wm.plot_meancontquiv(show=show, cb_orientation=cb_orientation)
+    if save:
+        p = os.path.join(savedir, "meancontquiv" + savetype)
+        plt.savefig(p)
+    if show:
+        plt.show()
     
 def watermark():
     """Creates a "preliminary" watermark on plots."""
