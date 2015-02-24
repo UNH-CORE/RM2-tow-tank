@@ -70,7 +70,8 @@ class PerfCurve(object):
         plt.grid(True)
         plt.tight_layout()
         if save:
-            plt.savefig(os.path.join(savedir, "cp_vs_tsr" + savetype))
+            plt.savefig(os.path.join(savedir, 
+                    "cp_vs_tsr_{}".format(self.tow_speed) + savetype))
         if show:
             plt.show()
             
@@ -100,7 +101,8 @@ class PerfCurve(object):
         plt.grid(True)
         plt.tight_layout()
         if save:
-            plt.savefig(os.path.join(savedir, "cd_vs_tsr" + savetype))
+            plt.savefig(os.path.join(savedir, 
+                    "cd_vs_tsr_{}".format(self.tow_speed) + savetype))
         if show:
             plt.show()
         
@@ -538,7 +540,7 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     PerfCurve(0.8).plotcp(newfig=False, show=False, marker="<")
     PerfCurve(1.0).plotcp(newfig=False, show=False, marker="o")
     PerfCurve(1.2).plotcp(newfig=False, show=False, marker="^")
-    plt.legend(loc="upper left")
+    plt.legend(loc="lower left", ncol=2)
     if preliminary:
         watermark()
     if subplots:
