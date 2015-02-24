@@ -57,7 +57,7 @@ def calc_uncertainty(quantity, b):
              
 def calc_tare_torque(rpm):
     """Returns tare torque array given RPM array."""
-    return 0.000474675989476*rpm + 0.876750155952
+    return 0.00104768276035*rpm - 0.848866229797
     
 def calc_re_c(u_infty, tsr=3.1):
     """
@@ -728,12 +728,13 @@ def batch_process_section(name):
     
 def batch_process_all():
     """Batch processes all sections."""
-    sections = ["Perf-0.3", "Perf-0.4", "Perf-0.5",
-                "Perf-0.6", "Perf-0.7", "Perf-0.8",
-                "Perf-0.9", "Perf-1.0", "Perf-1.1",
-                "Perf-1.2", "Perf-1.3", "Wake-0.4",
-                "Wake-0.6", "Wake-0.8", "Wake-1.0",
-                "Wake-1.2"]
+    sections = ["Perf-0.4", "Perf-0.4-b", "Perf-0.6", "Perf-0.6-b",
+                "Perf-0.8", "Perf-0.8-b", "Perf-1.0", "Perf-1.0-b",
+                "Perf-1.2", "Perf-1.2-b", "Perf-1.0-covers", 
+                "Perf-1.0-no-blades", "Perf-1.0-no-blades-covers", 
+                "Perf-tsr_0", "Perf-tsr_0-b", "Wake-1.0-0.0", "Wake-1.0-0.125",
+                "Wake-1.0-0.25", "Wake-1.0-0.375", "Wake-1.0-0.5",
+                "Wake-1.0-0.625", "Wake-1.0-0.75"]
     for section in sections:
         print("Processing {}".format(section))
         batch_process_section(section)
@@ -889,7 +890,7 @@ def batch_process_tare_torque(plot=False):
         plt.plot(rpm, m*rpm + b)
         plt.xlabel("RPM")
         plt.ylabel("Tare torque (Nm)")
-        plt.ylim((0, 1))
+#        plt.ylim((0, 1))
         plt.tight_layout()
         plt.show()
         
