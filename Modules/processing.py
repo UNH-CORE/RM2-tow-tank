@@ -201,7 +201,7 @@ class Run(object):
         download_raw(self.section, self.nrun, name)
         
     def subtract_tare_drag(self):
-        df = pd.read_csv(os.path.join("Data", "Processed", "Tare drag.csv"))
+        df = pd.read_csv(os.path.join("Data", "Processed", "Tare-drag.csv"))
         self.tare_drag = df.tare_drag[df.tow_speed==self.tow_speed_nom].values[0]
         self.drag = self.drag - self.tare_drag
         
@@ -741,19 +741,20 @@ def batch_process_all():
 def process_tare_drag(nrun, plot=False):
     """Processes a single tare drag run."""
     print("Processing tare drag run", nrun)
-    times = {0.3 : (10, 77),
-             0.4 : (8, 60),
-             0.5 : (8, 47),
-             0.6 : (10, 38),
-             0.7 : (8, 33),
-             0.8 : (7, 30),
-             0.9 : (8, 27),
-             1.0 : (6, 24),
-             1.1 : (6, 22),
-             1.2 : (7, 21),
-             1.3 : (7, 19),
-             1.4 : (6, 18)}
-    rdpath = os.path.join(raw_data_dir, "Tare drag", str(nrun))
+    times = {0.2: (15, 120),
+             0.3: (10, 77),
+             0.4: (10, 56),
+             0.5: (8, 47),
+             0.6: (10, 40),
+             0.7: (8, 33),
+             0.8: (5, 31),
+             0.9: (8, 27),
+             1.0: (6, 24),
+             1.1: (9, 22),
+             1.2: (8, 21),
+             1.3: (7, 19),
+             1.4: (6, 18)}
+    rdpath = os.path.join(raw_data_dir, "Tare-drag", str(nrun))
     with open(os.path.join(rdpath, "metadata.json")) as f:
         metadata = json.load(f)
     speed = float(metadata["Tow speed (m/s)"])
@@ -772,7 +773,7 @@ def process_tare_drag(nrun, plot=False):
         
 def batch_process_tare_drag(plot=False):
     """Processes all tare drag data."""
-    runs = os.listdir("Raw/Tare drag")
+    runs = os.listdir("Data/Raw/Tare-drag")
     runs = sorted([int(run) for run in runs])
     speed = np.zeros(len(runs))
     taredrag = np.zeros(len(runs))
@@ -782,7 +783,7 @@ def batch_process_tare_drag(plot=False):
     data["run"] = runs
     data["tow_speed"] = speed
     data["tare_drag"] = taredrag
-    data.to_csv("Data/Processed/Tare drag.csv", index=False)
+    data.to_csv("Data/Processed/Tare-drag.csv", index=False)
     if plot:
         plt.figure()
         plt.plot(speed, taredrag, "-ok", markerfacecolor="None")
@@ -869,7 +870,7 @@ def process_strut_torque(nrun, zero_torque=1.1, plot=False, covers=False,
     
 def batch_process_tare_torque(plot=False):
     """Processes all tare torque data."""
-    runs = os.listdir("Data/Raw/Tare torque")
+    runs = os.listdir("Data/Raw/Tare-torque")
     runs = sorted([int(run) for run in runs])
     rpm = np.zeros(len(runs))
     taretorque = np.zeros(len(runs))
@@ -879,7 +880,7 @@ def batch_process_tare_torque(plot=False):
     df["run"] = runs
     df["rpm"] = rpm
     df["tare_torque"] = taretorque
-    df.to_csv("Data/Processed/Tare torque.csv", index=False)
+    df.to_csv("Data/Processed/Tare-torque.csv", index=False)
     m, b = np.polyfit(rpm, taretorque, 1)
     print("tare_torque = "+str(m)+"*rpm +", b)
     if plot:
