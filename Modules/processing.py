@@ -812,7 +812,6 @@ def process_tare_torque(nrun, plot=False):
         t1, t2 = times[3]
     meanrpm, _ = ts.calcstats(rpm_ni, t1, t2, 2000)
     torque = nidata["torque_trans"]
-#    torque = torque - np.mean(torque[:2000]) # 2000 samples of zero torque
     meantorque, _ = ts.calcstats(torque, t1, t2, 2000)
     print("Tare torque =", meantorque, "Nm at", meanrpm, "RPM")
     if plot:
@@ -890,7 +889,6 @@ def batch_process_tare_torque(plot=False):
         plt.plot(rpm, m*rpm + b)
         plt.xlabel("RPM")
         plt.ylabel("Tare torque (Nm)")
-#        plt.ylim((0, 1))
         plt.tight_layout()
         plt.show()
         
