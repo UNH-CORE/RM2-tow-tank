@@ -1,9 +1,4 @@
 *.gddoc
-Documents/Test plan/*.aux
-Documents/Test plan/*.pdf
-Documents/Test plan/*.gz
-Documents/Test plan/*.log
-Documents/Test plan/*.toc
 *.swp
 *.doc
 *.docx
@@ -13,7 +8,6 @@ Documents/Test plan/*.toc
 *.lof
 *.bbl
 Invoices and receipts
-Documents/Test plan/Figures/SolidWorks/
 *.out
 Documents/Invoices, quotes, receipts
 Documents/Test plan
@@ -24,4 +18,3 @@ temp.py
 Figures
 Trash
 *.ffs_db
-Data
