@@ -7,7 +7,7 @@ This script generates all the relevant figures from the experiment.
 from Modules.processing import *
 from Modules.plotting import *
 
-save = False
+save = True
 savetype = ".pdf"
 show = True
 
