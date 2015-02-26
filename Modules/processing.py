@@ -823,7 +823,7 @@ def process_tare_torque(nrun, plot=False):
         plt.show()
     return meanrpm, -meantorque
     
-def process_strut_torque(nrun, zero_torque=1.1, plot=False, covers=False, 
+def process_strut_torque(nrun, zero_torque=0.0, plot=False, covers=False, 
                          verbose=False):
     """Processes a single strut torque run."""
     testplan = pd.read_csv("Config/Test plan/Strut-torque.csv", 
@@ -850,7 +850,7 @@ def process_strut_torque(nrun, zero_torque=1.1, plot=False, covers=False,
     t1, t2 = 9, dur
     meanrpm, _ = ts.calcstats(rpm_ni, t1, t2, 2000)
     torque = nidata["torque_trans"]
-#     torque = torque - np.mean(torque[:2000]) # 2000 samples of zero torque
+    torque += calc_tare_torque(rpm_ni)
     meantorque, _ = ts.calcstats(torque, t1, t2, 2000)
     tsr_ref = meanrpm/60.0*2*np.pi*R/ref_speed
     if verbose:
@@ -864,9 +864,15 @@ def process_strut_torque(nrun, zero_torque=1.1, plot=False, covers=False,
         plt.tight_layout()
         plt.show()
     meantorque -= zero_torque
-    ct = -meantorque/(0.5*rho*A*R*ref_speed**2)
+    ct = meantorque/(0.5*rho*A*R*ref_speed**2)
     cp = ct*tsr_ref
-    return tsr_ref, cp
+    summary = pd.Series()
+    summary["run"] = nrun
+    summary["tsr_ref"] = tsr_ref
+    summary["cp"] = cp
+    summary["mean_torque"] = meantorque
+    summary["mean_rpm"] = meanrpm
+    return summary
     
 def batch_process_tare_torque(plot=False):
     """Processes all tare torque data."""
@@ -891,6 +897,17 @@ def batch_process_tare_torque(plot=False):
         plt.ylabel("Tare torque (Nm)")
         plt.tight_layout()
         plt.show()
+        
+def batch_process_strut_torque(covers=False):
+    section = "Strut-torque"
+    if covers:
+        section += "-covers"
+    testplan = pd.read_csv("Config/Test plan/" + section + ".csv")
+    df = []
+    for run in testplan.run:
+        df.append(process_strut_torque(run, covers=covers))
+    df = pd.DataFrame(df)
+    df.to_csv("Data/Processed/" + section + ".csv", index=False)
         
 def make_remote_name(local_path):
     return "_".join(local_path.split("\\")[-3:])
