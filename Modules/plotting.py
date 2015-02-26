@@ -160,10 +160,11 @@ class WakeProfile(object):
             plt.show()
         if save:
             plt.savefig(savedir+quantity+"_Re_dep_exp"+savetype)
+            
     
 class WakeMap(object):
-    def __init__(self, U_infty):
-        self.U_infty = U_infty
+    def __init__(self):
+        self.U_infty = 1.0
         self.z_H = [0.0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75]
         self.loaded = False
         self.load()
@@ -171,13 +172,15 @@ class WakeMap(object):
     def load(self):
         self.y_R = WakeProfile(self.U_infty, 0.0, "mean_u").y_R
         self.mean_u = np.zeros((len(self.z_H), len(self.y_R)))
-        self.mean_v = self.mean_u*1
-        self.mean_w = self.mean_u*1
+        self.mean_v = self.mean_u.copy()
+        self.mean_w = self.mean_u.copy()
+        self.k = np.zeros((len(self.z_H), len(self.y_R)))
         for z_H in self.z_H:
             wp = WakeProfile(self.U_infty, z_H, "mean_u")
             self.mean_u[self.z_H.index(z_H)] = wp.df.mean_u
             self.mean_v[self.z_H.index(z_H)] = wp.df.mean_v
             self.mean_w[self.z_H.index(z_H)] = wp.df.mean_w
+            self.k[self.z_H.index(z_H)] = wp.df.k
         self.loaded = True
         
     def turb_lines(self, linestyles="solid", linewidth=3, colors="gray"):
@@ -346,6 +349,32 @@ class WakeMap(object):
         plt.figure()
         plt.plot(u_array, std)
         plt.show()
+        
+    def plot_k(self, fmt="", save=False, savetype = ".pdf", show=False,
+               cb_orientation="vertical"):
+        """Plot contours of turbulence kinetic energy."""
+        plt.figure(figsize=(10,5))
+        cs = plt.contourf(self.y_R, self.z_H, self.k/(1/2*self.U_infty**2), 20,
+                          cmap=plt.cm.coolwarm)
+        if cb_orientation == "horizontal":
+            cb = plt.colorbar(cs, shrink=1, extend="both",
+                              orientation="horizontal", pad=0.14)
+        elif cb_orientation == "vertical":
+            cb = plt.colorbar(cs, shrink=0.43, extend="both", 
+                              orientation="vertical", pad=0.02)
+        plt.xlabel(r"$y/R$")
+        plt.ylabel(r"$z/H$")
+        cb.set_label(r"$k/\frac{1}{2}U_{\infty}^2$")
+        self.turb_lines()
+        ax = plt.axes()
+        ax.set_aspect(2)
+        plt.ylim(0, 0.75)
+        plt.yticks(np.round(np.arange(0, 0.751, 0.125), decimals=2))
+        plt.tight_layout()
+        if save:
+            plt.savefig("Figures/k_contours" + savetype)
+        if show:
+            self.show()
         
     def show(self):
         plt.show()
