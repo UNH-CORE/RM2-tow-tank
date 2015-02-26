@@ -42,7 +42,8 @@ class PerfCurve(object):
             pass
         fpath_tp = os.path.join("Config", "Test plan", self.section+".csv")
         self.testplan = pd.read_csv(fpath_tp) 
-        self.df = self.df[self.df.std_tow_speed < 0.009]   
+        self.df = self.df[self.df.std_tow_speed < 0.009]
+        self.df = self.df[self.df.mean_tsr <= 5.1]
         self.label = r"$Re_D = {:.1f} \times 10^6$".format(self.Re_D/1e6)
         
     def plotcp(self, newfig=True, show=True, save=False, savedir="Figures",
@@ -592,6 +593,62 @@ def plot_meancontquiv(show=False, cb_orientation="vertical",
         plt.savefig(p)
     if show:
         plt.show()
+        
+def plot_strut_torque(covers=False, save=False, savetype=".pdf", show=False,
+                      newfig=True):
+    section = "Strut-torque"
+    figname = "strut_torque"
+    if covers:
+        section += "-covers"
+        figname += "_covers"
+    df = pd.read_csv("Data/Processed/" + section + ".csv")
+    if newfig:
+        plt.figure()
+    plt.plot(df.tsr_ref, df.cp, "-ok")
+    plt.xlabel(r"$\lambda_{\mathrm{ref}}$")
+    plt.ylabel(r"$C_{P, \mathrm{ref}}$")
+    plt.tight_layout()
+    if save:
+        plt.savefig("Figures/" + figname + savetype)
+    if show:
+        plt.show()
+        
+def plot_cp_covers(save=False, savetype=".pdf", show=False, newfig=True,
+                   add_strut_torque=False):
+    """Plots the performance curve with covers."""
+    df = pd.read_csv("Data/Processed/Perf-1.0-covers.csv")
+    if newfig:
+        plt.figure()
+    if add_strut_torque:
+        df2 = pd.read_csv("Data/Processed/Perf-1.0-no-blades-covers.csv")
+        df.mean_cp -= df2.mean_cp
+    plt.plot(df.mean_tsr, df.mean_cp, "-ok", label="Covers")
+    plt.xlabel(r"$\lambda$")
+    plt.ylabel(r"$C_P$")
+    plt.tight_layout()
+    if save:
+        plt.savefig("Figures/cp_curve_covers" + savetype)
+    if show:
+        plt.show()
+        
+def plot_cp_no_blades(covers=False, save=False, savetype=".pdf", show=False):
+    """Plots the power coefficient curve with no blades."""
+    section = "Perf-1.0-no-blades"
+    figname = "cp_no_blades"
+    if covers:
+        section += "-covers"
+        figname += "_covers"
+    df = pd.read_csv("Data/Processed/" + section + ".csv")
+    plt.figure()
+    plt.plot(df.mean_tsr, df.mean_cp, "-ok")
+    plt.xlabel(r"$\lambda$")
+    plt.ylabel(r"$C_P$")
+    plt.tight_layout()
+    if save:
+        plt.savefig("Figures/" + figname + savetype)
+    if show:
+        plt.show()
+    
     
 def watermark():
     """Creates a "preliminary" watermark on plots."""
