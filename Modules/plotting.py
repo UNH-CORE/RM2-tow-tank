@@ -381,7 +381,7 @@ def plot_trans_wake_profile(quantity, U_infty=0.4, z_H=0.0, save=False, savedir=
     
 def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf", 
                      errorbars=False, normalize_by=1.0, dual_xaxes=False, 
-                     show=True, preliminary=False):
+                     show=False, preliminary=False):
     """
     Plots Reynolds number dependence of power and drag coefficient. Note
     that if `errorbars=True`, the error bar values are the averages of all the

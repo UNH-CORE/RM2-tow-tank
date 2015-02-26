@@ -15,7 +15,7 @@ def main():
     plot_perf_curves(save=save, savetype=savetype)
     plot_perf_re_dep(save=save, savetype=savetype, errorbars=True, 
                      dual_xaxes=True)
-    PerfCurve(1.0).plotcp(save=save, savetype=savetype)
+    PerfCurve(1.0).plotcp(save=save, savetype=savetype, show=False)
     plot_meancontquiv(save=save, savetype=savetype)
     if show:
         plt.show()
