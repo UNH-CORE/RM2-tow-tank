@@ -17,7 +17,7 @@ def main():
                      dual_xaxes=True)
     PerfCurve(1.0).plotcp(save=save, savetype=savetype, show=False)
     wm = WakeMap()
-    wm.plot_meancontquiv(save=save, savetype=savetype)
+#    wm.plot_meancontquiv(save=save, savetype=savetype)
     wm.plot_k(save=save, savetype=savetype)
     plot_strut_torque(covers=False, save=save, savetype=savetype)
     plot_strut_torque(covers=True, save=save, savetype=savetype)
