@@ -6,7 +6,7 @@ experiment.
 
 ## Status
 
-Performance and wake runs are complete. Strut torque runs are in progress.
+Data is collected and processed data is in the `Data/Processed` directory.
 
 ## Getting started
 We recommend installing the 
