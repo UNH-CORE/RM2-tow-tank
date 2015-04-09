@@ -224,14 +224,14 @@ class WakeMap(object):
             cb = plt.colorbar(cs, shrink=1, extend="both",
                               orientation="horizontal", pad=0.14)
         elif cb_orientation == "vertical":
-            cb = plt.colorbar(cs, shrink=0.415, extend="both", 
+            cb = plt.colorbar(cs, shrink=0.42, extend="both", 
                               orientation="vertical", pad=0.02)
         cb.set_label(r"$U/U_{\infty}$")
         plt.hold(True)
         # Make quiver plot of v and w velocities
         Q = plt.quiver(self.y_R, self.z_H, self.mean_v/self.U_infty, 
                        self.mean_w/self.U_infty, width=0.0022,
-                       edgecolor="none", scale=2)
+                       edgecolor="none", scale=3)
         plt.xlabel(r"$y/R$")
         plt.ylabel(r"$z/H$")
         plt.ylim(-0.15, 0.85)
@@ -614,7 +614,7 @@ def plot_wake_profiles(z_H=0.25, save=False, show=False, savedir="Figures",
     
 def plot_meancontquiv(show=False, cb_orientation="vertical",
                       save=False, savedir="Figures", savetype=".pdf"):
-    wm = WakeMap(1.0)
+    wm = WakeMap()
     wm.plot_meancontquiv(show=show, cb_orientation=cb_orientation)
     if save:
         p = os.path.join(savedir, "meancontquiv" + savetype)
