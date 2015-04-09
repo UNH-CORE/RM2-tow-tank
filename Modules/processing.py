@@ -388,10 +388,12 @@ class Run(object):
         self.wpwp = self.wp**2
         
     def filter_wake(self, std=4, passes=1, thresh=0.95):
-        """Applies filtering to wake velocity data with a standard deviation
+        """
+        Applies filtering to wake velocity data with a standard deviation
         filter, threshold filter, or both. Renames unfiltered time series with
         the '_unf' suffix. Time series are already trimmed before they reach 
-        this point, so no slicing is necessary"""
+        this point, so no slicing is necessary.
+        """
         # Calculate means
         mean_u = self.u.mean()
         mean_v = self.v.mean()
@@ -401,7 +403,7 @@ class Run(object):
         self.v_unf = self.v.copy()
         self.w_unf = self.w.copy()
         if std > 0:
-        # Do standard deviation filters
+            # Do standard deviation filters
             self.u = ts.sigmafilter(self.u, std, passes)
             self.v = ts.sigmafilter(self.v, std, passes)
             self.w = ts.sigmafilter(self.w, std, passes)
@@ -409,21 +411,15 @@ class Run(object):
             # Do threshold filter on u
             ibad = np.where(self.u > mean_u + thresh)[0]
             ibad = np.append(ibad, np.where(self.u < mean_u - thresh)[0])
-            i = np.where(np.logical_and(ibad > self.t1*200, 
-                                        ibad < self.t2*200))[0]
-            self.u[ibad[i]] = np.nan
+            self.u[ibad] = np.nan
             # Do threshold filter on v
             ibad = np.where(self.v > mean_v + thresh)[0]
             ibad = np.append(ibad, np.where(self.v < mean_v - thresh)[0])
-            i = np.where(np.logical_and(ibad > self.t1*200, 
-                                        ibad < self.t2*200))[0]
-            self.v[ibad[i]] = np.nan
+            self.v[ibad] = np.nan
             # Do threshold filter on w
             ibad = np.where(self.w > mean_w + thresh)[0]
             ibad = np.append(ibad, np.where(self.w < mean_w - thresh)[0])
-            i = np.where(np.logical_and(ibad > self.t1*200, 
-                                        ibad < self.t2*200))[0]
-            self.w[ibad[i]] = np.nan
+            self.w[ibad] = np.nan
         # Count up bad datapoints
         self.nbadu = len(np.where(np.isnan(self.u)==True)[0])
         self.nbadv = len(np.where(np.isnan(self.v)==True)[0])
