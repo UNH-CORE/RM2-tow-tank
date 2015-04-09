@@ -14,7 +14,7 @@ show = True
 
 def main():
     plot_perf_curves(save=save, savetype=savetype)
-    plot_perf_re_dep(save=save, savetype=savetype, errorbars=True, 
+    plot_perf_re_dep(save=save, savetype=savetype, errorbars=False, 
                      dual_xaxes=True)
     PerfCurve(1.0).plotcp(save=save, savetype=savetype, show=False)
     wm = WakeMap()

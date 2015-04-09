@@ -437,9 +437,10 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
         plt.ylabel(r"$C_P/C_{P0}$")
     else:
         plt.ylabel(r"$C_P$")
+    plt.grid(True)
     ax = plt.gca()
     if dual_xaxes:
-        plt.text(1.32e6, 0.5, "1e5", color=r"#555555")
+        plt.text(1.335e6, 0.46, "1e5")
         ax2 = ax.twiny()
         ax.xaxis.get_majorticklocs()
         ticklabs = np.arange(0.2e6, 1.6e6, 0.2e6)
@@ -448,7 +449,6 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
         ax2.set_xticks(ax.xaxis.get_ticklocs())
         ax2.set_xlim((0.2e6, 1.4e6))
         ax2.set_xticklabels(ticklabs)
-#        ax2.xaxis.major.formatter.set_powerlimits((0,0)) 
         ax2.set_xlabel(r"$Re_{c, \mathrm{ave}}$")
     ax.xaxis.major.formatter.set_powerlimits((0,0)) 
     plt.tight_layout()
@@ -468,7 +468,8 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
     else:
         plt.ylabel(r"$C_D$")
     ax = plt.gca()
-    ax.xaxis.major.formatter.set_powerlimits((0,0)) 
+    ax.xaxis.major.formatter.set_powerlimits((0,0))
+    plt.grid(True)
     plt.tight_layout()
     if preliminary:
         watermark()
