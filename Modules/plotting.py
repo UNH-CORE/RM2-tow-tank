@@ -5,15 +5,13 @@ This module contains classes and functions for plotting data.
 """
 from __future__ import division, print_function
 from Modules.processing import *
-import matplotlib
+import seaborn as sns
 import os
 
-style_file = "Config/plotstyle.mplstyle"
-
-try:
-    matplotlib.style.use(style_file)
-except ValueError:
-    matplotlib.style.use(os.path.join("../", style_file))
+def set_sns():
+    sns.set(style="white", context="paper", font_scale=1.75,
+            rc={"lines.markersize": 9, "lines.markeredgewidth": 1.25,
+            "legend.fontsize": "small", "font.size": 14})
 
 ylabels = {"mean_u" : r"$U/U_\infty$",
            "std_u" : r"$\sigma_u/U_\infty$",
