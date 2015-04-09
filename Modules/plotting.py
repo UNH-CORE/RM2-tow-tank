@@ -216,7 +216,7 @@ class WakeMap(object):
         Plot contours of mean velocity and vector arrows showing mean
         cross-stream and vertical velocity.
         """
-        plt.figure(figsize=(10,6))
+        plt.figure(figsize=(10, 2.75))
         # Add contours of mean velocity
         cs = plt.contourf(self.y_R, self.z_H, self.mean_u/self.U_infty, 20, 
                           cmap=plt.cm.coolwarm)
@@ -224,7 +224,7 @@ class WakeMap(object):
             cb = plt.colorbar(cs, shrink=1, extend="both",
                               orientation="horizontal", pad=0.14)
         elif cb_orientation == "vertical":
-            cb = plt.colorbar(cs, shrink=0.42, extend="both", 
+            cb = plt.colorbar(cs, shrink=0.88, extend="both", 
                               orientation="vertical", pad=0.02)
         cb.set_label(r"$U/U_{\infty}$")
         plt.hold(True)
@@ -242,13 +242,13 @@ class WakeMap(object):
                           coordinates="figure",
                           fontproperties={"size": "small"})
         elif cb_orientation == "vertical":
-            plt.quiverkey(Q, 0.65, 0.23, 0.1, r"$0.1 U_\infty$",
+            plt.quiverkey(Q, 0.65, 0.075, 0.1, r"$0.1 U_\infty$",
                           labelpos="E",
                           coordinates="figure",
                           fontproperties={"size": "small"})
         self.turb_lines()
         ax = plt.axes()
-        ax.set_aspect(2)
+        ax.set_aspect(H/R)
         plt.yticks([0, 0.13, 0.25, 0.38, 0.5, 0.63, 0.75])
         plt.grid(True)
         plt.tight_layout()
@@ -351,21 +351,21 @@ class WakeMap(object):
     def plot_k(self, fmt="", save=False, savetype = ".pdf", show=False,
                cb_orientation="vertical"):
         """Plot contours of turbulence kinetic energy."""
-        plt.figure(figsize=(10,5))
+        plt.figure(figsize=(10, 2.5))
         cs = plt.contourf(self.y_R, self.z_H, self.k/(1/2*self.U_infty**2), 20,
                           cmap=plt.cm.coolwarm)
         if cb_orientation == "horizontal":
             cb = plt.colorbar(cs, shrink=1, extend="both",
                               orientation="horizontal", pad=0.14)
         elif cb_orientation == "vertical":
-            cb = plt.colorbar(cs, shrink=0.435, extend="both", 
+            cb = plt.colorbar(cs, shrink=1, extend="both", 
                               orientation="vertical", pad=0.02)
         plt.xlabel(r"$y/R$")
         plt.ylabel(r"$z/H$")
         cb.set_label(r"$k/\frac{1}{2}U_{\infty}^2$")
         self.turb_lines(color="black")
         ax = plt.axes()
-        ax.set_aspect(2)
+        ax.set_aspect(H/R)
         plt.ylim(0, 0.75)
         plt.yticks(np.round(np.arange(0, 0.751, 0.125), decimals=2))
         plt.tight_layout()
