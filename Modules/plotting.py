@@ -181,12 +181,12 @@ class WakeMap(object):
             self.k[self.z_H.index(z_H)] = wp.df.k
         self.loaded = True
         
-    def turb_lines(self, linestyles="solid", linewidth=3, colors="gray"):
-        plt.hlines(0.5, -1, 1, linestyles=linestyles, colors="gray",
+    def turb_lines(self, linestyles="solid", linewidth=3, color="gray"):
+        plt.hlines(0.5, -1, 1, linestyles=linestyles, colors=color,
                    linewidth=linewidth)
-        plt.vlines(-1, -0.2, 0.5, linestyles=linestyles, colors="gray",
+        plt.vlines(-1, -0.2, 0.5, linestyles=linestyles, colors=color,
                    linewidth=linewidth)
-        plt.vlines(1, -0.2, 0.5, linestyles=linestyles, colors="gray",
+        plt.vlines(1, -0.2, 0.5, linestyles=linestyles, colors=color,
                    linewidth=linewidth)
         
     def plot_mean_u(self, save=False, show=False, savedir="Figures", 
@@ -358,12 +358,12 @@ class WakeMap(object):
             cb = plt.colorbar(cs, shrink=1, extend="both",
                               orientation="horizontal", pad=0.14)
         elif cb_orientation == "vertical":
-            cb = plt.colorbar(cs, shrink=0.43, extend="both", 
+            cb = plt.colorbar(cs, shrink=0.435, extend="both", 
                               orientation="vertical", pad=0.02)
         plt.xlabel(r"$y/R$")
         plt.ylabel(r"$z/H$")
         cb.set_label(r"$k/\frac{1}{2}U_{\infty}^2$")
-        self.turb_lines()
+        self.turb_lines(color="black")
         ax = plt.axes()
         ax.set_aspect(2)
         plt.ylim(0, 0.75)
