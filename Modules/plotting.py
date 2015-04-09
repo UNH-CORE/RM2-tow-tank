@@ -635,6 +635,7 @@ def plot_strut_torque(covers=False, save=False, savetype=".pdf", show=False,
     plt.plot(df.tsr_ref, df.cp, "-ok")
     plt.xlabel(r"$\lambda_{\mathrm{ref}}$")
     plt.ylabel(r"$C_{P, \mathrm{ref}}$")
+    plt.grid(True)
     plt.tight_layout()
     if save:
         plt.savefig("Figures/" + figname + savetype)
@@ -653,6 +654,7 @@ def plot_cp_covers(save=False, savetype=".pdf", show=False, newfig=True,
     plt.plot(df.mean_tsr, df.mean_cp, "-ok", label="Covers")
     plt.xlabel(r"$\lambda$")
     plt.ylabel(r"$C_P$")
+    plt.grid(True)
     plt.tight_layout()
     if save:
         plt.savefig("Figures/cp_curve_covers" + savetype)
@@ -671,6 +673,7 @@ def plot_cp_no_blades(covers=False, save=False, savetype=".pdf", show=False):
     plt.plot(df.mean_tsr, df.mean_cp, "-ok")
     plt.xlabel(r"$\lambda$")
     plt.ylabel(r"$C_P$")
+    plt.grid(True)
     plt.tight_layout()
     if save:
         plt.savefig("Figures/" + figname + savetype)
