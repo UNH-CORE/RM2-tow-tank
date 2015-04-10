@@ -30,7 +30,7 @@ Please cite
 
 ## Resources
 * The test plan document is available from http://dx.doi.org/10.6084/m9.figshare.1373884
-* Manufacturing drawings and 3-D models are
+* Turbine manufacturing drawings and 3-D models are
 available from http://dx.doi.org/10.6084/m9.figshare.1373870
 
 ## License
