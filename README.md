@@ -31,7 +31,7 @@ figures from the experiment.
   2. Measure performance curves to find a Reynolds number independent operating
   condition. 
   3. Measure the near-wake at the Reynolds number found in 2. 
-  4. Measure the parasitic torque from the struts by rotating them in still water
+  4. Measure the parasitic torque from the struts by measuring turbine performance
   with the blades removed.
   5. Repeat 4 but for higher-drag struts. These will be cylindrical tubes
   slid over the regular struts.
