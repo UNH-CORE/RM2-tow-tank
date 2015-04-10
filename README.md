@@ -4,10 +4,6 @@ UNH RM2 tow tank experiment
 This is a repository for data and processing code from the UNH RM2 tow tank 
 experiment.
 
-## Status
-
-Data is collected and processed data is in the `Data/Processed` directory.
-
 ## Getting started
 We recommend installing the 
 [Anaconda Python distribution](http://continuum.io/downloads)
