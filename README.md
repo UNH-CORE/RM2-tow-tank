@@ -23,7 +23,7 @@ figures from the experiment.
   CACTUS's performance prediction ability. 
   
 ## Test plan
-* The [test plan document](https://drive.google.com/file/d/0BwMVIAlxIxfZZFR4cTVoRXdRNEU/view?usp=sharing) is online.
+* The test plan document is available from http://dx.doi.org/10.6084/m9.figshare.1373884
 * CSV test matrices for each part of the experiment are located in `Config/Test plan`.
 
 ### Summary
