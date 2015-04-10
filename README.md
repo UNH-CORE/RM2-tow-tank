@@ -53,9 +53,8 @@ figures from the experiment.
 | Shaft diameter (m) | 0.254 or 0.416 |   0.0635  |
 
 ### CAD files
-CAD files of the turbine model will be uploaded as a figshare fileset once assembled.
-[Manufacturing drawings](https://drive.google.com/folderview?id=0BwMVIAlxIxfZSmVXWlFYX2dRVjg&usp=sharing)
-are available on Google Drive.
+Manufacturing drawings and 3-D models are
+available from http://dx.doi.org/10.6084/m9.figshare.1373870
 
 ## License
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
