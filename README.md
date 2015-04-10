@@ -15,6 +15,19 @@ can be installed by executing
 After installing all dependencies, execute `python run.py` to generate
 figures from the experiment. 
 
+## How to cite
+Please cite 
+
+```bibtex
+@Misc{Bachant2015-RM2-data,
+  Title                    = {{UNH} {RM2} tow tank experiment: Reduced dataset and processing code},
+  Author                   = {Peter Bachant and Martin Wosnik and Budi Gunawan and Vincent Neary},
+  HowPublished             = {fig\textbf{share}. http://dx.doi.org/10.6084/m9.figshare.1373899},
+  Year                     = {2015},
+  Doi                      = {10.6084/m9.figshare.1373899},
+}
+```
+
 ## Objectives
   1. Acquire a Reynolds number independent dataset characterizing the 
   performance and near-wake of the DOE RM2 cross-flow turbine, for validation of
