@@ -5,7 +5,7 @@ This is a repository for data and processing code from the UNH RM2 tow tank
 experiment.
 
 ## Getting started
-We recommend installing the 
+We recommend using the 
 [Anaconda Python distribution](http://continuum.io/downloads)
 (Python 3.4) since it includes most dependencies. The remaining 
 can be installed by executing
