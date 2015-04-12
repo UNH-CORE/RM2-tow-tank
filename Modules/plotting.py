@@ -562,7 +562,7 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
                      show=False, savetype=".pdf", preliminary=False):
     """Plots all performance curves."""
     if subplots:
-        plt.figure(figsize=(12,5))
+        plt.figure(figsize=(11, 4.5))
         plt.subplot(121)
     PerfCurve(0.4).plotcp(newfig=not subplots, show=False, marker=">")
     PerfCurve(0.6).plotcp(newfig=False, show=False, marker="s")
@@ -572,6 +572,8 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     plt.legend(loc="lower left", ncol=2)
     if preliminary:
         watermark()
+    if save and not subplots:
+        plt.savefig(os.path.join(savedir, "cp_curves" + savetype))
     if subplots:
         plt.subplot(122)
     PerfCurve(0.4).plotcd(newfig=not subplots, show=False, marker=">")
@@ -583,7 +585,10 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     if preliminary:
         watermark()
     if save:
-        plt.savefig(os.path.join(savedir, "perf_curves" + savetype))
+        if subplots:
+            plt.savefig(os.path.join(savedir, "perf_curves" + savetype))
+        else:
+            plt.savefig(os.path.join(savedir, "cd_curves" + savetype))
     if show:
         plt.show()
     
