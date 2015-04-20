@@ -569,7 +569,8 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     PerfCurve(0.8).plotcp(newfig=False, show=False, marker="<")
     PerfCurve(1.0).plotcp(newfig=False, show=False, marker="o")
     PerfCurve(1.2).plotcp(newfig=False, show=False, marker="^")
-    plt.legend(loc="lower left", ncol=2)
+    if not subplots:
+        plt.legend(loc="lower left", ncol=2)
     if preliminary:
         watermark()
     if save and not subplots:
