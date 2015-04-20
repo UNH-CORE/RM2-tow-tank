@@ -365,7 +365,7 @@ class WakeMap(object):
                               orientation="vertical", pad=0.02)
         plt.xlabel(r"$y/R$")
         plt.ylabel(r"$z/H$")
-        cb.set_label(r"$k/\frac{1}{2}U_{\infty}^2$")
+        cb.set_label(r"$k/\left(\frac{1}{2}U_{\infty}^2\right)$")
         self.turb_lines(color="black")
         ax = plt.axes()
         ax.set_aspect(H/R)
