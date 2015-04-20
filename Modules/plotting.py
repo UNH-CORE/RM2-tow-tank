@@ -217,7 +217,8 @@ class WakeMap(object):
         Plot contours of mean velocity and vector arrows showing mean
         cross-stream and vertical velocity.
         """
-        plt.figure(figsize=(10, 2.75))
+        scale = 7.5/10.0
+        plt.figure(figsize=(10*scale, 3*scale))
         # Add contours of mean velocity
         cs = plt.contourf(self.y_R, self.z_H, self.mean_u/self.U_infty, 20, 
                           cmap=plt.cm.coolwarm)
@@ -243,7 +244,7 @@ class WakeMap(object):
                           coordinates="figure",
                           fontproperties={"size": "small"})
         elif cb_orientation == "vertical":
-            plt.quiverkey(Q, 0.65, 0.075, 0.1, r"$0.1 U_\infty$",
+            plt.quiverkey(Q, 0.65, 0.09, 0.1, r"$0.1 U_\infty$",
                           labelpos="E",
                           coordinates="figure",
                           fontproperties={"size": "small"})
