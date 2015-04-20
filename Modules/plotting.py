@@ -12,7 +12,7 @@ def set_sns():
     sns.set(style="white", context="notebook", font_scale=1.5,
             rc={"lines.markersize": 9, "lines.markeredgewidth": 1.25,
             "legend.fontsize": "small", "font.size": 15,
-            "legend.frameon": True})
+            "legend.frameon": True, "axes.formatter.limits": (-5, 5)})
 
 ylabels = {"mean_u" : r"$U/U_\infty$",
            "std_u" : r"$\sigma_u/U_\infty$",
@@ -435,13 +435,13 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
         plt.plot(Re_D, df.mean_cp/norm_cp, '-ok', markerfacecolor="none")
     plt.xlabel(r"$Re_D$")
     if normalize_by == "default":
-        plt.ylabel(r"$C_P/C_{P0}$")
+        plt.ylabel(r"$C_P/C_{P_0}$")
     else:
         plt.ylabel(r"$C_P$")
     plt.grid(True)
     ax = plt.gca()
     if dual_xaxes:
-        plt.text(1.335e6, 0.46, "1e5")
+        plt.text(1.345e6, 0.445, "1e5")
         ax2 = ax.twiny()
         ax.xaxis.get_majorticklocs()
         ticklabs = np.arange(0.2e6, 1.6e6, 0.2e6)
@@ -465,11 +465,21 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
         plt.plot(Re_D, df.mean_cd/norm_cd, '-ok', markerfacecolor="none")
     plt.xlabel(r"$Re_D$")
     if normalize_by == "default":
-        plt.ylabel(r"$C_D/C_{D0}$")
+        plt.ylabel(r"$C_D/C_{D_0}$")
     else:
         plt.ylabel(r"$C_D$")
     ax = plt.gca()
-    ax.xaxis.major.formatter.set_powerlimits((0,0))
+    if dual_xaxes:
+        plt.text(1.345e6, 0.875, "1e5")
+        ax2 = ax.twiny()
+        ax.xaxis.get_majorticklocs()
+        ticklabs = np.arange(0.2e6, 1.6e6, 0.2e6)
+        ticklabs = ticklabs/D*df.mean_tsr.mean()*chord/1e5
+        ticklabs = [str(np.round(ticklab, decimals=1)) for ticklab in ticklabs]
+        ax2.set_xticks(ax.xaxis.get_ticklocs())
+        ax2.set_xlim((0.2e6, 1.4e6))
+        ax2.set_xticklabels(ticklabs)
+        ax2.set_xlabel(r"$Re_{c, \mathrm{ave}}$")
     plt.grid(True)
     plt.tight_layout()
     if preliminary:
