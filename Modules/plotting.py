@@ -182,7 +182,7 @@ class WakeMap(object):
             self.k[self.z_H.index(z_H)] = wp.df.k
         self.loaded = True
         
-    def turb_lines(self, linestyles="solid", linewidth=3, color="gray"):
+    def turb_lines(self, linestyles="solid", linewidth=2, color="gray"):
         plt.hlines(0.5, -1, 1, linestyles=linestyles, colors=color,
                    linewidth=linewidth)
         plt.vlines(-1, -0.2, 0.5, linestyles=linestyles, colors=color,
