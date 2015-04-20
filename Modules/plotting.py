@@ -631,12 +631,9 @@ def plot_wake_profiles(z_H=0.25, save=False, show=False, savedir="Figures",
 def plot_meancontquiv(show=False, cb_orientation="vertical",
                       save=False, savedir="Figures", savetype=".pdf"):
     wm = WakeMap()
-    wm.plot_meancontquiv(show=show, cb_orientation=cb_orientation)
-    if save:
-        p = os.path.join(savedir, "meancontquiv" + savetype)
-        plt.savefig(p)
-    if show:
-        plt.show()
+    wm.plot_meancontquiv(save=save, show=show, 
+                         cb_orientation=cb_orientation, savetype=savetype,
+                         savedir=savedir)
         
 def plot_strut_torque(covers=False, save=False, savetype=".pdf", show=False,
                       newfig=True):
