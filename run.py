@@ -9,7 +9,7 @@ from Modules.plotting import *
 
 set_sns()
 save = True
-savetype = ".pdf"
+savetype = ".tiff"
 show = True
 
 def main():
