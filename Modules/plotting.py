@@ -451,7 +451,6 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
         ax2.set_xlim((0.2e6, 1.4e6))
         ax2.set_xticklabels(ticklabs)
         ax2.set_xlabel(r"$Re_{c, \mathrm{ave}}$")
-    ax.xaxis.major.formatter.set_powerlimits((0,0)) 
     plt.tight_layout()
     if preliminary:
         watermark()
@@ -468,6 +467,7 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
         plt.ylabel(r"$C_D/C_{D_0}$")
     else:
         plt.ylabel(r"$C_D$")
+    plt.grid(True)
     ax = plt.gca()
     if dual_xaxes:
         plt.text(1.345e6, 0.875, "1e5")
@@ -480,7 +480,6 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
         ax2.set_xlim((0.2e6, 1.4e6))
         ax2.set_xticklabels(ticklabs)
         ax2.set_xlabel(r"$Re_{c, \mathrm{ave}}$")
-    plt.grid(True)
     plt.tight_layout()
     if preliminary:
         watermark()
