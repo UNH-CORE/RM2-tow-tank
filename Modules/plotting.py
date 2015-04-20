@@ -9,9 +9,9 @@ import seaborn as sns
 import os
 
 def set_sns():
-    sns.set(style="white", context="paper", font_scale=1.75,
+    sns.set(style="white", context="notebook", font_scale=1.5,
             rc={"lines.markersize": 9, "lines.markeredgewidth": 1.25,
-            "legend.fontsize": "small", "font.size": 14})
+            "legend.fontsize": "small", "font.size": 15})
 
 ylabels = {"mean_u" : r"$U/U_\infty$",
            "std_u" : r"$\sigma_u/U_\infty$",
