@@ -353,7 +353,8 @@ class WakeMap(object):
     def plot_k(self, fmt="", save=False, savetype = ".pdf", show=False,
                cb_orientation="vertical"):
         """Plot contours of turbulence kinetic energy."""
-        plt.figure(figsize=(10, 2.5))
+        scale = 7.5/10.0
+        plt.figure(figsize=(10*scale, 2.5*scale))
         cs = plt.contourf(self.y_R, self.z_H, self.k/(1/2*self.U_infty**2), 20,
                           cmap=plt.cm.coolwarm)
         if cb_orientation == "horizontal":
