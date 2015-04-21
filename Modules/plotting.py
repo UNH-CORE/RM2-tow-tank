@@ -322,6 +322,29 @@ class WakeMap(object):
                    linewidth=linewidth)
         plt.vlines(1, -0.2, 0.5, linestyles=linestyles, colors=color,
                    linewidth=linewidth)
+                   
+    def plot_contours(self, quantity, label="", cb_orientation="vertical",
+                      newfig=True, levels=None):
+        """Plots contours of given quantity."""
+        if newfig:
+            plt.figure(figsize=(10, 2.5))
+        cs = plt.contourf(self.y_R, self.z_H, quantity, 20,
+                          cmap=plt.cm.coolwarm, levels=levels)
+        plt.xlabel(r"$y/R$")
+        plt.ylabel(r"$z/H$")
+        if cb_orientation == "horizontal":
+            cb = plt.colorbar(cs, shrink=1, extend="both", 
+                              orientation="horizontal", pad=0.3)
+        elif cb_orientation == "vertical":
+            cb = plt.colorbar(cs, shrink=1, extend="both", 
+                              orientation="vertical", pad=0.02)
+        cb.set_label(label)
+        self.turb_lines(color="black")
+        plt.ylim((0, 0.75))
+        ax = plt.axes()
+        ax.set_aspect(H/R)
+        plt.yticks([0,0.13,0.25,0.38,0.5,0.63.0.75])
+        plt.tight_layout()
         
     def plot_mean_u(self, save=False, show=False, savedir="Figures", 
                     savetype=".pdf"):
@@ -336,8 +359,8 @@ class WakeMap(object):
         cb.set_label(r"$U/U_{\infty}$")
         self.turb_lines()
         ax = plt.axes()
-        ax.set_aspect(2)
-        plt.yticks([0,0.13,0.25,0.38,0.5,0.63])
+        ax.set_aspect(H/R)
+        plt.yticks([0,0.13,0.25,0.38,0.5,0.63,0.75])
         plt.tight_layout()
         if save:
             plt.savefig(savedir+"/mean_u_cont"+savetype)
