@@ -314,14 +314,6 @@ class WakeMap(object):
             self.dUdz[:, n] = \
                 fdiff.second_order_diff(self.df.mean_u.iloc[:, n], z)
             self.d2Udz2[:, n] = fdiff.second_order_diff(self.dUdz[:, n], z)
-        
-    def turb_lines(self, linestyles="solid", linewidth=3, color="gray"):
-        plt.hlines(0.5, -1, 1, linestyles=linestyles, colors=color,
-                   linewidth=linewidth)
-        plt.vlines(-1, -0.2, 0.5, linestyles=linestyles, colors=color,
-                   linewidth=linewidth)
-        plt.vlines(1, -0.2, 0.5, linestyles=linestyles, colors=color,
-                   linewidth=linewidth)
                    
     def plot_contours(self, quantity, label="", cb_orientation="vertical",
                       newfig=True, levels=None):
@@ -343,7 +335,7 @@ class WakeMap(object):
         plt.ylim((0, 0.75))
         ax = plt.axes()
         ax.set_aspect(H/R)
-        plt.yticks([0,0.13,0.25,0.38,0.5,0.63.0.75])
+        plt.yticks([0.0, 0.13, 0.25, 0.38, 0.5, 0.63, 0.75])
         plt.tight_layout()
         
     def plot_mean_u(self, save=False, show=False, savedir="Figures", 
@@ -360,7 +352,7 @@ class WakeMap(object):
         self.turb_lines()
         ax = plt.axes()
         ax.set_aspect(H/R)
-        plt.yticks([0,0.13,0.25,0.38,0.5,0.63,0.75])
+        plt.yticks([0.0, 0.13, 0.25, 0.38, 0.5, 0.63, 0.75])
         plt.tight_layout()
         if save:
             plt.savefig(savedir+"/mean_u_cont"+savetype)
@@ -532,6 +524,45 @@ class WakeMap(object):
             plt.savefig("Figures/k_contours" + savetype)
         if show:
             self.show()
+            
+    def make_K_bar_graph(self, save=False, savetype=".pdf", 
+                         print_analysis=True):
+        """
+        Make a bar graph of terms contributing to dK/dx:
+          * Cross-stream advection
+          * Vertical advection
+          * Transport by turbulent fluctuations
+          * Production of TKE
+          * Mean dissipation
+        """
+        meanu, meanv, meanw = self.df.mean_u, self.df.mean_v, self.df.mean_w
+        tty, ttz = self.mean_k_turb_trans_y, self.mean_k_turb_trans_z
+        kprod, meandiss = self.k_prod, self.mean_diss
+        dKdy, dKdz = self.dKdy, self.dKdz
+        U = 1.0
+        y_R, z_H = self.y_R, self.z_H
+        plt.figure(figsize=(7, 3))
+        names = [r"$y$-adv.", r"$z$-adv.", r"$y$-turb.", r"$z$-turb.",
+                 r"$k$-prod.", "Mean diss."]
+        quantities = [ts.average_over_area(-2*meanv/meanu*dKdy/(0.5*U**2)/D, y_R, z_H), 
+                      ts.average_over_area(-2*meanw/meanu*dKdz/(0.5*U**2)/D, y_R, z_H),
+                      ts.average_over_area(2*tty/meanu/(0.5*U**2)/D, y_R, z_H),
+                      ts.average_over_area(2*ttz/meanu/(0.5*U**2)/D, y_R, z_H),
+                      ts.average_over_area(2*kprod/meanu/(0.5*U**2)/D, y_R, z_H),
+                      ts.average_over_area(2*meandiss/meanu/(0.5*U**2)/D, y_R, z_H)]
+        ax = plt.gca()
+        ax.bar(range(len(names)), quantities, color="gray", 
+               edgecolor="black", width=0.5)
+        ax.set_xticks(np.arange(len(names))+0.25)
+        ax.set_xticklabels(names)
+        plt.hlines(0, 0, len(names), color="black")
+        plt.ylabel(r"$\frac{K \, \mathrm{ transport}}{UK_\infty D^{-1}}$")
+        plt.tight_layout()
+        if print_analysis:
+            print("K recovery rate (%/D) =", 
+                  2*np.sum(quantities)/(0.5*U**2)/D*100)
+        if save:
+            plt.savefig("Figures/K_trans_bar_graph"+savetype)
         
     def show(self):
         plt.show()
@@ -850,7 +881,6 @@ def plot_cp_no_blades(covers=False, save=False, savetype=".pdf", show=False):
         plt.savefig("Figures/" + figname + savetype)
     if show:
         plt.show()
-    
     
 def watermark():
     """Creates a "preliminary" watermark on plots."""
