@@ -164,25 +164,158 @@ class WakeProfile(object):
 class WakeMap(object):
     def __init__(self):
         self.U_infty = 1.0
-        self.z_H = [0.0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75]
+        self.z_H = np.array([0.0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75])
         self.loaded = False
         self.load()
+        self.calc_transport()
         
     def load(self):
-        self.y_R = WakeProfile(self.U_infty, 0.0, "mean_u").y_R
-        self.mean_u = np.zeros((len(self.z_H), len(self.y_R)))
-        self.mean_v = self.mean_u.copy()
-        self.mean_w = self.mean_u.copy()
-        self.k = np.zeros((len(self.z_H), len(self.y_R)))
+        self.df = pd.DataFrame() 
+        self.y_R = WakeProfile(self.U_infty, 0.0, "mean_u").y_R.values
         for z_H in self.z_H:
             wp = WakeProfile(self.U_infty, z_H, "mean_u")
-            self.mean_u[self.z_H.index(z_H)] = wp.df.mean_u
-            self.mean_v[self.z_H.index(z_H)] = wp.df.mean_v
-            self.mean_w[self.z_H.index(z_H)] = wp.df.mean_w
-            self.k[self.z_H.index(z_H)] = wp.df.k
-        self.loaded = True
+            self.df = self.df.append(wp.df, ignore_index=True)
+        self.mean_u = self.df.mean_u
+        self.mean_v = self.df.mean_v
+        self.mean_w = self.df.mean_w
+        self.df["mean_k"] = \
+                0.5*(self.df.mean_u**2 + self.df.mean_v**2 + self.df.mean_w**2)
+        self.df["mean_upup"] = self.df.std_u**2
+        self.df["mean_vpvp"] = self.df.std_v**2
+        self.df["mean_wpwp"] = self.df.std_w**2
+        self.grdims = (len(self.z_H), len(self.y_R))
+        self.df = self.df.pivot(index="z_H", columns="y_R")
         
     def turb_lines(self, linestyles="solid", linewidth=2, color="gray"):
+        plt.hlines(0.5, -1, 1, linestyles=linestyles, colors=color,
+                   linewidth=linewidth)
+        plt.vlines(-1, -0.2, 0.5, linestyles=linestyles, colors=color,
+                   linewidth=linewidth)
+        plt.vlines(1, -0.2, 0.5, linestyles=linestyles, colors=color,
+                   linewidth=linewidth)
+                   
+    def calc_transport(self):
+        """
+        Calculates wake tranport terms similar to Bachant and Wosnik (2015)
+        "Characterising the near wake of a cross-flow turbine."
+        """
+        self.calc_mom_transport()
+        self.calc_mean_k_grad()
+        self.calc_k_prod_mean_diss()
+        self.calc_mean_k_turb_trans()
+    
+    def calc_mean_k_turb_trans(self):
+        """Calculates the transport of $K$ by turbulent fluctuations."""
+        y, z  = self.y_R*R, self.z_H*H
+        self.ddy_uvU = np.zeros(self.grdims)
+        self.ddz_uwU = np.zeros(self.grdims)
+        self.ddy_vvV = np.zeros(self.grdims)
+        self.ddz_vwV = np.zeros(self.grdims)
+        self.ddy_vwW = np.zeros(self.grdims)
+        self.ddz_wwW = np.zeros(self.grdims)
+        for n in range(len(z)):
+            self.ddy_uvU[n,:] = \
+                fdiff.second_order_diff((self.df.mean_upvp*self.df.mean_u)\
+                .iloc[n,:], y)
+            self.ddy_vvV[n,:] = \
+                fdiff.second_order_diff((self.df.mean_vpvp*self.df.mean_v)\
+                .iloc[n,:], y)
+            self.ddy_vwW[n,:] = \
+                fdiff.second_order_diff((self.df.mean_vpwp*self.df.mean_w)\
+                .iloc[n,:], y)
+        for n in range(len(y)):
+            self.ddz_uwU[:,n] = \
+                fdiff.second_order_diff((self.df.mean_upwp*self.df.mean_u)\
+                .iloc[:,n], z)
+            self.ddz_vwV[:,n] = \
+                fdiff.second_order_diff((self.df.mean_vpwp*self.df.mean_v)\
+                .iloc[:,n], z)
+            self.ddz_wwW[:,n] = \
+                fdiff.second_order_diff((self.df.mean_wpwp*self.df.mean_w)\
+                .iloc[:,n], z)
+        self.mean_k_turb_trans = -0.5*(self.ddy_uvU + \
+                                       self.ddz_uwU + \
+                                       self.ddy_vvV + \
+                                       self.ddz_vwV + \
+                                       self.ddy_vwW + \
+                                       self.ddz_wwW)
+        self.mean_k_turb_trans_y = -0.5*(self.ddy_uvU + \
+                                         self.ddy_vvV + \
+                                         self.ddy_vwW) # Only ddy terms
+        self.mean_k_turb_trans_z = -0.5*(self.ddz_uwU + \
+                                         self.ddz_vwV + \
+                                         self.ddz_wwW) # Only ddz terms
+        
+    def calc_k_prod_mean_diss(self):
+        """
+        Calculates the production of turbulent kinetic energy and dissipation
+        from mean shear. Note that the mean streamwise velocity derivatives
+        have already been calculated by this point.
+        """
+        y, z = self.y_R*R, self.z_H*H
+        self.dVdy = np.zeros(self.grdims)
+        self.dVdz = np.zeros(self.grdims)
+        self.dWdy = np.zeros(self.grdims)
+        self.dWdz = np.zeros(self.grdims)
+        for n in range(len(z)):
+            self.dVdy[n,:] = \
+                fdiff.second_order_diff(self.df.mean_v.iloc[n,:], y)
+            self.dWdy[n,:] = \
+                fdiff.second_order_diff(self.df.mean_w.iloc[n,:], y)
+        for n in range(len(y)):
+            self.dVdz[:,n] = \
+                fdiff.second_order_diff(self.df.mean_v.iloc[:,n], z)
+            self.dWdz[:,n] = \
+                fdiff.second_order_diff(self.df.mean_w.iloc[:,n], z)
+        self.k_prod = self.df.mean_upvp*self.dUdy + \
+                      self.df.mean_upwp*self.dUdz + \
+                      self.df.mean_vpwp*self.dVdz + \
+                      self.df.mean_vpwp*self.dWdy + \
+                      self.df.mean_vpvp*self.dVdy + \
+                      self.df.mean_wpwp*self.dWdz
+        self.mean_diss = -2.0*nu*(self.dUdy**2 + self.dUdz**2 + self.dVdy**2 +\
+                                  self.dVdz**2 + self.dWdy**2 + self.dWdz**2)
+        
+    def calc_mean_k_grad(self):
+        """Calulates $y$- and $z$-derivatives of $K$."""
+        z = self.z_H*H
+        y = self.y_R*R
+        self.dKdy = np.zeros(self.grdims)
+        self.dKdz = np.zeros(self.grdims)
+        for n in range(len(z)):
+            self.dKdy[n,:] = \
+                fdiff.second_order_diff(self.df.mean_k.iloc[n,:], y)
+        for n in range(len(y)):
+            self.dKdz[:,n] = \
+                fdiff.second_order_diff(self.df.mean_k.iloc[:,n], z)
+
+    def calc_mom_transport(self):
+        """
+        Calculates relevant (and available) momentum transport terms in the 
+        RANS equations.
+        """
+        y = self.y_R*R
+        z = self.z_H*H
+        self.ddy_upvp = np.zeros(self.grdims)
+        self.ddz_upwp = np.zeros(self.grdims)
+        self.d2Udy2 = np.zeros(self.grdims)
+        self.d2Udz2 = np.zeros(self.grdims)
+        self.dUdy = np.zeros(self.grdims)
+        self.dUdz = np.zeros(self.grdims)
+        for n in range(len(z)):
+            self.ddy_upvp[n, :] = \
+                fdiff.second_order_diff(self.df.mean_upvp.iloc[n, :], y)
+            self.dUdy[n, :] = \
+                fdiff.second_order_diff(self.df.mean_u.iloc[n, :], y)
+            self.d2Udy2[n, :] = fdiff.second_order_diff(self.dUdy[n, :], y)
+        for n in range(len(y)):
+            self.ddz_upwp[:, n] = \
+                fdiff.second_order_diff(self.df.mean_upwp.iloc[:, n], z)
+            self.dUdz[:, n] = \
+                fdiff.second_order_diff(self.df.mean_u.iloc[:, n], z)
+            self.d2Udz2[:, n] = fdiff.second_order_diff(self.dUdz[:, n], z)
+        
+    def turb_lines(self, linestyles="solid", linewidth=3, color="gray"):
         plt.hlines(0.5, -1, 1, linestyles=linestyles, colors=color,
                    linewidth=linewidth)
         plt.vlines(-1, -0.2, 0.5, linestyles=linestyles, colors=color,
@@ -220,7 +353,7 @@ class WakeMap(object):
         scale = 7.5/10.0
         plt.figure(figsize=(10*scale, 3*scale))
         # Add contours of mean velocity
-        cs = plt.contourf(self.y_R, self.z_H, self.mean_u/self.U_infty, 20, 
+        cs = plt.contourf(self.y_R, self.z_H, self.df.mean_u/self.U_infty, 20, 
                           cmap=plt.cm.coolwarm)
         if cb_orientation == "horizontal":
             cb = plt.colorbar(cs, shrink=1, extend="both",
@@ -231,8 +364,8 @@ class WakeMap(object):
         cb.set_label(r"$U/U_{\infty}$")
         plt.hold(True)
         # Make quiver plot of v and w velocities
-        Q = plt.quiver(self.y_R, self.z_H, self.mean_v/self.U_infty, 
-                       self.mean_w/self.U_infty, width=0.0022,
+        Q = plt.quiver(self.y_R, self.z_H, self.df.mean_v/self.U_infty, 
+                       self.df.mean_w/self.U_infty, width=0.0022,
                        edgecolor="none", scale=3)
         plt.xlabel(r"$y/R$")
         plt.ylabel(r"$z/H$")
@@ -355,8 +488,8 @@ class WakeMap(object):
         """Plot contours of turbulence kinetic energy."""
         scale = 7.5/10.0
         plt.figure(figsize=(10*scale, 2.5*scale))
-        cs = plt.contourf(self.y_R, self.z_H, self.k/(1/2*self.U_infty**2), 20,
-                          cmap=plt.cm.coolwarm)
+        cs = plt.contourf(self.y_R, self.z_H, self.df.k/(1/2*self.U_infty**2), 
+                          20, cmap=plt.cm.coolwarm)
         if cb_orientation == "horizontal":
             cb = plt.colorbar(cs, shrink=1, extend="both",
                               orientation="horizontal", pad=0.14)
