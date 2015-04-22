@@ -598,9 +598,9 @@ def plot_trans_wake_profile(quantity, U_infty=0.4, z_H=0.0, save=False, savedir=
     plt.ylabel(ylabels[quantity])
     plt.tight_layout()
     
-def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf", 
-                     errorbars=False, normalize_by=1.0, dual_xaxes=False, 
-                     show=False, preliminary=False):
+def plot_perf_re_dep(subplots=True, save=False, savedir="Figures", 
+                     savetype=".pdf", errorbars=False, normalize_by=1.0, 
+                     dual_xaxes=False, show=False, preliminary=False):
     """
     Plots Reynolds number dependence of power and drag coefficient. Note
     that if `errorbars=True`, the error bar values are the averages of all the
@@ -617,7 +617,11 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
     else:
         norm_cp = normalize_by
         norm_cd = normalize_by
-    plt.figure()
+    if subplots:
+        plt.figure(figsize=(7.5, 3.5))
+        plt.subplot(1, 2, 1)
+    else:
+        plt.figure()
     if errorbars:    
         plt.errorbar(Re_D, df.mean_cp/norm_cp, yerr=df.exp_unc_cp/norm_cp, 
                      fmt="-ok", markerfacecolor="none")
@@ -631,7 +635,11 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
     plt.grid(True)
     ax = plt.gca()
     if dual_xaxes:
-        plt.text(1.345e6, 0.445, "1e5")
+        if subplots:
+            x, y = 1.295e6, 0.465
+        else:
+            x, y = 1.345e6, 0.445
+        plt.text(x, y, "1e5")
         ax2 = ax.twiny()
         ax.xaxis.get_majorticklocs()
         ticklabs = np.arange(0.2e6, 1.6e6, 0.2e6)
@@ -644,9 +652,12 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
     plt.tight_layout()
     if preliminary:
         watermark()
-    if save:
+    if save and not subplots:
         plt.savefig(savedir + "/re_dep_cp" + savetype)
-    plt.figure()
+    if subplots:
+        plt.subplot(1, 2, 2)
+    else:
+        plt.figure()
     if errorbars:
         plt.errorbar(Re_D, df.mean_cd/norm_cd, yerr=df.exp_unc_cd/norm_cd, 
                      fmt="-ok", markerfacecolor="none")
@@ -660,7 +671,11 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
     plt.grid(True)
     ax = plt.gca()
     if dual_xaxes:
-        plt.text(1.345e6, 0.875, "1e5")
+        if subplots:
+            x, y = 1.295e6, 0.88
+        else:
+            x, y = 1.345e6, 0.875
+        plt.text(x, y, "1e5")
         ax2 = ax.twiny()
         ax.xaxis.get_majorticklocs()
         ticklabs = np.arange(0.2e6, 1.6e6, 0.2e6)
@@ -674,7 +689,10 @@ def plot_perf_re_dep(save=False, savedir="Figures", savetype=".pdf",
     if preliminary:
         watermark()
     if save:
-        plt.savefig(savedir + "/re_dep_cd" + savetype)
+        if subplots:
+            plt.savefig(savedir + "/perf_re_dep" + savetype)
+        else:
+            plt.savefig(savedir + "/re_dep_cd" + savetype)
     if show:
         plt.show()
     
