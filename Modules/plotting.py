@@ -913,7 +913,7 @@ def plot_no_blades_all(save=False, savetype=".pdf"):
     plt.title("(b)")
     plt.tight_layout()
     if save:
-        plt.savefig("Figures/perf_no_blades_all" + savetype)
+        plt.savefig("Figures/no_blades_all" + savetype)
         
 def plot_power_law(x, y, xname="x"):
     """
