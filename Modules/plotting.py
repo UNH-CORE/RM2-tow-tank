@@ -826,7 +826,7 @@ def plot_meancontquiv(show=False, cb_orientation="vertical",
                          savedir=savedir)
         
 def plot_strut_torque(covers=False, power_law=True, cubic=False, save=False, 
-                      savetype=".pdf", show=False, newfig=True):
+                      savetype=".pdf", show=False, newfig=True, fmt="-ok"):
     section = "Strut-torque"
     figname = "strut_torque"
     if covers:
@@ -835,7 +835,7 @@ def plot_strut_torque(covers=False, power_law=True, cubic=False, save=False,
     df = pd.read_csv("Data/Processed/" + section + ".csv")
     if newfig:
         plt.figure()
-    plt.plot(df.tsr_ref, df.cp, "-ok", markerfacecolor="none", label="Measurements")
+    plt.plot(df.tsr_ref, df.cp, fmt, markerfacecolor="none", label="Stationary")
     if power_law:
         plot_power_law(df.tsr_ref, df.cp, xname=r"\lambda")
         plt.legend(loc="best")
@@ -872,7 +872,7 @@ def plot_cp_covers(save=False, savetype=".pdf", show=False, newfig=True,
         plt.show()
         
 def plot_cp_no_blades(covers=False, power_law=True, cubic=False, save=False, 
-                      savetype=".pdf", show=False):
+                      savetype=".pdf", show=False, newfig=True, fmt="-ok"):
     """Plots the power coefficient curve with no blades."""
     section = "Perf-1.0-no-blades"
     figname = "cp_no_blades"
@@ -880,8 +880,9 @@ def plot_cp_no_blades(covers=False, power_law=True, cubic=False, save=False,
         section += "-covers"
         figname += "_covers"
     df = pd.read_csv("Data/Processed/" + section + ".csv")
-    plt.figure()
-    plt.plot(df.mean_tsr, df.mean_cp, "-ok", markerfacecolor="none", label="Measurements")
+    if newfig:    
+        plt.figure()
+    plt.plot(df.mean_tsr, df.mean_cp, fmt, markerfacecolor="none", label="Towed")
     if power_law:
         plot_power_law(df.mean_tsr, df.mean_cp, xname=r"\lambda")
         plt.legend(loc="best")
@@ -896,6 +897,23 @@ def plot_cp_no_blades(covers=False, power_law=True, cubic=False, save=False,
         plt.savefig("Figures/" + figname + savetype)
     if show:
         plt.show()
+        
+def plot_no_blades_all(save=False, savetype=".pdf"):
+    """
+    Plot all four cases of tests with no blades.
+    """
+    plt.figure(figsize=(7.5, 3.5))
+    plt.subplot(1, 2, 1)
+    plot_strut_torque(covers=False, newfig=False)
+    plot_cp_no_blades(covers=False, newfig=False, fmt="-sk")
+    plt.title("(a)")
+    plt.subplot(1, 2, 2)
+    plot_strut_torque(covers=True, newfig=False)
+    plot_cp_no_blades(covers=True, newfig=False, fmt="-sk")
+    plt.title("(b)")
+    plt.tight_layout()
+    if save:
+        plt.savefig("Figures/perf_no_blades_all" + savetype)
         
 def plot_power_law(x, y, xname="x"):
     """
