@@ -915,6 +915,48 @@ def plot_no_blades_all(save=False, savetype=".pdf"):
     if save:
         plt.savefig("Figures/no_blades_all" + savetype)
         
+def plot_perf_covers(subplots=True, save=False, savetype=".pdf"):
+    """
+    Plot performance curves with strut covers installed.
+    """
+    df = PerfCurve(1.0).df
+    dfc = pd.read_csv("Data/Processed/Perf-1.0-covers.csv")
+    if subplots:
+        plt.figure(figsize=(7.5, 3.5))
+        plt.subplot(1, 2, 1)
+    else:
+        plt.figure()
+    plt.plot(df.mean_tsr, df.mean_cp, "-ok", markerfacecolor="none", 
+             label="NACA 0021")
+    plt.plot(dfc.mean_tsr, dfc.mean_cp, "-sk", markerfacecolor="none", 
+             label="Cylindrical")
+    plt.xlabel(r"$\lambda$")
+    plt.ylabel("$C_P$")
+    plt.grid(True)
+    plt.legend(loc="best")
+    plt.tight_layout()
+    if save and not subplots:
+        plt.savefig("Figures/cp_covers" + savetype)
+    if subplots:
+        plt.subplot(1, 2, 2)
+    else:
+        plt.figure()
+    plt.plot(df.mean_tsr, df.mean_cd, "-ok", markerfacecolor="none",
+             label="NACA 0021")
+    plt.plot(dfc.mean_tsr, dfc.mean_cd, "-sk", markerfacecolor="none",
+             label="Cylindrical")
+    plt.xlabel(r"$\lambda$")
+    plt.ylabel("$C_D$")
+    plt.grid(True)
+    if not subplots:
+        plt.legend(loc="best")
+    plt.tight_layout()
+    if save:
+        if subplots:
+            plt.savefig("Figures/perf_covers" + savetype)
+        else:
+            plt.savefig("Figures/cd_covers" + savetype)
+        
 def plot_power_law(x, y, xname="x"):
     """
     Plots a power law fit for the given `x` and `y` data.
