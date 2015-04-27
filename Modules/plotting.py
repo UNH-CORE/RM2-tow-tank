@@ -696,24 +696,6 @@ def plot_perf_re_dep(subplots=True, save=False, savedir="Figures",
     if show:
         plt.show()
     
-def plot_old_wake(quantity, y_R):
-    plt.hold(True)
-    runs = range(32, 77)
-    ind = [run-1 for run in runs]
-    f = "../2013.03 VAT/Processed/"+quantity+".npy"
-    q = np.load(f)[ind]
-    plt.plot(y_R, q, 'xr', label=r"$Re_D=1.0 \times 10^6$", 
-             markerfacecolor="none")
-             
-def plot_cfd_perf(quantity="cp", normalize_by="CFD"):
-    Re_D = np.load(cfd_path + "/processed/Re_D.npy")
-    q = np.load(cfd_path + "/processed/" + quantity + ".npy")
-    if normalize_by=="CFD":
-        normval = q[-3]
-    else:
-        normval = normalize_by
-    plt.plot(Re_D, q/normval, "--^k", label="Simulation")
-    
 def plot_tare_drag():
     df = pd.read_csv("Data/Processed/Tare drag.csv")
     plt.figure()
