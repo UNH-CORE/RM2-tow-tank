@@ -21,6 +21,7 @@ def main():
     wm = WakeMap()
     wm.plot_meancontquiv(save=save, savetype=savetype)
     wm.plot_k(save=save, savetype=savetype)
+    wm.make_K_bar_graph(save=save, savetype=savetype)
     plot_no_blades_all(save=save, savetype=savetype)
     plot_cp_covers(save=save, savetype=savetype, add_strut_torque=False)
     plot_cp_covers(save=save, savetype=savetype, add_strut_torque=True)
