@@ -6,14 +6,8 @@ This module contains classes and functions for plotting data.
 from __future__ import division, print_function
 from Modules.processing import *
 from scipy.optimize import curve_fit
-import seaborn as sns
 import os
-
-def set_sns():
-    sns.set(style="white", context="paper", font_scale=1.5,
-            rc={"lines.markersize": 8, "lines.markeredgewidth": 1.25,
-            "legend.fontsize": "small", "font.size": 12,
-            "legend.frameon": True, "axes.formatter.limits": (-5, 5)})
+from pxl.styleplot import set_sns
 
 ylabels = {"mean_u" : r"$U/U_\infty$",
            "std_u" : r"$\sigma_u/U_\infty$",
