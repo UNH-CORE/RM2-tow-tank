@@ -498,7 +498,7 @@ class WakeMap(object):
         """Plot contours of turbulence kinetic energy."""
         scale = 7.5/10.0
         plt.figure(figsize=(10*scale, 2.5*scale))
-        cs = plt.contourf(self.y_R, self.z_H, self.df.k/(1/2*self.U_infty**2), 
+        cs = plt.contourf(self.y_R, self.z_H, self.df.k/(self.U_infty**2), 
                           20, cmap=plt.cm.coolwarm)
         if cb_orientation == "horizontal":
             cb = plt.colorbar(cs, shrink=1, extend="both",
@@ -508,7 +508,7 @@ class WakeMap(object):
                               orientation="vertical", pad=0.02)
         plt.xlabel(r"$y/R$")
         plt.ylabel(r"$z/H$")
-        cb.set_label(r"$k/\left(\frac{1}{2}U_{\infty}^2\right)$")
+        cb.set_label(r"$k/U_{\infty}^2$")
         self.turb_lines(color="black")
         ax = plt.axes()
         ax.set_aspect(H/R)
