@@ -115,25 +115,25 @@ All dimensions in inches.
 | Diameter, bottom | 2.500 | 2.495 | 
 | Length  | 51.72 | 51 3/4 |
 
-# Hub section 1
+## Hub section 1
 
 | Dimension | Spec. | Meas. |
 |-----------|-------|-------|
 | Strut mount surface height | 2.965 | 2.964 | 
 
-# Hub section 2
+## Hub section 2
 
 | Dimension | Spec. | Meas. |
 |-----------|-------|-------|
 | Strut mount surface height | 2.965 | 2.964 | 
 
-# Hub section 3
+## Hub section 3
 
 | Dimension | Spec. | Meas. |
 |-----------|-------|-------|
 | Strut mount surface height | 2.965 | 2.964 | 
 
-# Strut cover 1
+## Strut cover 1
 
 | Dimension | Spec. | Meas. |
 |-----------|-------|-------|
@@ -142,7 +142,7 @@ All dimensions in inches.
 | Diameter, middle | N/A | 2.899 |
 | Length | 19.65 | 19 5/8 |
 
-# Strut cover 2
+## Strut cover 2
 
 | Dimension | Spec. | Meas. |
 |-----------|-------|-------|
@@ -151,7 +151,7 @@ All dimensions in inches.
 | Diameter, middle | N/A | 2.903 |
 | Length | 19.65 | 19 5/8 |
 
-# Strut cover 3
+## Strut cover 3
 
 | Dimension | Spec. | Meas. |
 |-----------|-------|-------|
