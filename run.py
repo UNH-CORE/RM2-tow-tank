@@ -9,7 +9,7 @@ from Modules.plotting import *
 
 set_sns()
 save = True
-savetype = ".pdf"
+savetype = ".eps"
 show = True
 
 def main():
@@ -21,10 +21,8 @@ def main():
     wm = WakeMap()
     wm.plot_meancontquiv(save=save, savetype=savetype)
     wm.plot_k(save=save, savetype=savetype)
-    plot_strut_torque(covers=False, save=save, savetype=savetype)
-    plot_strut_torque(covers=True, save=save, savetype=savetype)
-    plot_cp_no_blades(covers=False, save=save, savetype=savetype)
-    plot_cp_no_blades(covers=True, save=save, savetype=savetype)
+    wm.make_K_bar_graph(save=save, savetype=savetype)
+    plot_no_blades_all(save=save, savetype=savetype)
     plot_cp_covers(save=save, savetype=savetype, add_strut_torque=False)
     plot_cp_covers(save=save, savetype=savetype, add_strut_torque=True)
     if show:
