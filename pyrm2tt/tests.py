@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 """
 This module contains test functions.
-
 """
 import os
 import time
-if os.getcwd()[-7:] == "Modules":
-    print("Changing working directory to experiment root directory")
-    os.chdir("../")
 from .processing import *
 from .plotting import *
+
 
 def test_run():
     print("Testing Run class")
@@ -23,10 +20,12 @@ def test_run():
     run.print_perf_stats()
     print("PASS")
 
+
 def test_section():
     print("Testing Section class")
     section = Section("Wake-1.0")
     print("PASS")
+
 
 def test_batch_process_section():
     print("Testing batch_process_section")
@@ -37,17 +36,20 @@ def test_batch_process_section():
     plt.plot(df.mean_tsr, df.mean_cp)
     plt.show()
 
+
 def test_perf_curve():
     print("Testing PerfCurve class")
     pc = PerfCurve(0.6)
     pc.plotcp()
     print("PASS")
 
+
 def test_wake_profile():
     print("Testing WakeProfile class")
     wp = WakeProfile(0.6, 0.25, "horizontal")
     wp.plot("mean_u")
     print("PASS")
+
 
 def test_wake_map():
     print("Testing WakeMap class")
@@ -58,6 +60,7 @@ def test_wake_map():
 #    wm.plot_diff(quantity="mean_w", U_infty_diff=0.6)
 #    wm.plot_meancontquiv_diff(0.8, percent=False)
     print("PASS")
+
 
 def test_process_section_parallel():
     nproc = 4
@@ -77,6 +80,7 @@ def test_process_section_parallel():
     assert(np.all(s.data.mean_cd == df.mean_cd))
     print("PASS")
 
+
 def test_batch_process_section_vs_parallel():
     name = "Perf-1.0"
     t0 = time.time()
@@ -85,6 +89,7 @@ def test_batch_process_section_vs_parallel():
     t0 = time.time()
     Section(name).process()
     print(time.time() - t0)
+
 
 def test_download_raw():
     """Tests the `processing.download_raw` function."""
@@ -112,10 +117,12 @@ def test_download_raw():
         os.rename(fpath_temp, fpath)
     print("PASS")
 
+
 def test_plot_settling():
     print("Testing plotting.plot_settling")
     plot_settling(1.0)
     print("PASS")
+
 
 def test_process_new():
     from pandas.util.testing import assert_frame_equal
@@ -136,35 +143,21 @@ def test_process_new():
         print(df2)
 
 
-def test_all():
-    test_run()
-    test_section()
-    test_perf_curve()
-    print("Testing plot_perf_re_dep")
+def test_process_tare_torque():
+    process_tare_torque(2, plot=False)
+
+
+def test_process_tare_drag():
+    process_tare_drag(5, plot=False)
+
+
+def test_plots():
     plot_perf_re_dep()
     plot_perf_re_dep(dual_xaxes=True)
-    print("PASS")
-    print("Testing plot_perf_curves")
     plot_perf_curves()
-    print("PASS")
-    print("Testing plot_trans_wake_profile")
     plot_trans_wake_profile("mean_u")
-    print("PASS")
-    print("Testing plot_wake_profiles")
     plot_wake_profiles(z_H=0.0, save=False)
-    print("PASS")
-    test_wake_profile()
-    print("Testing process_tare_torque")
-    process_tare_torque(2, plot=False)
-    print("PASS")
-    print("Testing process_tare_drag")
-    process_tare_drag(5, plot=False)
-    print("PASS")
-    test_wake_map()
-    plt.show()
-    test_download_raw()
-    test_plot_settling()
-    print("All tests passed")
+
 
 if __name__ == "__main__":
     pass
