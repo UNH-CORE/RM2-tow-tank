@@ -18,6 +18,27 @@ After installing all dependencies, execute `python plot.py` to generate
 figures from the experiment.
 
 
+## Test matrix sections
+
+Processed data is stored as CSV in the `Data/Processed` directory. One file is
+generated per test matrix section, the descriptions for which are given below:
+
+| Name | Description |
+|------|-------------|
+| `Perf-{speed}` | Performance curve at `{speed}` m/s tow speed, performed for (0.4, 0.6, 0.8, 1.0, 1.2) m/s. |
+| `Perf-{speed}-b` | Second performance curve at `{speed}` m/s. |
+| `Perf-1.0-covers` | Performance curve at 1.0 m/s tow speed with cylindrical strut covers. |
+| `Perf-1.0-no-blades-covers` | Performance curve at 1.0 m/s with no blades and cylindrical strut covers. |
+| `Perf-1.0-no-blades` | Performance curve at 1.0 m/s with no blades. |
+| `Perf-tsr_0` | Performance at 3.1 tip speed ratio for multiple speeds. |
+| `Perf-tsr_0-b` | Second set of runs with identical parameters as `Perf-tsr_0`. |
+| `Strut-torque-covers` | Measuring torque from cylindrical struts (no towing). |
+| `Strut-torque` | Measuring torque from NACA 0021 struts (no towing). |
+| `Tare-drag` | Drag on the turbine mounting frame with the turbine removed. |
+| `Tare-torque` | Measurements of friction torque in shaft bearings. |
+| `Wake-{speed}-{z/H}` | Cross-stream wake profile at 1 m downstream (x/D = 0.93), 3.1 tip speed ratio, `{speed}` m/s tow speed, and `{z/H}` vertical location. |
+
+
 ## How to cite
 
 Please cite
