@@ -1,32 +1,63 @@
 # -*- coding: utf-8 -*-
 """
-This script runs processing functions from `Modules.processing`.
-
+This script runs processing functions.
 """
 
 from __future__ import print_function
 import os
-if os.getcwd()[-7:] == "Scripts":
-    print("Changing working directory to experiment root directory")
-    os.chdir("../")
-from Modules.processing import *
+from pyrm2tt.processing import *
+import matplotlib.pyplot as plt
+import argparse
+
 
 if __name__ == "__main__":
-    print("Running processing script")
+    parser = argparse.ArgumentParser(description="Process data from the UNH "
+                                     "RM2 tow tank experiment.")
+    parser.add_argument("--single-run", "-r", nargs=2, help="Process a single "
+                        "run; args=[section, nrun]")
+    parser.add_argument("--single-tare-drag", help="Process a tare drag run")
+    parser.add_argument("--single-tare-torque",
+                        help="Process a tare torque run")
+    parser.add_argument("--section", help="Process a test matrix section")
+    parser.add_argument("--tare-drag", help="Process tare drag runs",
+                        action="store_true")
+    parser.add_argument("--tare-torque", help="Process tare torque runs",
+                        action="store_true")
+    parser.add_argument("--all", "-a", help="Process all data")
+    parser.add_argument("--plot", action="store_true", default=False,
+                        help="Create plots (if applicable)")
+    args = parser.parse_args()
 
-    # Dealing with individual runs
-    r = Run("Wake-0.4", 20)
-    r.plot_perf("cp")
-    r.plot_wake()
-    r.print_perf_stats()
-    r.print_wake_stats()
+    if args.single_run:
+        # Dealing with individual runs
+        section = args.single_run[0]
+        nrun = int(args.single_run[1])
+        print("Processing {} run {}".format(section, nrun))
+        r = Run(section, nrun)
+        if args.plot:
+            r.plot_perf("cp")
+            r.plot_wake()
+        r.print_perf_stats()
+        r.print_wake_stats()
 
-    # Tare drag and torque"""
-#    process_tare_torque(2, plot=True)
-#    batch_process_tare_torque(plot=True)
-#    process_tare_drag(5, plot=True)
-#    batch_process_tare_drag(plot=True)
-    
-    # Batch processing
-#    batch_process_section("Perf-0.3")
-#    batch_process_all()
+    if args.single_tare_drag:
+        process_tare_drag(args.single_tare_drag, plot=args.plot)
+
+    if args.tare_drag:
+        batch_process_tare_drag(plot=args.plot)
+
+    if args.single_tare_torque:
+        process_tare_torque(args.single_tare_torque, plot=args.plot)
+
+    if args.tare_torque:
+        batch_process_tare_torque(plot=args.plot)
+
+    if args.section:
+        print("Processing {}".format(args.section))
+        batch_process_section(args.section)
+
+    if args.all:
+        batch_process_all()
+
+    if args.plot:
+        plt.show()
