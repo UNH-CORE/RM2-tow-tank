@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 This module contains classes and functions for plotting data.
-
 """
+
 from __future__ import division, print_function
 from .processing import *
 from scipy.optimize import curve_fit
 import os
-from pxl.styleplot import set_sns
+
 
 ylabels = {"mean_u" : r"$U/U_\infty$",
            "std_u" : r"$\sigma_u/U_\infty$",
