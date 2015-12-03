@@ -51,6 +51,7 @@ if __name__ == "__main__":
     else:
         from pxl.styleplot import set_sns
         set_sns()
+        plt.rcParams["axes.grid"] = True
 
     if "perf_curves" in args.plots or args.all:
         plot_perf_curves(subplots=args.subplots, save=save, savetype=savetype)

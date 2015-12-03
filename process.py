@@ -28,6 +28,11 @@ if __name__ == "__main__":
                         help="Create plots (if applicable)")
     args = parser.parse_args()
 
+    if args.plot:
+        from pxl.styleplot import set_sns
+        set_sns()
+        plt.rcParams["axes.grid"] = True
+
     if args.single_run:
         # Dealing with individual runs
         section = args.single_run[0]
