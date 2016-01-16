@@ -520,8 +520,7 @@ class WakeMap(object):
 
     def make_K_bar_graph(self, save=False, savetype=".pdf",
                          print_analysis=True):
-        """
-        Make a bar graph of terms contributing to dK/dx:
+        """Make a bar graph of terms contributing to dK/dx:
           * Cross-stream advection
           * Vertical advection
           * Transport by turbulent fluctuations
@@ -561,10 +560,11 @@ class WakeMap(object):
         plt.show()
 
 
-def plot_trans_wake_profile(quantity, U_infty=0.4, z_H=0.0, save=False, savedir="Figures",
-                            savetype=".pdf", newfig=True, marker="-ok",
-                            fill="none", oldwake=False, figsize=(10, 5)):
-    """Plots the transverse wake profile of some quantity. These can be
+def plot_trans_wake_profile(quantity, U_infty=0.4, z_H=0.0, save=False,
+                            savedir="Figures", savetype=".pdf", newfig=True,
+                            marker="-ok", fill="none", oldwake=False,
+                            figsize=(10, 5)):
+    """Plot the transverse wake profile of some quantity. These can be
       * mean_u
       * mean_v
       * mean_w
@@ -590,16 +590,17 @@ def plot_trans_wake_profile(quantity, U_infty=0.4, z_H=0.0, save=False, savedir=
     plt.ylabel(ylabels[quantity])
     plt.tight_layout()
 
+
 def plot_perf_re_dep(subplots=True, save=False, savedir="Figures",
                      savetype=".pdf", errorbars=False, normalize_by=1.0,
                      dual_xaxes=False, show=False, preliminary=False):
-    """
-    Plots Reynolds number dependence of power and drag coefficient. Note
+    """Plot Reynolds number dependence of power and drag coefficient. Note
     that if `errorbars=True`, the error bar values are the averages of all the
     individual run uncertainties.
     """
     df = pd.read_csv("Data/Processed/Perf-tsr_0.csv")
-    df = df.append(pd.read_csv("Data/Processed/Perf-tsr_0-b.csv"), ignore_index=True)
+    df = df.append(pd.read_csv("Data/Processed/Perf-tsr_0-b.csv"),
+                               ignore_index=True)
     df = df[df.tow_speed_nom > 0.21]
     df = df.groupby("tow_speed_nom").mean()
     Re_D = df.mean_tow_speed*D/nu
@@ -688,6 +689,7 @@ def plot_perf_re_dep(subplots=True, save=False, savedir="Figures",
     if show:
         plt.show()
 
+
 def plot_tare_drag():
     df = pd.read_csv("Data/Processed/Tare drag.csv")
     plt.figure()
@@ -695,6 +697,7 @@ def plot_tare_drag():
     plt.xlabel("Tow speed (m/s)")
     plt.ylabel("Tare drag (N)")
     plt.show()
+
 
 def plot_settling(nrun, smooth_window=800, tol=1e-2, std=False, show=False):
     """Plot data from the settling experiments."""
@@ -740,19 +743,22 @@ def plot_settling(nrun, smooth_window=800, tol=1e-2, std=False, show=False):
     if show:
         plt.show()
 
+
 def plot_cp_curve(u_infty, save=False, show=False, savedir="Figures",
                   savetype=".pdf"):
     pc = PerfCurve(u_infty)
     pc.plotcp(save=False, show=False)
     if save:
-        savepath = os.path.join(savedir, "cp_vs_tsr_{}".format(u_infty) + savetype)
+        savepath = os.path.join(savedir,
+                                "cp_vs_tsr_{}".format(u_infty) + savetype)
         plt.savefig(savepath)
     if show:
         plt.show()
 
+
 def plot_perf_curves(subplots=True, save=False, savedir="Figures",
                      show=False, savetype=".pdf", preliminary=False):
-    """Plots all performance curves."""
+    """Plot all performance curves."""
     if subplots:
         plt.figure(figsize=(11, 4.5))
         plt.subplot(121)
@@ -785,6 +791,7 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     if show:
         plt.show()
 
+
 def plot_wake_profiles(z_H=0.25, save=False, show=False, savedir="Figures",
                        savetype=".pdf"):
     """Plots all wake profiles of interest."""
@@ -792,16 +799,16 @@ def plot_wake_profiles(z_H=0.25, save=False, show=False, savedir="Figures",
                   "std_u" : 1,
                   "mean_upvp" : 1}
     for q in ["mean_u", "std_u", "mean_upvp"]:
-        plot_trans_wake_profile(q, U_infty=0.4, z_H=z_H, newfig=True, marker="--vb",
-                                fill="blue")
-        plot_trans_wake_profile(q, U_infty=0.6, z_H=z_H, newfig=False, marker="sk",
-                                fill="lightblue")
-        plot_trans_wake_profile(q, U_infty=0.8, z_H=z_H, newfig=False, marker="<k",
-                                fill="gray")
-        plot_trans_wake_profile(q, U_infty=1.0, z_H=z_H, newfig=False, marker="-ok",
-                                fill="orange")
-        plot_trans_wake_profile(q, U_infty=1.2, z_H=z_H, newfig=False, marker="^k",
-                                fill="red")
+        plot_trans_wake_profile(q, U_infty=0.4, z_H=z_H, newfig=True,
+                                marker="--vb", fill="blue")
+        plot_trans_wake_profile(q, U_infty=0.6, z_H=z_H, newfig=False,
+                                marker="sk", fill="lightblue")
+        plot_trans_wake_profile(q, U_infty=0.8, z_H=z_H, newfig=False,
+                                marker="<k", fill="gray")
+        plot_trans_wake_profile(q, U_infty=1.0, z_H=z_H, newfig=False,
+                                marker="-ok", fill="orange")
+        plot_trans_wake_profile(q, U_infty=1.2, z_H=z_H, newfig=False,
+                                marker="^k", fill="red")
         plt.legend(loc=legendlocs[q])
         if q == "mean_upvp":
             plt.ylim((-0.015, 0.025))
@@ -810,12 +817,14 @@ def plot_wake_profiles(z_H=0.25, save=False, show=False, savedir="Figures",
     if show:
         plt.show()
 
+
 def plot_meancontquiv(show=False, cb_orientation="vertical",
                       save=False, savedir="Figures", savetype=".pdf"):
     wm = WakeMap()
     wm.plot_meancontquiv(save=save, show=show,
                          cb_orientation=cb_orientation, savetype=savetype,
                          savedir=savedir)
+
 
 def plot_strut_torque(covers=False, power_law=True, cubic=False, save=False,
                       savetype=".pdf", show=False, newfig=True, fmt="-ok"):
@@ -844,9 +853,10 @@ def plot_strut_torque(covers=False, power_law=True, cubic=False, save=False,
     if show:
         plt.show()
 
+
 def plot_cp_covers(save=False, savetype=".pdf", show=False, newfig=True,
                    add_strut_torque=False):
-    """Plots the performance curve with covers."""
+    """Plot the performance coefficient curve with covers."""
     df = pd.read_csv("Data/Processed/Perf-1.0-covers.csv")
     if newfig:
         plt.figure()
@@ -863,9 +873,10 @@ def plot_cp_covers(save=False, savetype=".pdf", show=False, newfig=True,
     if show:
         plt.show()
 
+
 def plot_cp_no_blades(covers=False, power_law=True, cubic=False, save=False,
                       savetype=".pdf", show=False, newfig=True, fmt="-ok"):
-    """Plots the power coefficient curve with no blades."""
+    """Plot the power coefficient curve with no blades."""
     section = "Perf-1.0-no-blades"
     figname = "cp_no_blades"
     if covers:
@@ -890,10 +901,9 @@ def plot_cp_no_blades(covers=False, power_law=True, cubic=False, save=False,
     if show:
         plt.show()
 
+
 def plot_no_blades_all(save=False, savetype=".pdf"):
-    """
-    Plot all four cases of tests with no blades.
-    """
+    """Plot all four cases of tests with no blades."""
     plt.figure(figsize=(7.5, 3.5))
     plt.subplot(1, 2, 1)
     plot_strut_torque(covers=False, newfig=False)
@@ -906,6 +916,7 @@ def plot_no_blades_all(save=False, savetype=".pdf"):
     plt.tight_layout()
     if save:
         plt.savefig("Figures/no_blades_all" + savetype)
+
 
 def plot_perf_covers(subplots=True, save=False, savetype=".pdf"):
     """Plot performance curves with strut covers installed."""
@@ -949,10 +960,9 @@ def plot_perf_covers(subplots=True, save=False, savetype=".pdf"):
         else:
             plt.savefig("Figures/cd_covers" + savetype)
 
+
 def plot_power_law(x, y, xname="x"):
-    """
-    Plots a power law fit for the given `x` and `y` data.
-    """
+    """Plot a power law fit for the given `x` and `y` data."""
     def func(x, a, b):
         return a*x**b
     coeffs, covar = curve_fit(func, x, y)
@@ -961,10 +971,9 @@ def plot_power_law(x, y, xname="x"):
     yp = a*xp**b
     plt.plot(xp, yp, label=r"${:.4f}{}^{{{:.4f}}}$".format(a, xname, b))
 
+
 def plot_cubic(x, y, xname="x"):
-    """
-    Plots a power law fit for the given `x` and `y` data.
-    """
+    """Plots a power law fit for the given `x` and `y` data."""
     def func(x, a, b):
         return a*x**3 + b
     coeffs, covar = curve_fit(func, x, y)
@@ -972,6 +981,7 @@ def plot_cubic(x, y, xname="x"):
     xp = np.linspace(np.min(x), np.max(x), num=200)
     yp = a*xp**3 + b
     plt.plot(xp, yp, label=r"${:.4f}{}^3 {:.4f}$".format(a, xname, b))
+
 
 def watermark():
     """Creates a "preliminary" watermark on plots."""
@@ -983,6 +993,7 @@ def watermark():
              alpha=0.2,
              fontsize=32,
              zorder=10)
+
 
 if __name__ == "__main__":
     pass
