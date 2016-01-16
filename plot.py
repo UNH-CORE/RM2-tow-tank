@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-This script generates all the relevant figures from the experiment.
-"""
+#!/usr/bin/env python
+"""This script generates all the relevant figures from the experiment."""
 
 from pyrm2tt.processing import *
 from pyrm2tt.plotting import *
