@@ -908,9 +908,7 @@ def plot_no_blades_all(save=False, savetype=".pdf"):
         plt.savefig("Figures/no_blades_all" + savetype)
 
 def plot_perf_covers(subplots=True, save=False, savetype=".pdf"):
-    """
-    Plot performance curves with strut covers installed.
-    """
+    """Plot performance curves with strut covers installed."""
     df = PerfCurve(1.0).df
     dfc = pd.read_csv("Data/Processed/Perf-1.0-covers.csv")
     if subplots:
@@ -918,6 +916,8 @@ def plot_perf_covers(subplots=True, save=False, savetype=".pdf"):
         plt.subplot(1, 2, 1)
     else:
         plt.figure()
+    # Add horizontal line at zero
+    plt.hlines(0, 0.5, 4.5, linewidth=1)
     plt.plot(df.mean_tsr, df.mean_cp, "-ok", markerfacecolor="none",
              label="NACA 0021")
     plt.plot(dfc.mean_tsr, dfc.mean_cp, "-sk", markerfacecolor="none",
