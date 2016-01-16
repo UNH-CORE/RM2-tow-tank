@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-This module contains classes and functions for plotting data.
-"""
+"""This module contains classes and functions for plotting data."""
 
 from __future__ import division, print_function
 from .processing import *
