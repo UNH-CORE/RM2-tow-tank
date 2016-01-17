@@ -1,7 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-This script runs processing functions.
-"""
+"""This script runs processing functions."""
 
 from __future__ import print_function
 import os
@@ -23,7 +22,8 @@ if __name__ == "__main__":
                         action="store_true")
     parser.add_argument("--tare-torque", help="Process tare torque runs",
                         action="store_true")
-    parser.add_argument("--all", "-a", help="Process all data")
+    parser.add_argument("--all", "-a", action="store_true",
+                        help="Process all data")
     parser.add_argument("--plot", action="store_true", default=False,
                         help="Create plots (if applicable)")
     args = parser.parse_args()
