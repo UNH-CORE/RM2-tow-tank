@@ -625,7 +625,6 @@ def plot_perf_re_dep(subplots=True, save=False, savedir="Figures",
         plt.ylabel(r"$C_P/C_{P_0}$")
     else:
         plt.ylabel(r"$C_P$")
-    plt.grid(True)
     ax = plt.gca()
     if dual_xaxes:
         if subplots:
@@ -642,6 +641,8 @@ def plot_perf_re_dep(subplots=True, save=False, savedir="Figures",
         ax2.set_xlim((0.2e6, 1.4e6))
         ax2.set_xticklabels(ticklabs)
         ax2.set_xlabel(r"$Re_{c, \mathrm{ave}}$")
+        # Do not create second grid as this will be above data
+        ax2.grid(False)
     plt.tight_layout()
     if preliminary:
         watermark()
@@ -661,7 +662,6 @@ def plot_perf_re_dep(subplots=True, save=False, savedir="Figures",
         plt.ylabel(r"$C_D/C_{D_0}$")
     else:
         plt.ylabel(r"$C_D$")
-    plt.grid(True)
     ax = plt.gca()
     if dual_xaxes:
         if subplots:
@@ -678,6 +678,8 @@ def plot_perf_re_dep(subplots=True, save=False, savedir="Figures",
         ax2.set_xlim((0.2e6, 1.4e6))
         ax2.set_xticklabels(ticklabs)
         ax2.set_xlabel(r"$Re_{c, \mathrm{ave}}$")
+        # Do not create second grid as this will be above data
+        ax2.grid(False)
     plt.tight_layout()
     if preliminary:
         watermark()
