@@ -20,8 +20,8 @@ if __name__ == "__main__":
                         help="Plot all figures used in publication")
     parser.add_argument("--subplots", action="store_true", default=False,
                         help="Use subplots for performance curves")
-    parser.add_argument("--errorbars", action="store_true", default=False,
-                        help="Plot error bars on Re-dependence figure")
+    parser.add_argument("--no-errorbars", action="store_true",
+                        help="Don't plot error bars on Re-dependence figure")
     parser.add_argument("--style", nargs=1, help="matplotlib stylesheet")
     parser.add_argument("--save", "-s", action="store_true", default=False,
                         help="Save figures to local directory")
@@ -32,6 +32,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     save = args.save
     savetype = args.savetype
+    errorbars = not args.no_errorbars
 
     if args.plots == "none" and not args.all:
         print("No plots selected")
@@ -54,7 +55,7 @@ if __name__ == "__main__":
     if "perf_curves" in args.plots or args.all:
         plot_perf_curves(subplots=args.subplots, save=save, savetype=savetype)
     if "perf_re_dep" in args.plots or args.all:
-        plot_perf_re_dep(save=save, savetype=savetype, errorbars=args.errorbars,
+        plot_perf_re_dep(save=save, savetype=savetype, errorbars=errorbars,
                          dual_xaxes=True)
     if "cp_re_0" in args.plots:
         PerfCurve(1.0).plotcp(save=save, savetype=savetype, show=False)

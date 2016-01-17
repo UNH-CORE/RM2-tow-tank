@@ -591,105 +591,151 @@ def plot_trans_wake_profile(quantity, U_infty=0.4, z_H=0.0, save=False,
     plt.tight_layout()
 
 
-def plot_perf_re_dep(subplots=True, save=False, savedir="Figures",
-                     savetype=".pdf", errorbars=False, normalize_by=1.0,
-                     dual_xaxes=False, show=False, preliminary=False):
-    """Plot Reynolds number dependence of power and drag coefficient. Note
-    that if `errorbars=True`, the error bar values are the averages of all the
-    individual run uncertainties.
-    """
-    df = pd.read_csv("Data/Processed/Perf-tsr_0.csv")
-    df = df.append(pd.read_csv("Data/Processed/Perf-tsr_0-b.csv"),
-                               ignore_index=True)
-    df = df[df.tow_speed_nom > 0.21]
-    df = df.groupby("tow_speed_nom").mean()
-    Re_D = df.mean_tow_speed*D/nu
-    if normalize_by == "default":
-        norm_cp = df.mean_cp[1.0]
-        norm_cd = df.mean_cd[1.0]
+def plot_perf_re_dep(ax1=None, ax2=None, save=False, savedir="Figures",
+                     savetype=".pdf", errorbars=False, subplots=True,
+                     normalize_by=1.0, dual_xaxes=True, power_law=False,
+                     **kwargs):
+    """Plot the Reynolds number dependence of power and drag coefficients."""
+    if not "marker" in kwargs.keys():
+        kwargs["marker"] = "o"
+    if not "color" in kwargs.keys():
+        kwargs["color"] = "black"
+    if not "markerfacecolor" in kwargs.keys():
+        kwargs["markerfacecolor"] = "none"
+    # Open up the two DataFrames for the Re-dep sections
+    df1 = pd.read_csv("Data/Processed/Perf-tsr_0.csv")
+    df2 = pd.read_csv("Data/Processed/Perf-tsr_0-b.csv")
+    df1 = df1[df1.tow_speed_nom > 0.21]
+    df2 = df2[df2.tow_speed_nom > 0.21]
+    dfc = df1.append(df2, ignore_index=True)
+    # Create a new DataFrame for combined data
+    speeds = np.unique(df1.tow_speed_nom)
+    df = pd.DataFrame()
+    df["tow_speed_nom"] = speeds
+    mean_cp = []
+    mean_cd = []
+    mean_tsr = []
+    exp_unc_cp = []
+    exp_unc_cd = []
+    for speed in speeds:
+        dfi = dfc[dfc.tow_speed_nom == speed]
+        mean_cp.append(dfi.mean_cp.mean())
+        mean_cd.append(dfi.mean_cd.mean())
+        mean_tsr.append(dfi.mean_tsr.mean())
+        exp_unc_cp.append(ts.calc_multi_exp_unc(dfi.sys_unc_cp, dfi.n_revs,
+                                                dfi.mean_cp, dfi.std_cp_per_rev,
+                                                dfi.dof_cp, confidence=0.95))
+        exp_unc_cd.append(ts.calc_multi_exp_unc(dfi.sys_unc_cd, dfi.n_revs,
+                                                dfi.mean_cd, dfi.std_cd_per_rev,
+                                                dfi.dof_cd, confidence=0.95))
+    df["Re_D"] = df.tow_speed_nom*D/nu
+    df["mean_tsr"] = mean_tsr
+    df["Re_c"] = df.tow_speed_nom*df.mean_tsr*root_chord/nu
+    df["mean_cp"] = mean_cp
+    df["mean_cd"] = mean_cd
+    df["exp_unc_cp"] = exp_unc_cp
+    df["exp_unc_cd"] = exp_unc_cd
+    if ax1 is None and ax2 is None and subplots:
+        fig1, (ax1, ax2) = plt.subplots(figsize=(7.5, 3.5), nrows=1, ncols=2)
+    elif ax1 is None and ax2 is None and not subplots:
+        fig1, ax1 = plt.subplots()
+        fig2, ax2 = plt.subplots()
+    if normalize_by == "C_P_0":
+        norm_cp = df.mean_cp[df.tow_speed_nom == 1.0].iloc[0]
+        norm_cd = df.mean_cd[df.tow_speed_nom == 1.0].iloc[0]
     else:
         norm_cp = normalize_by
         norm_cd = normalize_by
-    if subplots:
-        plt.figure(figsize=(7.5, 3.5))
-        plt.subplot(1, 2, 1)
-    else:
-        plt.figure()
     if errorbars:
-        plt.errorbar(Re_D, df.mean_cp/norm_cp, yerr=df.exp_unc_cp/norm_cp,
-                     fmt="-ok", markerfacecolor="none")
+        ax1.errorbar(df.Re_D, df.mean_cp/norm_cp, yerr=df.exp_unc_cp/norm_cp,
+                     label="Experiment", **kwargs)
     else:
-        plt.plot(Re_D, df.mean_cp/norm_cp, '-ok', markerfacecolor="none")
-    plt.xlabel(r"$Re_D$")
+        ax1.plot(df.Re_D, df.mean_cp/norm_cp, label="Experiment", **kwargs)
+    ax1.set_xlabel(r"$Re_D$")
     if normalize_by == "default":
-        plt.ylabel(r"$C_P/C_{P_0}$")
+        ax1.set_ylabel(r"$C_P/C_{P_0}$")
     else:
-        plt.ylabel(r"$C_P$")
-    ax = plt.gca()
+        ax1.set_ylabel(r"$C_P$")
     if dual_xaxes:
+        x, y = 0.95, 1.08
         if subplots:
-            x, y = 1.295e6, 0.465
-        else:
-            x, y = 1.345e6, 0.445
-        plt.text(x, y, "1e5")
-        ax2 = ax.twiny()
-        ax.xaxis.get_majorticklocs()
-        ticklabs = np.arange(0.2e6, 1.6e6, 0.2e6)
+            x, y = x*0.955, y*1.03
+        ax1.text(x, y, "1e5", transform=ax1.transAxes)
+        ax12 = ax1.twiny()
+        ax1.xaxis.get_majorticklocs()
+        ticklabs = ax1.get_xticks()
         ticklabs = ticklabs/D*df.mean_tsr.mean()*chord/1e5
         ticklabs = [str(np.round(ticklab, decimals=1)) for ticklab in ticklabs]
-        ax2.set_xticks(ax.xaxis.get_ticklocs())
-        ax2.set_xlim((0.2e6, 1.4e6))
-        ax2.set_xticklabels(ticklabs)
-        ax2.set_xlabel(r"$Re_{c, \mathrm{ave}}$")
-        # Do not create second grid as this will be above data
-        ax2.grid(False)
-    plt.tight_layout()
-    if preliminary:
-        watermark()
+        ax12.set_xticks(ax1.xaxis.get_ticklocs())
+        ax12.set_xlim((0.2e6, 1.4e6))
+        ax12.set_xticklabels(ticklabs)
+        ax12.set_xlabel(r"$Re_{c, \mathrm{ave}}$")
+        ax12.grid(False)
+        print(df.Re_D)
+        print(df.Re_c)
+    if power_law:
+        # Calculate power law fits for quantities
+        def func(x, a, b):
+            return a*x**b
+        coeffs_cd, covar_cd = curve_fit(func, df.Re_c, df.mean_cd)
+        coeffs_cp, covar_cp = curve_fit(func, df.Re_c, df.mean_cp)
+        print("Power law fits:")
+        print("C_P = {:.3f}*Re_c**{:.3f}".format(coeffs_cp[0], coeffs_cp[1]))
+        print("C_D = {:.3f}*Re_c**{:.3f}".format(coeffs_cd[0], coeffs_cd[1]))
+        Re_D_curve = np.linspace(0.3e6, 1.3e6)
+        cp_power_law = coeffs_cp[0]*(Re_D_curve/D*chord*1.9)**coeffs_cp[1]
+        ax1.plot(Re_D_curve, cp_power_law, "--k",
+                 label=r"${:.3f}Re_c^{{ {:.3f} }}$".format(coeffs_cp[0],
+                 coeffs_cp[1]))
+        ax1.legend(loc="lower right")
+    ax1.xaxis.major.formatter.set_powerlimits((0, 0))
+    ax1.grid(True)
+    try:
+        fig1.tight_layout()
+    except UnboundLocalError:
+        pass
     if save and not subplots:
-        savefig(savedir + "/re_dep_cp" + savetype)
-    if subplots:
-        plt.subplot(1, 2, 2)
-    else:
-        plt.figure()
+        savefig(fig=fig1, fpath=savedir + "/re_dep_cp" + savetype)
     if errorbars:
-        plt.errorbar(Re_D, df.mean_cd/norm_cd, yerr=df.exp_unc_cd/norm_cd,
-                     fmt="-ok", markerfacecolor="none")
+        ax2.errorbar(df.Re_D, df.mean_cd/norm_cd, yerr=df.exp_unc_cd/norm_cd,
+                     label="Experiment", **kwargs)
     else:
-        plt.plot(Re_D, df.mean_cd/norm_cd, '-ok', markerfacecolor="none")
-    plt.xlabel(r"$Re_D$")
+        ax2.plot(df.Re_D, df.mean_cd/norm_cd, label="Experiment", **kwargs)
+    ax2.set_xlabel(r"$Re_D$")
     if normalize_by == "default":
-        plt.ylabel(r"$C_D/C_{D_0}$")
+        ax2.set_ylabel(r"$C_D/C_{D_0}$")
     else:
-        plt.ylabel(r"$C_D$")
-    ax = plt.gca()
+        ax2.set_ylabel(r"$C_D$")
     if dual_xaxes:
-        if subplots:
-            x, y = 1.295e6, 0.88
-        else:
-            x, y = 1.345e6, 0.875
-        plt.text(x, y, "1e5")
-        ax2 = ax.twiny()
-        ax.xaxis.get_majorticklocs()
-        ticklabs = np.arange(0.2e6, 1.6e6, 0.2e6)
+        ax2.text(x, y, "1e5", transform=ax2.transAxes)
+        ax22 = ax2.twiny()
+        ax2.xaxis.get_majorticklocs()
+        ticklabs = ax2.get_xticks()
         ticklabs = ticklabs/D*df.mean_tsr.mean()*chord/1e5
         ticklabs = [str(np.round(ticklab, decimals=1)) for ticklab in ticklabs]
-        ax2.set_xticks(ax.xaxis.get_ticklocs())
-        ax2.set_xlim((0.2e6, 1.4e6))
-        ax2.set_xticklabels(ticklabs)
-        ax2.set_xlabel(r"$Re_{c, \mathrm{ave}}$")
-        # Do not create second grid as this will be above data
-        ax2.grid(False)
-    plt.tight_layout()
-    if preliminary:
-        watermark()
+        ax22.set_xticks(ax2.xaxis.get_ticklocs())
+        ax22.set_xlim((0.2e6, 1.4e6))
+        ax22.set_xticklabels(ticklabs)
+        ax22.set_xlabel(r"$Re_{c, \mathrm{ave}}$")
+        ax22.grid(False)
+    ax2.xaxis.major.formatter.set_powerlimits((0, 0))
+    ax2.grid(True)
+    if power_law:
+        cd_power_law = coeffs_cd[0]*(Re_D_curve/D*chord*1.9)**coeffs_cd[1]
+        ax2.plot(Re_D_curve, cd_power_law, "--k",
+                 label=r"${:.3f}Re_c^{{ {:.3f} }}$".format(coeffs_cd[0],
+                 coeffs_cd[1]))
+        ax2.legend(loc="lower right")
+    try:
+        fig1.tight_layout()
+        fig2.tight_layout()
+    except UnboundLocalError:
+        pass
     if save:
         if subplots:
-            savefig(savedir + "/perf_re_dep" + savetype)
+            savefig(fig=fig1, fpath=savedir + "/perf_re_dep" + savetype)
         else:
-            savefig(savedir + "/re_dep_cd" + savetype)
-    if show:
-        plt.show()
+            savefig(fig=fig2, fpath=savedir + "/re_dep_cd" + savetype)
 
 
 def plot_tare_drag():
