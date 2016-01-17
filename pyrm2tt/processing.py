@@ -4,7 +4,8 @@
 from __future__ import division, print_function
 import numpy as np
 from pxl import timeseries as ts
-from pxl.timeseries import loadhdf
+from pxl.timeseries import calc_uncertainty, calc_exp_uncertainty
+from pxl.io import loadhdf
 import matplotlib.pyplot as plt
 import multiprocessing as mp
 import scipy.stats
@@ -50,10 +51,6 @@ def calc_b_vec(vel):
     """Calculates the systematic error of a Vectrino measurement (in m/s)
     from their published specs. Returns half the +/- value as b."""
     return 0.5*(0.005*np.abs(vel) + 0.001)
-
-
-def calc_uncertainty(quantity, b):
-    return np.sqrt(nanstd(quantity)**2 + b**2)
 
 
 def calc_tare_torque(rpm):
@@ -344,37 +341,16 @@ class Run(object):
         self.b_tsr = b_tsr
 
     def calc_perf_exp_uncertainty(self):
-        """See uncertainty IPython notebook for equations."""
+        """Calculated expanded uncertainty for performance quantities."""
         # Power coefficient
-        s_cp = self.std_cp_per_rev
-        nu_s_cp = len(self.cp_per_rev) - 1
-        b_cp = self.b_cp
-        b_cp_rel_unc = 0.25 # A guess
-        nu_b_cp = 0.5*b_cp_rel_unc**(-2)
-        nu_cp = ((s_cp**2 + b_cp**2)**2)/(s_cp**4/nu_s_cp + b_cp**4/nu_b_cp)
-        t = scipy.stats.t.interval(alpha=0.95, df=nu_cp)[-1]
-        self.exp_unc_cp = t*self.unc_cp
-        self.dof_cp = nu_cp
+        self.exp_unc_cp, self.dof_cp = calc_exp_uncertainty(self.n_revs,
+                self.std_cp_per_rev, self.unc_cp, self.b_cp)
         # Drag coefficient
-        s_cd = self.std_cd_per_rev
-        nu_s_cd = len(self.cd_per_rev) - 1
-        b_cd = self.b_cd
-        b_cd_rel_unc = 0.25 # A guess
-        nu_b_cd = 0.5*b_cd_rel_unc**(-2)
-        nu_cd = ((s_cd**2 + b_cd**2)**2)/(s_cd**4/nu_s_cd + b_cd**4/nu_b_cd)
-        t = scipy.stats.t.interval(alpha=0.95, df=nu_cd)[-1]
-        self.exp_unc_cd = t*self.unc_cd
-        self.dof_cd = nu_cd
+        self.exp_unc_cd, self.dof_cd = calc_exp_uncertainty(self.n_revs,
+                self.std_cd_per_rev, self.unc_cd, self.b_cd)
         # Tip speed ratio
-        s_tsr = self.std_tsr_per_rev
-        nu_s_tsr = len(self.tsr_per_rev) - 1
-        b_tsr = self.b_tsr
-        b_tsr_rel_unc = 0.25 # A guess
-        nu_b_tsr = 0.5*b_tsr_rel_unc**(-2)
-        nu_tsr = ((s_tsr**2 + b_tsr**2)**2)/(s_tsr**4/nu_s_tsr + b_tsr**4/nu_b_tsr)
-        t = scipy.stats.t.interval(alpha=0.95, df=nu_tsr)[-1]
-        self.exp_unc_tsr = t*self.unc_tsr
-        self.dof_tsr = nu_tsr
+        self.exp_unc_tsr, self.dof_tsr = calc_exp_uncertainty(self.n_revs,
+                self.std_tsr_per_rev, self.unc_tsr, self.b_tsr)
 
     def calc_wake_instantaneous(self):
         """Create fluctuating and Reynolds stress time series. Note that
