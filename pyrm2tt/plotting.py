@@ -547,7 +547,7 @@ class WakeMap(object):
                edgecolor="black", width=0.5)
         ax.set_xticks(np.arange(len(names))+0.25)
         ax.set_xticklabels(names)
-        plt.hlines(0, 0, len(names), color="black")
+        plt.hlines(0, 0, len(names) - 0.25, color="black", linewidth=1.0)
         plt.ylabel(r"$\frac{K \, \mathrm{ transport}}{UK_\infty D^{-1}}$")
         plt.tight_layout()
         if print_analysis:
