@@ -40,7 +40,9 @@ A = D*H
 R = D/2
 rho = 1000.0
 nu = 1e-6
-chord = 0.067
+tip_chord = 0.04
+root_chord = 0.067
+chord = root_chord
 
 # Directory constants
 raw_data_dir = os.path.join("Data", "Raw")
@@ -504,6 +506,9 @@ class Run(object):
             s["std_tsr_per_rev"] = self.std_tsr_per_rev
             s["std_cp_per_rev"] = self.std_cp_per_rev
             s["std_cd_per_rev"] = self.std_cd_per_rev
+            s["sys_unc_tsr"] = self.b_tsr
+            s["sys_unc_cp"]  = self.b_cp
+            s["sys_unc_cd"] = self.b_cd
             s["exp_unc_tsr"] = self.exp_unc_tsr
             s["exp_unc_cp"] = self.exp_unc_cp
             s["exp_unc_cd"] = self.exp_unc_cd
