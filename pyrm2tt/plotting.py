@@ -63,7 +63,7 @@ class PerfCurve(object):
         plt.grid(True)
         plt.tight_layout()
         if save:
-            plt.savefig(os.path.join(savedir,
+            savefig(os.path.join(savedir,
                     "cp_vs_tsr_{}".format(self.tow_speed) + savetype))
         if show:
             plt.show()
@@ -94,7 +94,7 @@ class PerfCurve(object):
         plt.grid(True)
         plt.tight_layout()
         if save:
-            plt.savefig(os.path.join(savedir,
+            savefig(os.path.join(savedir,
                     "cd_vs_tsr_{}".format(self.tow_speed) + savetype))
         if show:
             plt.show()
@@ -151,7 +151,7 @@ class WakeProfile(object):
         if show:
             plt.show()
         if save:
-            plt.savefig(savedir+quantity+"_Re_dep_exp"+savetype)
+            savefig(savedir+quantity+"_Re_dep_exp"+savetype)
 
 
 class WakeMap(object):
@@ -348,7 +348,7 @@ class WakeMap(object):
         plt.yticks([0.0, 0.13, 0.25, 0.38, 0.5, 0.63, 0.75])
         plt.tight_layout()
         if save:
-            plt.savefig(savedir+"/mean_u_cont"+savetype)
+            savefig(savedir+"/mean_u_cont"+savetype)
         if show:
             self.show()
 
@@ -398,7 +398,7 @@ class WakeMap(object):
         if show:
             self.show()
         if save:
-            plt.savefig(savedir+"/meancontquiv"+savetype)
+            savefig(savedir+"/meancontquiv"+savetype)
 
     def plot_xvorticity(self):
         pass
@@ -431,7 +431,7 @@ class WakeMap(object):
             self.show()
         if save:
             if savedir: savedir += "/"
-            plt.savefig(savedir+"/"+quantity+"_diff"+savetype)
+            savefig(savedir+"/"+quantity+"_diff"+savetype)
 
     def plot_meancontquiv_diff(self, U_infty_diff, save=False, show=False,
                                savedir="Figures", savetype="", percent=True):
@@ -475,7 +475,7 @@ class WakeMap(object):
             self.show()
         if save:
             if savedir: savedir += "/"
-            plt.savefig(savedir+"/meancontquiv_diff"+savetype)
+            savefig(savedir+"/meancontquiv_diff"+savetype)
 
     def plot_mean_u_diff_std(self):
         u_ref = 1.0
@@ -514,7 +514,7 @@ class WakeMap(object):
         plt.yticks(np.round(np.arange(0, 0.751, 0.125), decimals=2))
         plt.tight_layout()
         if save:
-            plt.savefig("Figures/k_contours" + savetype)
+            savefig("Figures/k_contours" + savetype)
         if show:
             self.show()
 
@@ -554,7 +554,7 @@ class WakeMap(object):
             print("K recovery rate (%/D) =",
                   2*np.sum(quantities)/(0.5*U**2)/D*100)
         if save:
-            plt.savefig("Figures/K_trans_bar_graph"+savetype)
+            savefig("Figures/K_trans_bar_graph"+savetype)
 
     def show(self):
         plt.show()
@@ -646,7 +646,7 @@ def plot_perf_re_dep(subplots=True, save=False, savedir="Figures",
     if preliminary:
         watermark()
     if save and not subplots:
-        plt.savefig(savedir + "/re_dep_cp" + savetype)
+        savefig(savedir + "/re_dep_cp" + savetype)
     if subplots:
         plt.subplot(1, 2, 2)
     else:
@@ -683,9 +683,9 @@ def plot_perf_re_dep(subplots=True, save=False, savedir="Figures",
         watermark()
     if save:
         if subplots:
-            plt.savefig(savedir + "/perf_re_dep" + savetype)
+            savefig(savedir + "/perf_re_dep" + savetype)
         else:
-            plt.savefig(savedir + "/re_dep_cd" + savetype)
+            savefig(savedir + "/re_dep_cd" + savetype)
     if show:
         plt.show()
 
@@ -751,7 +751,7 @@ def plot_cp_curve(u_infty, save=False, show=False, savedir="Figures",
     if save:
         savepath = os.path.join(savedir,
                                 "cp_vs_tsr_{}".format(u_infty) + savetype)
-        plt.savefig(savepath)
+        savefig(savepath)
     if show:
         plt.show()
 
@@ -772,7 +772,7 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     if preliminary:
         watermark()
     if save and not subplots:
-        plt.savefig(os.path.join(savedir, "cp_curves" + savetype))
+        savefig(os.path.join(savedir, "cp_curves" + savetype))
     if subplots:
         plt.subplot(122)
     PerfCurve(0.4).plotcd(newfig=not subplots, show=False, marker=">")
@@ -785,9 +785,9 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
         watermark()
     if save:
         if subplots:
-            plt.savefig(os.path.join(savedir, "perf_curves" + savetype))
+            savefig(os.path.join(savedir, "perf_curves" + savetype))
         else:
-            plt.savefig(os.path.join(savedir, "cd_curves" + savetype))
+            savefig(os.path.join(savedir, "cd_curves" + savetype))
     if show:
         plt.show()
 
@@ -813,7 +813,7 @@ def plot_wake_profiles(z_H=0.25, save=False, show=False, savedir="Figures",
         if q == "mean_upvp":
             plt.ylim((-0.015, 0.025))
         if save:
-            plt.savefig(os.path.join(savedir, q+savetype))
+            savefig(os.path.join(savedir, q+savetype))
     if show:
         plt.show()
 
@@ -849,7 +849,7 @@ def plot_strut_torque(covers=False, power_law=True, cubic=False, save=False,
     plt.grid(True)
     plt.tight_layout()
     if save:
-        plt.savefig("Figures/" + figname + savetype)
+        savefig("Figures/" + figname + savetype)
     if show:
         plt.show()
 
@@ -869,7 +869,7 @@ def plot_cp_covers(save=False, savetype=".pdf", show=False, newfig=True,
     plt.grid(True)
     plt.tight_layout()
     if save:
-        plt.savefig("Figures/cp_curve_covers" + savetype)
+        savefig("Figures/cp_curve_covers" + savetype)
     if show:
         plt.show()
 
@@ -897,7 +897,7 @@ def plot_cp_no_blades(covers=False, power_law=True, cubic=False, save=False,
     plt.grid(True)
     plt.tight_layout()
     if save:
-        plt.savefig("Figures/" + figname + savetype)
+        savefig("Figures/" + figname + savetype)
     if show:
         plt.show()
 
@@ -915,7 +915,7 @@ def plot_no_blades_all(save=False, savetype=".pdf"):
     plt.title("(b)")
     plt.tight_layout()
     if save:
-        plt.savefig("Figures/no_blades_all" + savetype)
+        savefig("Figures/no_blades_all" + savetype)
 
 
 def plot_perf_covers(subplots=True, save=False, savetype=".pdf"):
@@ -939,7 +939,7 @@ def plot_perf_covers(subplots=True, save=False, savetype=".pdf"):
     plt.legend(loc="best")
     plt.tight_layout()
     if save and not subplots:
-        plt.savefig("Figures/cp_covers" + savetype)
+        savefig("Figures/cp_covers" + savetype)
     if subplots:
         plt.subplot(1, 2, 2)
     else:
@@ -956,9 +956,9 @@ def plot_perf_covers(subplots=True, save=False, savetype=".pdf"):
     plt.tight_layout()
     if save:
         if subplots:
-            plt.savefig("Figures/perf_covers" + savetype)
+            savefig("Figures/perf_covers" + savetype)
         else:
-            plt.savefig("Figures/cd_covers" + savetype)
+            savefig("Figures/cd_covers" + savetype)
 
 
 def plot_power_law(x, y, xname="x"):
@@ -993,6 +993,28 @@ def watermark():
              alpha=0.2,
              fontsize=32,
              zorder=10)
+
+
+def savefig(fpath=None, fig=None):
+    """Save figure to specified path"""
+    if fig is not None:
+        fig.savefig(fpath)
+    else:
+        plt.savefig(fpath)
+    if fpath.endswith("eps"):
+        fix_eps(fpath)
+
+
+def fix_eps(fpath):
+    """Fix carriage returns in EPS files caused by Arial font."""
+    txt = b""
+    with open(fpath, "rb") as f:
+        for line in f:
+            if b"\r\rHebrew" in line:
+                line = line.replace(b"\r\rHebrew", b"Hebrew")
+            txt += line
+    with open(fpath, "wb") as f:
+        f.write(txt)
 
 
 if __name__ == "__main__":
