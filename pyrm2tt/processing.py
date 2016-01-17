@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
-This module contains classes and functions for processing data.
+"""This module contains classes and functions for processing data."""
 
-"""
 from __future__ import division, print_function
 import numpy as np
 from pxl import timeseries as ts
@@ -30,7 +28,7 @@ wakeruns = {0.0 : np.arange(0, 45),
             0.375 : np.arange(135, 180),
             0.5 : np.arange(180, 225),
             0.625 : np.arange(225, 270)}
-           
+
 # Read constants from turbine properties
 with open("Config/turbine_properties.json") as f:
     turbine_properties = json.load(f)
@@ -47,24 +45,27 @@ chord = 0.067
 raw_data_dir = os.path.join("Data", "Raw")
 processed_data_dir = os.path.join("Data", "Processed")
 
+
 def calc_b_vec(vel):
     """Calculates the systematic error of a Vectrino measurement (in m/s)
     from their published specs. Returns half the +/- value as b."""
     return 0.5*(0.005*np.abs(vel) + 0.001)
-    
+
+
 def calc_uncertainty(quantity, b):
     return np.sqrt(nanstd(quantity)**2 + b**2)
-             
+
+
 def calc_tare_torque(rpm):
     """Returns tare torque array given RPM array."""
     return 0.00104768276035*rpm - 0.848866229797
-    
+
+
 def calc_re_c(u_infty, tsr=3.1):
+    """Calculates the average blade chord Reynolds number based on free stream
+    velocity and tip speed ratio.
     """
-    Calculates the average blade chord Reynolds number based on free
-    stream velocity and tip speed ratio.
-    """
-    return tsr*u_infty*chord/nu    
+    return tsr*u_infty*chord/nu
 
 
 class Run(object):
@@ -94,9 +95,9 @@ class Run(object):
             self.calc_perf_exp_uncertainty()
         else:
             print("Cannot load Run data")
-        
+
     def load(self):
-        """Loads the data from the run into memory."""
+        """Load the data from the run into memory."""
         self.loaded = True
         try:
             with open("Config/raw_data_urls.json") as f:
@@ -139,16 +140,16 @@ class Run(object):
             self.load_vecdata()
         else:
             self.loaded = False
-        
+
     def load_metadata(self):
-        """Loads run metadata."""
+        """Load run metadata."""
         with open(os.path.join(self.raw_dir, "metadata.json")) as f:
             self.metadata = json.load(f)
         self.tow_speed_nom = np.round(self.metadata["Tow speed (m/s)"], decimals=1)
         self.y_R = self.metadata["Vectrino y/R"]
         self.z_H = self.metadata["Vectrino z/H"]
         self.tsr_nom = self.metadata["Tip speed ratio"]
-        
+
     def load_nidata(self):
         nidata = loadhdf(os.path.join(self.raw_dir, "nidata.h5"))
         self.time_ni = nidata["time"]
@@ -170,7 +171,7 @@ class Run(object):
         self.omega_ni = self.rpm_ni*2*np.pi/60.0
         self.omega = self.omega_ni
         self.tow_speed = self.tow_speed_ref
-        
+
     def load_acsdata(self):
         fpath = os.path.join(self.raw_dir, "acsdata.h5")
         acsdata = loadhdf(fpath)
@@ -185,7 +186,7 @@ class Run(object):
             self.omega_acs = self.omega_acs[:newlen]
         self.omega_acs_interp = np.interp(self.time_ni, self.time_acs, self.omega_acs)
         self.rpm_acs_interp = self.omega_acs_interp*60.0/(2*np.pi)
-        
+
     def load_vecdata(self):
         try:
             vecdata = loadhdf(os.path.join(self.raw_dir, "vecdata.h5"))
@@ -199,18 +200,19 @@ class Run(object):
 
     def download_raw(self, name):
         download_raw(self.section, self.nrun, name)
-        
+
     def subtract_tare_drag(self):
         df = pd.read_csv(os.path.join("Data", "Processed", "Tare-drag.csv"))
-        self.tare_drag = df.tare_drag[df.tow_speed==self.tow_speed_nom].values[0]
+        self.tare_drag = \
+                df.tare_drag[df.tow_speed==self.tow_speed_nom].values[0]
         self.drag = self.drag - self.tare_drag
-        
+
     def add_tare_torque(self):
         rpm_ref = self.rpm_ni
         # Add tare torque
         self.tare_torque = calc_tare_torque(rpm_ref)
         self.torque += self.tare_torque
-        
+
     def calc_perf_instantaneous(self):
         omega_ref = self.omega_ni
         # Compute power
@@ -223,16 +225,17 @@ class Run(object):
         # Remove datapoints for coefficients where tow speed is small
         self.cp[np.abs(self.tow_speed_ref < 0.01)] = np.nan
         self.cd[np.abs(self.tow_speed_ref < 0.01)] = np.nan
-        
+
     def load_vectxt(self):
-        """Loads Vectrino data from text (*.dat) file."""
+        """Load Vectrino data from text (*.dat) file."""
         data = np.loadtxt(self.raw_dir + "/vecdata.dat", unpack=True)
         self.time_vec_txt = data[0]
         self.u_txt = data[3]
-        
+
     def make_trimmed(self):
         """Trim all time series and replace the full run names with names with
-        the '_all' suffix."""
+        the '_all' suffix.
+        """
         # Put in some guesses for t1 and t2
         stpath = "Config/Steady times/{}.csv".format(self.tow_speed_nom)
         s_times = pd.read_csv(stpath)
@@ -277,7 +280,7 @@ class Run(object):
         self.v = self.v_all[self.t1*self.sr_vec:self.t2*self.sr_vec]
         self.w_all = self.w
         self.w = self.w_all[self.t1*self.sr_vec:self.t2*self.sr_vec]
-        
+
     def find_t2(self):
         sr = self.sr_ni
         angle1 = self.angle[sr*self.t1]
@@ -292,9 +295,9 @@ class Run(object):
         self.t2found = True
         self.t1_wake = self.t1
         self.t2_wake = self.t2
-        
+
     def calc_perf_stats(self):
-        """Calculates mean performance based on trimmed time series."""
+        """Calculate mean performance based on trimmed time series."""
         self.mean_tsr, self.std_tsr = nanmean(self.tsr), nanstd(self.tsr)
         self.mean_cp, self.std_cp = nanmean(self.cp), nanstd(self.cp)
         self.mean_cd, self.std_cd = nanmean(self.cd), nanstd(self.cd)
@@ -309,7 +312,7 @@ class Run(object):
         print("TSR = {:.2f} +/- {:.2f}".format(self.mean_tsr, self.exp_unc_tsr))
         print("C_P = {:.2f} +/- {:.2f}".format(self.mean_cp, self.exp_unc_cp))
         print("C_D = {:.2f} +/- {:.2f}".format(self.mean_cd, self.exp_unc_cd))
-        
+
     def calc_perf_uncertainty(self):
         """See uncertainty IPython notebook for equations."""
         # Systematic uncertainty estimates
@@ -339,7 +342,7 @@ class Run(object):
                         (-omega*R/(u_infty**2))**2*b_car_pos**2)
         self.unc_tsr = calc_uncertainty(self.tsr_per_rev, b_tsr)
         self.b_tsr = b_tsr
-        
+
     def calc_perf_exp_uncertainty(self):
         """See uncertainty IPython notebook for equations."""
         # Power coefficient
@@ -372,11 +375,12 @@ class Run(object):
         t = scipy.stats.t.interval(alpha=0.95, df=nu_tsr)[-1]
         self.exp_unc_tsr = t*self.unc_tsr
         self.dof_tsr = nu_tsr
-        
+
     def calc_wake_instantaneous(self):
-        """Creates fluctuating and Reynolds stress time series. Note that
+        """Create fluctuating and Reynolds stress time series. Note that
         time series must be trimmed first, or else subtracting the mean makes
-        no sense. Prime variables are denoted by a `p` e.g., $u'$ is `up`."""
+        no sense. Prime variables are denoted by a `p` e.g., $u'$ is `up`.
+        """
         self.up = self.u - nanmean(self.u)
         self.vp = self.v - nanmean(self.v)
         self.wp = self.w - nanmean(self.w)
@@ -386,12 +390,11 @@ class Run(object):
         self.vpvp = self.vp**2
         self.vpwp = self.vp*self.wp
         self.wpwp = self.wp**2
-        
+
     def filter_wake(self, std=4, passes=1, thresh=0.95):
-        """
-        Applies filtering to wake velocity data with a standard deviation
+        """Apply filtering to wake velocity data with a standard deviation
         filter, threshold filter, or both. Renames unfiltered time series with
-        the '_unf' suffix. Time series are already trimmed before they reach 
+        the '_unf' suffix. Time series are already trimmed before they reach
         this point, so no slicing is necessary.
         """
         # Calculate means
@@ -425,7 +428,7 @@ class Run(object):
         self.nbadv = len(np.where(np.isnan(self.v)==True)[0])
         self.nbadw = len(np.where(np.isnan(self.w)==True)[0])
         self.nbad = self.nbadu + self.nbadv + self.nbadw
-        
+
     def calc_wake_stats(self):
         if not self.t2found:
             self.find_t2()
@@ -439,7 +442,7 @@ class Run(object):
         self.mean_vpwp, self.std_vpwp = nanmean(self.vpwp), nanstd(self.vpwp)
         self.mean_wpwp, self.std_wpwp = nanmean(self.wpwp), nanstd(self.wpwp)
         self.k = 0.5*(self.mean_upup + self.mean_vpvp + self.mean_wpwp)
-            
+
     def print_wake_stats(self):
         ntotal = int((self.t2 - self.t1)*self.sr_vec*3)
         print("y/R =", self.y_R)
@@ -447,15 +450,16 @@ class Run(object):
         print("mean_u/tow_speed_nom =", self.mean_u/self.tow_speed_nom)
         print("std_u/tow_speed_nom =", self.std_u/self.tow_speed_nom)
         print(str(self.nbad)+"/"+str(ntotal), "data points omitted")
-        
+
     def calc_wake_uncertainty(self):
-        """Computes delta values for wake measurements from Vectrino accuracy
-        specs, not statistical uncertainties."""
+        """Compute delta values for wake measurements from Vectrino accuracy
+        specs, not statistical uncertainties.
+        """
         self.unc_mean_u = np.nan
         self.unc_std_u = np.nan
-        
+
     def calc_perf_per_rev(self):
-        """Computes mean power coefficient over each revolution."""
+        """Compute mean power coefficient over each revolution."""
         angle = self.angle*1
         angle -= angle[0]
         cp = np.zeros(self.n_revs)
@@ -481,17 +485,18 @@ class Run(object):
         self.std_tsr_per_rev = tsr.std()
         self.torque_per_rev = torque
         self.std_torque_per_rev = torque.std()
-        
+
     @property
     def cp_conf_interval(self, alpha=0.95):
         self.calc_perf_per_rev()
         t_val = scipy.stats.t.interval(alpha=alpha, df=self.n_revs-1)[1]
         std = self.std_cp_per_rev
         return t_val*std/np.sqrt(self.n_revs)
-        
+
     def detect_badvec(self):
-        """Detects if Vectrino data is bad by looking at first 2 seconds of
-        data, and checking if there are many datapoints."""
+        """Detect if Vectrino data is bad by looking at first 2 seconds of
+        data, and checking if there are many datapoints.
+        """
         nbad = len(np.where(np.abs(self.u[:400]) > 0.5)[0])
         print(nbad, "bad Vectrino datapoints in first 2 seconds")
         if nbad > 50:
@@ -500,7 +505,7 @@ class Run(object):
         else:
             self.badvec = False
             print("Vectrino data okay")
-            
+
     @property
     def summary(self):
         s = pd.Series()
@@ -582,9 +587,9 @@ class Run(object):
             s["mean_vpwp"] = np.nan
             s["k"] = np.nan
         return s
-        
+
     def plot_perf(self, quantity="power coefficient"):
-        """Plots the run's data"""
+        """Plot the run's data."""
         if not self.loaded:
             self.load()
         if quantity == "drag":
@@ -605,7 +610,7 @@ class Run(object):
         plt.ylabel(ylabel)
         plt.ylim(ylim)
         plt.tight_layout()
-        
+
     def plot_wake(self):
         """Plot streamwise velocity over experiment."""
         if not self.loaded:
@@ -615,7 +620,7 @@ class Run(object):
         plt.plot(self.time_vec, self.u, 'k')
         plt.xlabel("Time (s)")
         plt.ylabel("$u$ (m/s)")
-        
+
     def plot_acs(self):
         if not self.loaded:
             self.load()
@@ -628,7 +633,7 @@ class Run(object):
         plt.hold(True)
         plt.plot(self.time_acs, self.tow_speed_acs)
         plt.show()
-        
+
     def plot_carriage_vel(self):
         if not self.loaded:
             self.load()
@@ -637,13 +642,13 @@ class Run(object):
         plt.tight_layout()
         plt.show()
 
-        
+
 class Section(object):
     def __init__(self, name):
         self.name = name
         self.processed_path = os.path.join(processed_data_dir, name+".csv")
         self.test_plan_path = os.path.join("Config", "Test plan", name+".csv")
-        self.load()    
+        self.load()
     def load(self):
         self.test_plan = pd.read_csv(self.test_plan_path, index_col="run")
         try:
@@ -686,16 +691,16 @@ class Section(object):
             self.data = self.newdata
         else:
             self.data = self.data.append(self.newdata)
-        
+
 
 def process_run(section, nrun):
     run = Run(section, nrun)
     return run.summary
 
+
 def process_latest_run(section):
-    """
-    Automatically detects the most recently acquired run and processes it,
-    printing a summary to the shell.
+    """Automatically detect the most recently acquired run and process it,
+    then print a summary to the shell.
     """
     print("Processing latest run in", section)
     raw_dir = os.path.join("Data", "Raw", section)
@@ -710,33 +715,37 @@ def process_latest_run(section):
             print(d, "is not a properly formatted directory")
     print("\nSummary for {} run {}:".format(section, nrun))
     print(Run(section, nrun).summary)
-        
+
+
 def load_test_plan_section(section):
     df = pd.read_csv(os.path.join("Config", "Test plan", section+".csv"))
     df = df.dropna(how="all", axis=1).dropna(how="all", axis=0)
     if "Run" in df:
         df["Run"] = df["Run"].astype(int)
-    return df               
+    return df
+
 
 def batch_process_section(name):
     s = Section(name)
     s.process()
-    
+
+
 def batch_process_all():
-    """Batch processes all sections."""
+    """Batch process all sections."""
     sections = ["Perf-0.4", "Perf-0.4-b", "Perf-0.6", "Perf-0.6-b",
                 "Perf-0.8", "Perf-0.8-b", "Perf-1.0", "Perf-1.0-b",
-                "Perf-1.2", "Perf-1.2-b", "Perf-1.0-covers", 
-                "Perf-1.0-no-blades", "Perf-1.0-no-blades-covers", 
+                "Perf-1.2", "Perf-1.2-b", "Perf-1.0-covers",
+                "Perf-1.0-no-blades", "Perf-1.0-no-blades-covers",
                 "Perf-tsr_0", "Perf-tsr_0-b", "Wake-1.0-0.0", "Wake-1.0-0.125",
                 "Wake-1.0-0.25", "Wake-1.0-0.375", "Wake-1.0-0.5",
                 "Wake-1.0-0.625", "Wake-1.0-0.75"]
     for section in sections:
         print("Processing {}".format(section))
         batch_process_section(section)
-    
+
+
 def process_tare_drag(nrun, plot=False):
-    """Processes a single tare drag run."""
+    """Process a single tare drag run."""
     print("Processing tare drag run", nrun)
     times = {0.2: (15, 120),
              0.3: (10, 77),
@@ -760,16 +769,17 @@ def process_tare_drag(nrun, plot=False):
     drag = nidata["drag_left"] + nidata["drag_right"]
     drag = drag - np.mean(drag[:2000])
     t1, t2 = times[speed]
-    meandrag, x = ts.calcstats(drag, t1, t2, 2000) 
+    meandrag, x = ts.calcstats(drag, t1, t2, 2000)
     print("Tare drag =", meandrag, "N at", speed, "m/s")
     if plot:
         plt.figure()
         plt.plot(time_ni, drag, 'k')
         plt.show()
     return speed, meandrag
-        
+
+
 def batch_process_tare_drag(plot=False):
-    """Processes all tare drag data."""
+    """Process all tare drag data."""
     runs = os.listdir("Data/Raw/Tare-drag")
     runs = sorted([int(run) for run in runs])
     speed = np.zeros(len(runs))
@@ -788,9 +798,10 @@ def batch_process_tare_drag(plot=False):
         plt.ylabel("Tare drag (N)")
         plt.tight_layout()
         plt.show()
-    
+
+
 def process_tare_torque(nrun, plot=False):
-    """Processes a single tare torque run."""
+    """Process a single tare torque run."""
     print("Processing tare torque run", nrun)
     times = {0 : (35, 86),
              1 : (12, 52),
@@ -818,11 +829,12 @@ def process_tare_torque(nrun, plot=False):
         plt.tight_layout()
         plt.show()
     return meanrpm, -meantorque
-    
-def process_strut_torque(nrun, zero_torque=0.0, plot=False, covers=False, 
+
+
+def process_strut_torque(nrun, zero_torque=0.0, plot=False, covers=False,
                          verbose=False):
-    """Processes a single strut torque run."""
-    testplan = pd.read_csv("Config/Test plan/Strut-torque.csv", 
+    """Process a single strut torque run."""
+    testplan = pd.read_csv("Config/Test plan/Strut-torque.csv",
                            index_col="run")
     ref_speed = testplan.ref_speed.iloc[nrun]
     tsr_nom = testplan.tsr.iloc[nrun]
@@ -869,9 +881,10 @@ def process_strut_torque(nrun, zero_torque=0.0, plot=False, covers=False,
     summary["mean_torque"] = meantorque
     summary["mean_rpm"] = meanrpm
     return summary
-    
+
+
 def batch_process_tare_torque(plot=False):
-    """Processes all tare torque data."""
+    """Process all tare torque data."""
     runs = os.listdir("Data/Raw/Tare-torque")
     runs = sorted([int(run) for run in runs])
     rpm = np.zeros(len(runs))
@@ -893,7 +906,8 @@ def batch_process_tare_torque(plot=False):
         plt.ylabel("Tare torque (Nm)")
         plt.tight_layout()
         plt.show()
-        
+
+
 def batch_process_strut_torque(covers=False):
     section = "Strut-torque"
     if covers:
@@ -904,14 +918,16 @@ def batch_process_strut_torque(covers=False):
         df.append(process_strut_torque(run, covers=covers))
     df = pd.DataFrame(df)
     df.to_csv("Data/Processed/" + section + ".csv", index=False)
-        
+
+
 def make_remote_name(local_path):
     return "_".join(local_path.split("\\")[-3:])
-        
+
+
 def download_raw(section, nrun, name):
-    """
-    Downloads a run's raw data. `name` can be either the file name with
-    extension, or
+    """Download a run's raw data.
+
+    `name` can be either the file name with extension, or
       * `"metadata"` -- Metadata in JSON format
       * `"nidata"` -- Data from the NI DAQ system
       * `"acsdata"` -- Data from the tow tank's motion controller
@@ -921,7 +937,7 @@ def download_raw(section, nrun, name):
         filename = "metadata.json"
     elif name in ["vecdata", "nidata", "acsdata"]:
         filename = name + ".h5"
-    else: 
+    else:
         filename = name
     print("Downloading", filename, "from", section, "run", nrun)
     local_dir = os.path.join("Data", "Raw", section, str(nrun))
@@ -944,19 +960,3 @@ def download_raw(section, nrun, name):
     pbar.start()
     urlretrieve(url, local_path, reporthook=download_progress)
     pbar.finish()
-    
-def main():
-    pass
-        
-if __name__ == "__main__":
-    if os.getcwd()[-7:] == "Modules":
-        print("Changing working directory to experiment root directory")
-        os.chdir("../")
-    if len(sys.argv) == 3:
-        section = sys.argv[1]
-        nrun = int(sys.argv[2])
-        run = Run(section, nrun)
-        run.calc_perf()
-        run.calc_wake()
-    else:
-        main()
