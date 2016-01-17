@@ -671,8 +671,6 @@ def plot_perf_re_dep(ax1=None, ax2=None, save=False, savedir="Figures",
         ax12.set_xticklabels(ticklabs)
         ax12.set_xlabel(r"$Re_{c, \mathrm{ave}}$")
         ax12.grid(False)
-        print(df.Re_D)
-        print(df.Re_c)
     if power_law:
         # Calculate power law fits for quantities
         def func(x, a, b):
