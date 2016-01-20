@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
-"""
-This module contains test functions.
-"""
+"""This module contains test functions."""
+
 import os
 import time
 from .processing import *
 from .plotting import *
+
+
+def test_turbine_geometry():
+    assert D == 1.075
+    assert R == 0.5375
+    assert H == 0.807
+    assert A == D*H
 
 
 def test_run():
