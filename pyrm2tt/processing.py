@@ -698,14 +698,6 @@ def process_latest_run(section):
     print(Run(section, nrun).summary)
 
 
-def load_test_plan_section(section):
-    df = pd.read_csv(os.path.join("Config", "Test plan", section+".csv"))
-    df = df.dropna(how="all", axis=1).dropna(how="all", axis=0)
-    if "Run" in df:
-        df["Run"] = df["Run"].astype(int)
-    return df
-
-
 def batch_process_section(name):
     s = Section(name)
     s.process()
