@@ -646,7 +646,7 @@ class Section(object):
         self.data = self.data.sort_index()
         if save:
             self.data.to_csv(self.processed_path, na_rep="NaN", index=True)
-    def process_parallel(self, nproc=8, nruns="all"):
+    def process_parallel(self, nproc=4, nruns="all"):
         s = self.name
         runs = self.test_plan.index.values
         if nruns != "all":
