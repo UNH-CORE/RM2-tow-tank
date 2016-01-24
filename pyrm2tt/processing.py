@@ -639,7 +639,7 @@ class Section(object):
     @property
     def mean_cp(self):
         return self.data.mean_cp
-    def process(self, nproc=8, nruns="all", save=True):
+    def process(self, nproc=4, nruns="all", save=True):
         """Process an entire section of data."""
         self.process_parallel(nproc=nproc, nruns=nruns)
         self.data.index.name = "run"
@@ -672,6 +672,7 @@ class Section(object):
             self.data = self.newdata
         else:
             self.data = self.data.append(self.newdata)
+            self.data = self.data.drop_duplicates()
 
 
 def process_run(section, nrun):
