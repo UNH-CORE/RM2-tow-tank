@@ -27,7 +27,7 @@ if __name__ == "__main__":
                         help="Save figures to local directory")
     parser.add_argument("--savetype", "-t", help="Figure file format",
                         type=str, default=".eps")
-    parser.add_argument("--noshow", action="store_true", default=False,
+    parser.add_argument("--no-show", action="store_true", default=False,
                         help="Do not show figures")
     args = parser.parse_args()
     save = args.save
@@ -79,5 +79,5 @@ if __name__ == "__main__":
         plot_perf_covers(save=save, savetype=savetype, subplots=True)
 
 
-    if not args.noshow:
+    if not args.no_show:
         plt.show()
