@@ -860,7 +860,7 @@ def plot_meancontquiv(show=False, cb_orientation="vertical",
 
 
 def plot_strut_torque(covers=False, power_law=True, cubic=False, save=False,
-                      savetype=".pdf", show=False, newfig=True, fmt="-ok"):
+                      savetype=".pdf", newfig=True, marker="o", color="b"):
     section = "Strut-torque"
     figname = "strut_torque"
     if covers:
@@ -869,12 +869,14 @@ def plot_strut_torque(covers=False, power_law=True, cubic=False, save=False,
     df = pd.read_csv("Data/Processed/" + section + ".csv")
     if newfig:
         plt.figure()
-    plt.plot(df.tsr_ref, df.cp, fmt, markerfacecolor="none", label="Stationary")
+    plt.plot(df.tsr_ref, df.cp, marker=marker, markerfacecolor="none",
+             label="Stationary", color=color, markeredgecolor=color,
+             linestyle="none")
     if power_law:
-        plot_power_law(df.tsr_ref, df.cp, xname=r"\lambda")
+        plot_power_law(df.tsr_ref, df.cp, xname=r"\lambda", color=color)
         plt.legend(loc="best")
     if cubic:
-        plot_cubic(df.tsr_ref, df.cp, xname=r"\lambda")
+        plot_cubic(df.tsr_ref, df.cp, xname=r"\lambda", color=color)
         plt.legend(loc="best")
     plt.xlabel(r"$\lambda_{\mathrm{ref}}$")
     plt.ylabel(r"$C_{P_\mathrm{ref}}$")
@@ -883,8 +885,6 @@ def plot_strut_torque(covers=False, power_law=True, cubic=False, save=False,
     plt.tight_layout()
     if save:
         savefig("Figures/" + figname + savetype)
-    if show:
-        plt.show()
 
 
 def plot_cp_covers(save=False, savetype=".pdf", show=False, newfig=True,
@@ -908,7 +908,7 @@ def plot_cp_covers(save=False, savetype=".pdf", show=False, newfig=True,
 
 
 def plot_cp_no_blades(covers=False, power_law=True, cubic=False, save=False,
-                      savetype=".pdf", show=False, newfig=True, fmt="-ok"):
+                      savetype=".pdf", newfig=True, marker="o", color="g"):
     """Plot the power coefficient curve with no blades."""
     section = "Perf-1.0-no-blades"
     figname = "cp_no_blades"
@@ -918,12 +918,14 @@ def plot_cp_no_blades(covers=False, power_law=True, cubic=False, save=False,
     df = pd.read_csv("Data/Processed/" + section + ".csv")
     if newfig:
         plt.figure()
-    plt.plot(df.mean_tsr, df.mean_cp, fmt, markerfacecolor="none", label="Towed")
+    plt.plot(df.mean_tsr, df.mean_cp, marker=marker, markerfacecolor="none",
+             label="Towed", color=color, linestyle="none",
+             markeredgecolor=color)
     if power_law:
-        plot_power_law(df.mean_tsr, df.mean_cp, xname=r"\lambda")
+        plot_power_law(df.mean_tsr, df.mean_cp, xname=r"\lambda", color=color)
         plt.legend(loc="best")
     if cubic:
-        plot_cubic(df.mean_tsr, df.mean_cp, xname=r"\lambda")
+        plot_cubic(df.mean_tsr, df.mean_cp, xname=r"\lambda", color=color)
         plt.legend(loc="best")
     plt.xlabel(r"$\lambda$")
     plt.ylabel(r"$C_P$")
@@ -931,8 +933,6 @@ def plot_cp_no_blades(covers=False, power_law=True, cubic=False, save=False,
     plt.tight_layout()
     if save:
         savefig("Figures/" + figname + savetype)
-    if show:
-        plt.show()
 
 
 def plot_no_blades_all(save=False, savetype=".pdf"):
@@ -940,11 +940,11 @@ def plot_no_blades_all(save=False, savetype=".pdf"):
     plt.figure(figsize=(7.5, 3.5))
     plt.subplot(1, 2, 1)
     plot_strut_torque(covers=False, newfig=False)
-    plot_cp_no_blades(covers=False, newfig=False, fmt="-sk")
+    plot_cp_no_blades(covers=False, newfig=False, marker="s")
     plt.title("(a)")
     plt.subplot(1, 2, 2)
     plot_strut_torque(covers=True, newfig=False)
-    plot_cp_no_blades(covers=True, newfig=False, fmt="-sk")
+    plot_cp_no_blades(covers=True, newfig=False, marker="s")
     plt.title("(b)")
     plt.tight_layout()
     if save:
@@ -992,7 +992,7 @@ def plot_perf_covers(subplots=True, save=False, savetype=".pdf", **kwargs):
             savefig("Figures/cd_covers" + savetype)
 
 
-def plot_power_law(x, y, xname="x"):
+def plot_power_law(x, y, xname="x", **kwargs):
     """Plot a power law fit for the given `x` and `y` data."""
     def func(x, a, b):
         return a*x**b
@@ -1000,10 +1000,11 @@ def plot_power_law(x, y, xname="x"):
     a, b = coeffs[0], coeffs[1]
     xp = np.linspace(np.min(x), np.max(x), num=200)
     yp = a*xp**b
-    plt.plot(xp, yp, label=r"${:.4f}{}^{{{:.4f}}}$".format(a, xname, b))
+    plt.plot(xp, yp, label=r"${:.4f}{}^{{{:.4f}}}$".format(a, xname, b),
+             **kwargs)
 
 
-def plot_cubic(x, y, xname="x"):
+def plot_cubic(x, y, xname="x", **kwargs):
     """Plots a power law fit for the given `x` and `y` data."""
     def func(x, a, b):
         return a*x**3 + b
@@ -1011,7 +1012,8 @@ def plot_cubic(x, y, xname="x"):
     a, b = coeffs[0], coeffs[1]
     xp = np.linspace(np.min(x), np.max(x), num=200)
     yp = a*xp**3 + b
-    plt.plot(xp, yp, label=r"${:.4f}{}^3 {:.4f}$".format(a, xname, b))
+    plt.plot(xp, yp, label=r"${:.4f}{}^3 {:.4f}$".format(a, xname, b),
+             **kwargs)
 
 
 def watermark():
