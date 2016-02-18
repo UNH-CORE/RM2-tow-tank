@@ -57,7 +57,7 @@ if __name__ == "__main__":
         plot_perf_re_dep(save=save, savetype=savetype, errorbars=errorbars,
                          dual_xaxes=True)
     if "cp_re_0" in args.plots:
-        PerfCurve(1.0).plotcp(save=save, savetype=savetype, show=False)
+        PerfCurve(1.0).plotcp(save=save, savetype=savetype)
     if ("meancontquiv" in args.plots or
         "kcont" in args.plots or
         "K_bar_chart" in args.plots or
