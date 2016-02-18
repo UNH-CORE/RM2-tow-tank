@@ -5,6 +5,7 @@ from __future__ import division, print_function
 from .processing import *
 from scipy.optimize import curve_fit
 import os
+from pxl.styleplot import label_subplot
 
 
 ylabels = {"mean_u" : r"$U/U_\infty$",
@@ -941,14 +942,14 @@ def plot_no_blades_all(save=False, savetype=".pdf"):
     plt.subplot(1, 2, 1)
     plot_strut_torque(covers=False, newfig=False)
     plot_cp_no_blades(covers=False, newfig=False, marker="s")
-    plt.title("(a)")
+    label_subplot(text="(a)")
     plt.subplot(1, 2, 2)
     plot_strut_torque(covers=True, newfig=False)
     plot_cp_no_blades(covers=True, newfig=False, marker="s")
-    plt.title("(b)")
+    label_subplot(text="(b)")
     plt.tight_layout()
     if save:
-        savefig("Figures/no_blades_all" + savetype)
+        savefig("Figures/no_blades_all" + savetype, bbox_inches="tight")
 
 
 def plot_perf_covers(subplots=True, save=False, savetype=".pdf", **kwargs):
@@ -1028,12 +1029,12 @@ def watermark():
              zorder=10)
 
 
-def savefig(fpath=None, fig=None):
+def savefig(fpath=None, fig=None, **kwargs):
     """Save figure to specified path"""
     if fig is not None:
-        fig.savefig(fpath)
+        fig.savefig(fpath, **kwargs)
     else:
-        plt.savefig(fpath)
+        plt.savefig(fpath, **kwargs)
     if fpath.endswith("eps"):
         fix_eps(fpath)
 
