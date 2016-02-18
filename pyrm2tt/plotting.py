@@ -589,10 +589,6 @@ def plot_perf_re_dep(ax1=None, ax2=None, save=False, savedir="Figures",
     """Plot the Reynolds number dependence of power and drag coefficients."""
     if not "marker" in kwargs.keys():
         kwargs["marker"] = "o"
-    if not "color" in kwargs.keys():
-        kwargs["color"] = "black"
-    if not "markerfacecolor" in kwargs.keys():
-        kwargs["markerfacecolor"] = "none"
     # Open up the two DataFrames for the Re-dep sections
     df1 = pd.read_csv("Data/Processed/Perf-tsr_0.csv")
     df2 = pd.read_csv("Data/Processed/Perf-tsr_0-b.csv")
