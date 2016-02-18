@@ -38,17 +38,15 @@ class PerfCurve(object):
         self.df = self.df[self.df.mean_tsr <= 5.1]
         self.label = r"$Re_D = {:.1f} \times 10^6$".format(self.Re_D/1e6)
 
-    def plotcp(self, newfig=True, show=True, save=False, savedir="Figures",
-               savetype=".pdf", splinefit=False, marker="o"):
+    def plotcp(self, newfig=True, save=False, savedir="Figures",
+               savetype=".pdf", splinefit=False, **kwargs):
         """Generates power coefficient curve plot."""
         self.tsr = self.df.mean_tsr
         self.cp = self.df.mean_cp
         if newfig:
             plt.figure()
         if splinefit and not True in np.isnan(self.tsr):
-            plt.plot(self.tsr, self.cp, marker+"k", markerfacecolor="None",
-                     label=self.label)
-            plt.hold(True)
+            plt.plot(self.tsr, self.cp, marker+"k", label=self.label, **kwargs)
             tsr_fit = np.linspace(np.min(self.tsr), np.max(self.tsr), 200)
             tck = interpolate.splrep(self.tsr[::-1], self.cp[::-1], s=1e-3)
             cp_fit = interpolate.splev(tsr_fit, tck)
@@ -56,8 +54,7 @@ class PerfCurve(object):
         else:
             if splinefit:
                 print("Cannot fit spline. NaN present in array.")
-            plt.plot(self.tsr, self.cp, "-"+marker+"k", markerfacecolor="None",
-                     label=self.label)
+            plt.plot(self.tsr, self.cp, label=self.label, **kwargs)
         plt.xlabel(r"$\lambda$")
         plt.ylabel(r"$C_P$")
         plt.grid(True)
@@ -65,20 +62,16 @@ class PerfCurve(object):
         if save:
             savefig(os.path.join(savedir,
                     "cp_vs_tsr_{}".format(self.tow_speed) + savetype))
-        if show:
-            plt.show()
 
-    def plotcd(self, newfig=True, show=True, save=False, savedir="Figures",
-               savetype=".pdf", splinefit=False, marker="o"):
+    def plotcd(self, newfig=True, save=False, savedir="Figures",
+               savetype=".pdf", splinefit=False, **kwargs):
         """Generates power coefficient curve plot."""
         self.tsr = self.df.mean_tsr
         self.cd = self.df.mean_cd
         if newfig:
             plt.figure()
         if splinefit and not True in np.isnan(self.tsr):
-            plt.plot(self.tsr, self.cd, marker+"k", markerfacecolor="None",
-                     label=self.label)
-            plt.hold(True)
+            plt.plot(self.tsr, self.cd, label=self.label, **kwargs)
             tsr_fit = np.linspace(np.min(self.tsr), np.max(self.tsr), 200)
             tck = interpolate.splrep(self.tsr[::-1], self.cd[::-1], s=1e-3)
             cd_fit = interpolate.splev(tsr_fit, tck)
@@ -86,8 +79,7 @@ class PerfCurve(object):
         else:
             if splinefit:
                 print("Cannot fit spline. NaN present in array.")
-            plt.plot(self.tsr, self.cd, "-"+marker+"k", markerfacecolor="None",
-                     label=self.label)
+            plt.plot(self.tsr, self.cd, label=self.label, **kwargs)
         plt.xlabel(r"$\lambda$")
         plt.ylabel(r"$C_D$")
         plt.ylim((0, 1.2))
@@ -96,8 +88,7 @@ class PerfCurve(object):
         if save:
             savefig(os.path.join(savedir,
                     "cd_vs_tsr_{}".format(self.tow_speed) + savetype))
-        if show:
-            plt.show()
+
 
 class WakeProfile(object):
     def __init__(self, tow_speed, z_H, orientation="horizontal"):
@@ -808,11 +799,13 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     if subplots:
         plt.figure(figsize=(11, 4.5))
         plt.subplot(121)
-    PerfCurve(0.4).plotcp(newfig=not subplots, show=False, marker=">")
-    PerfCurve(0.6).plotcp(newfig=False, show=False, marker="s")
-    PerfCurve(0.8).plotcp(newfig=False, show=False, marker="<")
-    PerfCurve(1.0).plotcp(newfig=False, show=False, marker="o")
-    PerfCurve(1.2).plotcp(newfig=False, show=False, marker="^")
+    speeds = np.round(np.arange(0.4, 1.3, 0.2), decimals=1)
+    cm = plt.cm.coolwarm
+    colors = [cm(int(n/4*256)) for n in range(len(speeds))]
+    markers = [">", "s", "<", "o", "^"]
+    for speed, color, marker, in zip(speeds, colors, markers):
+        nf = speed == speeds[0]
+        PerfCurve(speed).plotcp(newfig=nf, marker=marker, color=color)
     if not subplots:
         plt.legend(loc="lower left", ncol=2)
     if preliminary:
@@ -821,11 +814,9 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
         savefig(os.path.join(savedir, "cp_curves" + savetype))
     if subplots:
         plt.subplot(122)
-    PerfCurve(0.4).plotcd(newfig=not subplots, show=False, marker=">")
-    PerfCurve(0.6).plotcd(newfig=False, show=False, marker="s")
-    PerfCurve(0.8).plotcd(newfig=False, show=False, marker="<")
-    PerfCurve(1.0).plotcd(newfig=False, show=False, marker="o")
-    PerfCurve(1.2).plotcd(newfig=False, show=False, marker="^")
+    for speed, color, marker, in zip(speeds, colors, markers):
+        nf = speed == speeds[0]
+        PerfCurve(speed).plotcd(newfig=nf, marker=marker, color=color)
     plt.legend(loc="lower right")
     if preliminary:
         watermark()
