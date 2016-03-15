@@ -44,11 +44,11 @@ generated per test matrix section, the descriptions for which are given below:
 Please cite
 
 ```bibtex
-@Misc{Bachant2015-RM2-data,
+@Misc{Bachant2016-RM2-data,
   Title                    = {{UNH} {RM2} tow tank experiment: Reduced dataset and processing code},
   Author                   = {Peter Bachant and Martin Wosnik and Budi Gunawan and Vincent Neary},
   HowPublished             = {fig\textbf{share}. http://dx.doi.org/10.6084/m9.figshare.1373899},
-  Year                     = {2015},
+  Year                     = {2016},
   Doi                      = {10.6084/m9.figshare.1373899},
 }
 ```
