@@ -528,12 +528,16 @@ class WakeMap(object):
         plt.figure(figsize=(7, 3))
         names = [r"$y$-adv.", r"$z$-adv.", r"$y$-turb.", r"$z$-turb.",
                  r"$k$-prod.", "Mean diss."]
-        quantities = [ts.average_over_area(-2*meanv/meanu*dKdy/(0.5*U**2)/D, y_R, z_H),
-                      ts.average_over_area(-2*meanw/meanu*dKdz/(0.5*U**2)/D, y_R, z_H),
+        quantities = [ts.average_over_area(-2*meanv/meanu*dKdy/(0.5*U**2)/D,
+                                           y_R, z_H),
+                      ts.average_over_area(-2*meanw/meanu*dKdz/(0.5*U**2)/D,
+                                           y_R, z_H),
                       ts.average_over_area(2*tty/meanu/(0.5*U**2)/D, y_R, z_H),
                       ts.average_over_area(2*ttz/meanu/(0.5*U**2)/D, y_R, z_H),
-                      ts.average_over_area(2*kprod/meanu/(0.5*U**2)/D, y_R, z_H),
-                      ts.average_over_area(2*meandiss/meanu/(0.5*U**2)/D, y_R, z_H)]
+                      ts.average_over_area(2*kprod/meanu/(0.5*U**2)/D, y_R,
+                                           z_H),
+                      ts.average_over_area(2*meandiss/meanu/(0.5*U**2)/D, y_R,
+                                           z_H)]
         ax = plt.gca()
         ax.bar(range(len(names)), quantities, color="gray",
                edgecolor="black", width=0.5)
