@@ -14,7 +14,7 @@ if __name__ == "__main__":
                         choices=["perf_curves", "perf_re_dep", "cp_re_0",
                                  "meancontquiv", "kcont", "K_bar_chart",
                                  "perf_no_blades", "cp_covers", "perf_covers",
-                                 "none"],
+                                 "mom_bar_chart", "none"],
                         default="none")
     parser.add_argument("--all", "-a", action="store_true", default=False,
                         help="Plot all figures used in publication")
@@ -61,6 +61,7 @@ if __name__ == "__main__":
         PerfCurve(1.0).plotcp(save=save, savetype=savetype)
     if ("meancontquiv" in args.plots or
         "kcont" in args.plots or
+        "mom_bar_chart" in args.plots or
         "K_bar_chart" in args.plots or
         args.all):
         wm = WakeMap()
@@ -68,6 +69,8 @@ if __name__ == "__main__":
             wm.plot_meancontquiv(save=save, savetype=savetype)
         if "kcont" in args.plots or args.all:
             wm.plot_k(save=save, savetype=savetype)
+        if "mom_bar_chart" in args.plots or args.all:
+            wm.make_mom_bar_graph(save=save, savetype=savetype)
         if "K_bar_chart" in args.plots or args.all:
             wm.make_K_bar_graph(save=save, savetype=savetype)
     if "perf_no_blades" in args.plots or args.all:

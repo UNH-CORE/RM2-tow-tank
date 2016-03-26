@@ -510,8 +510,62 @@ class WakeMap(object):
         if show:
             self.show()
 
+    def make_mom_bar_graph(self, ax=None, save=False, savetype=".pdf",
+                           print_analysis=False, **kwargs):
+        """Create a bar graph of terms contributing to dU/dx:
+          * Cross-stream advection
+          * Vertical advection
+          * Cross-stream Re stress gradient
+          * Vertical Re stress gradient
+          * Cross-steam diffusion
+          * Vertical diffusion
+        """
+        if not "color" in kwargs.keys():
+            kwargs["color"] = "gray"
+        if not "edgecolor" in kwargs.keys():
+            kwargs["edgecolor"] = "black"
+        names = [r"$-V \frac{\partial U}{\partial y}$",
+                 r"$-W \frac{\partial U}{\partial z}$",
+                 r"$-\frac{\partial}{\partial y} \overline{u^\prime v^\prime}$",
+                 r"$-\frac{\partial}{\partial z} \overline{u^\prime w^\prime}$",
+                 r"$\nu \frac{\partial^2 U}{\partial y^2}$",
+                 r"$\nu \frac{\partial^2 U}{\partial z^2}$"]
+        if ax is None:
+            fig, ax = plt.subplots(figsize=(7, 3))
+        dUdy = self.dUdy
+        dUdz = self.dUdz
+        tty = self.ddy_upvp
+        ttz = self.ddz_upwp
+        d2Udy2 = self.d2Udy2
+        d2Udz2 = self.d2Udz2
+        meanu, meanv, meanw = self.df.mean_u, self.df.mean_v, self.df.mean_w
+        y_R, z_H = self.y_R.copy(), self.z_H.copy()
+        U = self.U_infty
+        quantities = [ts.average_over_area(-2*meanv*dUdy/meanu/U*D, y_R, z_H),
+                      ts.average_over_area(-2*meanw*dUdz/meanu/U*D, y_R, z_H),
+                      ts.average_over_area(-2*tty/meanu/U*D, y_R, z_H),
+                      ts.average_over_area(-2*ttz/meanu/U*D, y_R, z_H),
+                      ts.average_over_area(2*nu*d2Udy2/meanu/U*D, y_R, z_H),
+                      ts.average_over_area(2*nu*d2Udz2/meanu/U*D, y_R, z_H)]
+        if print_analysis:
+            quantities[4] /= 1e3
+            quantities[5] /= 1e3
+            print("U recovery rate at {:.1f} m/s: {:.2f} (%/D)".format(U,
+                  np.sum(quantities)*100))
+        ax.bar(np.arange(len(names)), quantities, width=0.5, **kwargs)
+        ax.set_xticks(np.arange(len(names)) + 0.25)
+        ax.set_xticklabels(names)
+        ax.hlines(0, 0, len(names) - 0.25, color="black", linewidth=1)
+        ax.set_ylabel(r"$\frac{U \, \mathrm{ transport}}{UU_\infty D^{-1}}$")
+        try:
+            fig.tight_layout()
+        except UnboundLocalError:
+            pass
+        if save:
+            plt.savefig("Figures/mom_bar_graph" + savetype)
+
     def make_K_bar_graph(self, save=False, savetype=".pdf",
-                         print_analysis=True):
+                         print_analysis=False):
         """Make a bar graph of terms contributing to dK/dx:
           * Cross-stream advection
           * Vertical advection
@@ -541,7 +595,7 @@ class WakeMap(object):
         ax = plt.gca()
         ax.bar(range(len(names)), quantities, color="gray",
                edgecolor="black", width=0.5)
-        ax.set_xticks(np.arange(len(names))+0.25)
+        ax.set_xticks(np.arange(len(names)) + 0.25)
         ax.set_xticklabels(names)
         plt.hlines(0, 0, len(names) - 0.25, color="black", linewidth=1.0)
         plt.ylabel(r"$\frac{K \, \mathrm{ transport}}{UK_\infty D^{-1}}$")
@@ -550,10 +604,7 @@ class WakeMap(object):
             print("K recovery rate (%/D) =",
                   2*np.sum(quantities)/(0.5*U**2)/D*100)
         if save:
-            savefig("Figures/K_trans_bar_graph"+savetype)
-
-    def show(self):
-        plt.show()
+            savefig("Figures/K_trans_bar_graph" + savetype)
 
 
 def plot_trans_wake_profile(quantity, U_infty=0.4, z_H=0.0, save=False,
