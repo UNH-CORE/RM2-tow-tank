@@ -96,4 +96,4 @@ def test_process_tare_drag():
 
 
 def test_plots():
-    subprocess.call(["python", "plot.py", "--all", "--noshow"])
+    subprocess.call(["python", "plot.py", "--all", "--no-show"])
