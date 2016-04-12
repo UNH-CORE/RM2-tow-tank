@@ -20,7 +20,7 @@ ylabels = {"mean_u" : r"$U/U_\infty$",
 
 class PerfCurve(object):
     """Object that represents a performance curve."""
-    def __init__(self, tow_speed):
+    def __init__(self, tow_speed=1.0):
         self.tow_speed = tow_speed
         self.Re_D = tow_speed*D/nu
         self.section = "Perf-{}".format(tow_speed)
@@ -843,18 +843,18 @@ def plot_cp_curve(u_infty, save=False, show=False, savedir="Figures",
         plt.show()
 
 
-def plot_perf_curves(subplots=True, save=False, savedir="Figures",
+def plot_perf_curves(subplots=False, save=False, savedir="Figures",
                      show=False, savetype=".pdf", preliminary=False):
     """Plot all performance curves."""
     if subplots:
-        plt.figure(figsize=(11, 4.5))
+        plt.figure(figsize=(7.5, 3.25))
         plt.subplot(121)
     speeds = np.round(np.arange(0.4, 1.3, 0.2), decimals=1)
     cm = plt.cm.coolwarm
     colors = [cm(int(n/4*256)) for n in range(len(speeds))]
     markers = [">", "s", "<", "o", "^"]
     for speed, color, marker, in zip(speeds, colors, markers):
-        nf = speed == speeds[0]
+        nf = speed == speeds[0] and not subplots
         PerfCurve(speed).plotcp(newfig=nf, marker=marker, color=color)
     if not subplots:
         plt.legend(loc="lower left", ncol=2)
@@ -865,7 +865,7 @@ def plot_perf_curves(subplots=True, save=False, savedir="Figures",
     if subplots:
         plt.subplot(122)
     for speed, color, marker, in zip(speeds, colors, markers):
-        nf = speed == speeds[0]
+        nf = speed == speeds[0] and not subplots
         PerfCurve(speed).plotcd(newfig=nf, marker=marker, color=color)
     plt.legend(loc="lower right")
     if preliminary:
