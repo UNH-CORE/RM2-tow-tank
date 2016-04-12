@@ -38,12 +38,13 @@ class PerfCurve(object):
         self.df = self.df[self.df.std_tow_speed < 0.009]
         self.df = self.df[self.df.mean_tsr <= 5.1]
         self.label = r"$Re_D = {:.1f} \times 10^6$".format(self.Re_D/1e6)
+        self.tsr = self.df.mean_tsr
+        self.cp = self.df.mean_cp
+        self.cd = self.df.mean_cd
 
     def plotcp(self, newfig=True, save=False, savedir="Figures",
                savetype=".pdf", splinefit=False, **kwargs):
         """Generates power coefficient curve plot."""
-        self.tsr = self.df.mean_tsr
-        self.cp = self.df.mean_cp
         if newfig:
             plt.figure()
         if splinefit and not True in np.isnan(self.tsr):
@@ -67,8 +68,6 @@ class PerfCurve(object):
     def plotcd(self, newfig=True, save=False, savedir="Figures",
                savetype=".pdf", splinefit=False, **kwargs):
         """Generates power coefficient curve plot."""
-        self.tsr = self.df.mean_tsr
-        self.cd = self.df.mean_cd
         if newfig:
             plt.figure()
         if splinefit and not True in np.isnan(self.tsr):
