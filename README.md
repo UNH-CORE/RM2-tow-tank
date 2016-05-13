@@ -18,6 +18,22 @@ After installing all dependencies, execute `python plot.py` to generate
 figures from the experiment.
 
 
+## Turbine model specs
+
+|      | Full-scale | Model (1:6) |
+|------|------------|-------------|
+| Diameter (m)  | 6.450 | 1.075 |
+| Height (m)    | 4.840 | 0.8067 |
+| Blade root chord (m) | 0.4000 | 0.06667 |
+| Blade tip chord (m)  | 0.2400 | 0.04000 |
+| Blade profile | NACA 0021 | NACA 0021 |
+| Blade mount | 1/2 chord | 1/2 chord |
+| Blade pitch (deg.) | 0.0 | 0.0 |
+| Strut profile | NACA 0021 | NACA 0021 |
+| Strut chord (m) | 0.3600 | 0.06000 |
+| Shaft diameter (m) | 0.2540 or 0.4160 | 0.06350 |
+
+
 ## Test matrix sections
 
 Processed data is stored as CSV in the `Data/Processed` directory. One file is
