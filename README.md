@@ -70,6 +70,11 @@ Please cite
 ```
 
 
+## Publications
+
+Bachant, P., Wosnik, M., Gunawan, B., and Neary, V. S. (2016) [Experimental Study of a Reference Model Vertical-Axis Cross-Flow Turbine](https://drive.google.com/file/d/0BwMVIAlxIxfZS29xNjk0OGpHbzQ/view?usp=sharing), Submitted to _PLOS ONE_
+
+
 ## Resources
 
 * The test plan document is available from http://dx.doi.org/10.6084/m9.figshare.1373884
