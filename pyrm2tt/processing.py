@@ -895,6 +895,9 @@ def batch_process_strut_torque(covers=False):
 
 
 def make_remote_name(local_path):
+    """Create top level file name for uploading to figshare.
+
+    Note: Will only work properly on Windows"""
     return "_".join(local_path.split("\\")[-3:])
 
 
