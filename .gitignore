@@ -20,3 +20,4 @@ Trash
 *.ffs_db
 temp*
 *.zip
+Scripts/.cache

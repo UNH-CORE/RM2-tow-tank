@@ -12,10 +12,19 @@ We recommend using the
 (Python 3.5) since it includes most dependencies. The remaining
 can be installed by executing
 
-    pip install progressbar33 pxl>=0.0.9
+    pip install progressbar33 pxl>=0.0.9 wget
 
 After installing all dependencies, execute `python plot.py` to generate
 figures from the experiment.
+
+
+## Downloading raw data
+
+By design, raw data will be downloaded automatically as needed by various
+processing functions. However, it is possible to download all raw data (~10 GB)
+by executing
+
+    python Scripts/download.py
 
 
 ## Turbine model specs
