@@ -9,7 +9,7 @@ from pxl.io import loadhdf
 import matplotlib.pyplot as plt
 import multiprocessing as mp
 import scipy.stats
-from scipy.stats import nanmean, nanstd
+from numpy import nanmean, nanstd
 from pxl import fdiff
 import progressbar
 import json
