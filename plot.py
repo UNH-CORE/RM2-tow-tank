@@ -50,13 +50,13 @@ if __name__ == "__main__":
     else:
         from pxl.styleplot import set_sns
         set_sns()
-        plt.rcParams["axes.formatter.use_mathtext"] = True
 
     if "perf_curves" in args.plots or args.all:
         plot_perf_curves(subplots=args.subplots, save=save, savetype=savetype)
     if "perf_re_dep" in args.plots or args.all:
-        plot_perf_re_dep(save=save, savetype=savetype, errorbars=errorbars,
-                         dual_xaxes=True)
+        with plt.rc_context(rc={"axes.formatter.use_mathtext": True}):
+            plot_perf_re_dep(save=save, savetype=savetype, errorbars=errorbars,
+                             dual_xaxes=True)
     if "cp_re_0" in args.plots:
         PerfCurve(1.0).plotcp(save=save, savetype=savetype)
     if ("meancontquiv" in args.plots or
