@@ -994,10 +994,14 @@ def plot_no_blades_all(save=False, savetype=".pdf"):
     plt.subplot(1, 2, 1)
     plot_strut_torque(covers=False, newfig=False)
     plot_cp_no_blades(covers=False, newfig=False, marker="s")
+    ax = plt.gca()
+    ax.set_xticks(np.arange(0.5, 5.6, 1.0))
     label_subplot(text="(a)")
     plt.subplot(1, 2, 2)
     plot_strut_torque(covers=True, newfig=False)
     plot_cp_no_blades(covers=True, newfig=False, marker="s")
+    ax = plt.gca()
+    ax.set_xticks(np.arange(0.5, 5.6, 1.0))
     label_subplot(text="(b)")
     plt.tight_layout()
     if save:
@@ -1018,6 +1022,8 @@ def plot_perf_covers(subplots=True, save=False, savetype=".pdf", **kwargs):
     plt.plot(df.mean_tsr, df.mean_cp, marker="o", label="NACA 0021", **kwargs)
     plt.plot(dfc.mean_tsr, dfc.mean_cp, marker="s", label="Cylindrical",
              **kwargs)
+    ax = plt.gca()
+    ax.set_xticks(np.arange(0.5, 4.6, 1.0))
     plt.xlabel(r"$\lambda$")
     plt.ylabel("$C_P$")
     plt.grid(True)
@@ -1032,6 +1038,8 @@ def plot_perf_covers(subplots=True, save=False, savetype=".pdf", **kwargs):
     plt.plot(df.mean_tsr, df.mean_cd, marker="o", label="NACA 0021", **kwargs)
     plt.plot(dfc.mean_tsr, dfc.mean_cd, marker="s", label="Cylindrical",
              **kwargs)
+    ax = plt.gca()
+    ax.set_xticks(np.arange(0.5, 4.6, 1.0))
     plt.xlabel(r"$\lambda$")
     plt.ylabel("$C_D$")
     plt.grid(True)
